@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Offline</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Drone Control Dashboard</h1>
+    </header>
+
+    <main>
+        <section class="offline-section">
+            <h2>Drone is Offline</h2>
+            <p>It seems that the drone is not currently available. Please check the following:</p>
+            <ul>
+                <li>Ensure the drone is powered on.</li>
+                <li>Check the Wi-Fi connection between the drone and your device.</li>
+                <li>Restart the drone and try again.</li>
+            </ul>
+            <button class="btn" onclick="window.location.href='/'">Return to Dashboard</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Drone Control System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+
+
+

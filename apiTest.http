@@ -1,45 +1,142 @@
-### Check if the drone is ON or OFF
+### Test Index Page
+GET http://localhost:5000/
+Accept: text/html
+
+### Check if Drone is ON or OFF
 GET http://localhost:5000/is_on
 Accept: application/json
+### Expected Response:
+### {
+###   "status": "Drone is ON"  // or "Drone is OFF"
+### }
 
-### Check drone status (battery, height, etc.)
+### Get Drone Status
 GET http://localhost:5000/status
 Accept: application/json
+### Expected Response:
+### {
+###   "battery": "100%",
+###   "height": "0 cm",
+###   "is_flying": false,
+###   "temperature": "25 °C",
+###   "flight_time": "0 seconds",
+###   "wifi_strength": 50
+### }
 
-### Command the drone to take off
+### Command Drone to Takeoff
 GET http://localhost:5000/takeoff
 Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone took off!"
+### }
 
-### Command the drone to land
+### Command Drone to Land
 GET http://localhost:5000/land
 Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone landed!"
+### }
 
-### Move the drone (change the direction and distance as needed)
+### Move Drone Forward by 50 cm
 POST http://localhost:5000/move/forward/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved forward by 50 cm!"
+### }
 
-### Move the drone backward
+### Move Drone Backward by 50 cm
 POST http://localhost:5000/move/backward/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved backward by 50 cm!"
+### }
 
-### Move the drone left
+### Move Drone Left by 50 cm
 POST http://localhost:5000/move/left/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved left by 50 cm!"
+### }
 
-### Move the drone right
+### Move Drone Right by 50 cm
 POST http://localhost:5000/move/right/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved right by 50 cm!"
+### }
 
-### Move the drone up
+### Move Drone Up by 50 cm
 POST http://localhost:5000/move/up/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved up by 50 cm!"
+### }
 
-### Move the drone down
+### Move Drone Down by 50 cm
 POST http://localhost:5000/move/down/50
 Content-Type: application/json
+Accept: application/json
+### Expected Response:
+### {
+###   "message": "Drone moved down by 50 cm!"
+### }
 
-### Check the live video feed (this will not return a JSON response)
+### Start Video Feed
 GET http://localhost:5000/video_feed
+Accept: multipart/x-mixed-replace; boundary=frame
+### Expected Response: 
+### Stream of video frames (this will not return a JSON response, 
+### but will provide a live video feed)
 
-### Get index.html
-GET http://localhost:5000/
+### Move Drone to GPS Coordinates (Example: San Francisco, CA)
+POST http://localhost:5000/move_to_gps
+Content-Type: application/json
+Accept: application/json
+
+{
+    "latitude": 37.7749,
+    "longitude": -122.4194
+}
+### Expected Response:
+### {
+###   "message": "Drone has moved to GPS location and returned to start."
+### }
+
+### Test Move to GPS with Invalid Coordinates (Example: Invalid Latitude)
+POST http://localhost:5000/move_to_gps
+Content-Type: application/json
+Accept: application/json
+
+{
+    "latitude": 200.0,  // Invalid latitude
+    "longitude": -122.4194
+}
+### Expected Response:
+### {
+###   "error": "Invalid coordinates!"  // Assuming you implement validation
+### }
+
+### Test Move to GPS without coordinates
+POST http://localhost:5000/move_to_gps
+Content-Type: application/json
+Accept: application/json
+
+{}
+### Expected Response:
+### {
+###   "error": "Latitude and longitude are required!"  // Assuming you implement validation
+### }
+
+

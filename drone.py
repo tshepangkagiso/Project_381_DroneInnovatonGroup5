@@ -2,43 +2,59 @@
 #pip install flask opencv-python djitellopy numpy
 #python drone.py
 
-from flask import Flask, Response, jsonify, render_template  
+from flask import Flask, Response, jsonify, render_template, redirect, url_for
 from djitellopy import Tello
 import threading
-import cv2
+import time
 
 app = Flask(__name__)
-drone = Tello()  
-drone.connect()  
+drone = Tello()
+drone_connected = False  # Global variable to track drone connection status
+
+# Attempt to connect to the drone
+try:
+    drone.connect()
+    drone_connected = True
+except Exception as e:
+    print(f"Drone connection failed: {e}")
+
+# Mock GPS sensor data
+def get_gps_coordinates():
+    # Replace with actual GPS sensor reading logic
+    return {"latitude": 37.7749, "longitude": -122.4194}
+
+# Check if the drone is connected
+def check_drone_connection():
+    return drone_connected and drone.is_connected()
 
 # Route to render the HTML page
 @app.route('/', methods=['GET'])  # http://localhost:5000/
 def index():
-    return render_template('index.html')  
+    return render_template('index.html')
 
-# Route checks if drone is on or off
+# Route to check if drone is on or off
 @app.route('/is_on', methods=['GET'])  # http://localhost:5000/is_on
 def is_on():
-    try:
-        if drone.is_connected:
-            return jsonify({"status": "Drone is ON"})
-        else:
-            return jsonify({"status": "Drone is OFF"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    if check_drone_connection():
+        return jsonify({"status": "Drone is ON"})
+    else:
+        return redirect(url_for('offline'))
 
 # Route to get drone status information
 @app.route('/status', methods=['GET'])  # http://localhost:5000/status
 def status():
+    if not check_drone_connection():
+        return redirect(url_for('offline'))
+
+    # Fetching drone status information
     try:
-        # Fetching drone status information
         battery = drone.get_battery()
         height = drone.get_height()
         is_flying = drone.is_flying
         temp = drone.get_temperature()
         flight_time = drone.get_flight_time()
         wifi_strength = drone.query_wifi_signal_noise_ratio()
-        
+
         # Return the status information as JSON
         return jsonify({
             "battery": f"{battery}%",
@@ -48,30 +64,31 @@ def status():
             "flight_time": f"{flight_time} seconds",
             "wifi_strength": wifi_strength
         })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return redirect(url_for('offline'))
 
 # Route to command the drone to takeoff
 @app.route('/takeoff', methods=['GET'])  # http://localhost:5000/takeoff
 def takeoff():
-    try:
-        drone.takeoff()
-        return jsonify({"message": "Drone took off!"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    if not check_drone_connection():
+        return redirect(url_for('offline'))
+    drone.takeoff()
+    return jsonify({"message": "Drone took off!"})
 
 # Route to command the drone to land
 @app.route('/land', methods=['GET'])  # http://localhost:5000/land
 def land():
-    try:
-        drone.land()
-        return jsonify({"message": "Drone landed!"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    if not check_drone_connection():
+        return redirect(url_for('offline'))
+    drone.land()
+    return jsonify({"message": "Drone landed!"})
 
 # Route to move the drone in a specific direction
 @app.route('/move/<direction>/<int:distance>', methods=['POST'])  # http://localhost:5000/move/forward/50
 def move(direction, distance):
+    if not check_drone_connection():
+        return redirect(url_for('offline'))
+
     try:
         if direction == 'forward':
             drone.move_forward(distance)
@@ -89,8 +106,8 @@ def move(direction, distance):
             return jsonify({"error": "Invalid direction!"}), 400
         
         return jsonify({"message": f"Drone moved {direction} by {distance} cm!"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        return redirect(url_for('offline'))
 
 # Video streaming endpoint method
 def generate_frames():
@@ -106,10 +123,40 @@ def generate_frames():
 # Route to get the video feed
 @app.route('/video_feed', methods=['GET'])  # http://localhost:5000/video_feed
 def video_feed():
+    if not check_drone_connection():  # Check if the drone is connected
+        return redirect(url_for('offline'))  # Redirect to offline page if not connected
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# Run the Flask server
+# New route for moving to GPS coordinates
+@app.route('/move_to_gps', methods=['POST'])  # http://localhost:5000/move_to_gps
+def move_to_gps():
+    if not check_drone_connection():  # Check if the drone is connected
+        return redirect(url_for('offline'))  # Redirect if not connected
+
+    initial_coordinates = get_gps_coordinates()  # Mock initial coordinates
+    target_coordinates = get_gps_coordinates()  # Mock target coordinates
+
+    try:
+        print("Moving to GPS location...")
+        # Simplified movement logic for demonstration
+        drone.takeoff()
+        drone.move_forward(100)  # Move forward for demonstration
+        time.sleep(5)  # Hover for 5 seconds
+        drone.land()
+        
+        return jsonify({"message": "Drone has moved to GPS location."})
+    except Exception:
+        return redirect(url_for('offline'))  # Redirect on error
+
+# Route to render the offline page
+@app.route('/offline', methods=['GET'])  # http://localhost:5000/offline
+def offline():
+    return render_template('offline.html')
+
+# Run the Flask server in a separate thread
 if __name__ == '__main__':
-    # Run the app in a separate thread so that the drone can operate simultaneously
     threading.Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)).start()
+
+
+

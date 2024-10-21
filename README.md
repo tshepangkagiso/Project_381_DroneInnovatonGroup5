@@ -1,13 +1,19 @@
-# Tello Drone Flask API
+# Drone Control API
 
 ## Overview
 
-This repository contains a Flask API for controlling a Tello drone. The API allows users to take off, land, check status, 
-move in various directions, and stream video from the drone.
+This project is a **Flask-based web application** for controlling a Tello drone. It provides users with a dashboard interface to monitor the drone's status, issue control commands, and stream live video from the drone’s camera.
+
+## Features
+
+- **Drone Control**: Perform takeoff, landing, and movement in various directions.
+- **Live Video Feed**: Stream real-time video from the drone’s camera.
+- **Drone Status Monitoring**: Display vital information like battery percentage, flight time, and altitude.
+- **Offline Handling**: Detects if the drone is disconnected and displays an offline status page.
 
 ## Requirements
 
-Before you begin, ensure you have the following installed on your system:
+Before running the application, ensure you have the following installed:
 
 - **Python 3.x**
 - **Flask**: Install via pip
@@ -25,106 +31,105 @@ Before you begin, ensure you have the following installed on your system:
 
 ## Project Structure
 
-Ensure your project has the following structure:
+Your project should have the following structure:
 
 ```
 your_project/
-├── drone.py
-└── templates/
-    └── index.html
-```
-
-### HTML File
-
-Create an `index.html` file in the `templates` folder with the following content:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drone Video Feed</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        img {
-            width: 640px; /* Set the desired width */
-            height: auto; /* Maintain aspect ratio */
-            border: 2px solid #333;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Live Video Feed from Tello Drone</h1>
-    <img src="{{ url_for('video_feed') }}" alt="Drone Video Feed">
-</body>
-</html>
+├── app.py                # Main Flask app
+├── drone.py              # Drone control logic
+├── udpDrone.py           # UDP communication logic
+├── apiTest.http          # HTTP API testing script
+├── templates/
+│   ├── index.html        # Dashboard template
+│   └── offline.html      # Offline page template
+└── static/
+    └── styles.css        # Custom styles for the web interface
 ```
 
 ## Running the Application
 
 1. **Start the Flask Application**:
-   Open your terminal, navigate to your project directory, and run:
-   ```bash
-   python drone.py
-   ```
+   - Open a terminal, navigate to your project directory, and run:
+     ```bash
+     python app.py
+     ```
 
-2. **Access the API**:
-   Open a web browser and go to:
-   ```
-   http://localhost:5000/
-   ```
+2. **Access the Web Dashboard**:
+   - Open your browser and navigate to:
+     ```
+     http://localhost:5000/
+     ```
+   - From the dashboard, you can monitor the drone’s status, view the live video feed, and issue control commands.
 
-3. **Testing API Endpoints**:
-   Use the provided `.rest` file to test various API endpoints, or you can use a tool like Postman or curl to make HTTP requests to your endpoints.
+## API Endpoints
 
-### API Endpoints
+You can also interact with the drone using the following API endpoints:
 
 - **GET** `/is_on`: Check if the drone is connected.
-- **GET** `/status`: Get the drone's battery, height, flying status, etc.
+- **GET** `/status`: Retrieve the drone's current status (battery, height, etc.).
 - **GET** `/takeoff`: Command the drone to take off.
 - **GET** `/land`: Command the drone to land.
-- **POST** `/move/<direction>/<int:distance>`: Move the drone in a specified direction (e.g., forward, backward).
-- **GET** `/video_feed`: Stream the video feed from the drone.
+- **POST** `/move/<direction>/<int:distance>`: Move the drone in a specified direction (e.g., `/move/forward/50`).
+- **GET** `/video_feed`: Stream the live video feed from the drone.
+
+## Handling Drone Connection Issues
+
+### Drone Initialization
+
+- At startup, the app attempts to connect to the drone using the `drone.connect()` command.
+- If the drone is not available, an exception will be raised. To prevent the app from crashing when this occurs, wrap the `drone.connect()` call in a `try-except` block.
+
+Example:
+```python
+try:
+    drone.connect()
+except Exception as e:
+    print(f"Failed to connect to the drone: {e}")
+```
+
+### Offline Handling
+
+- Users can still access the web interface even if the drone is not connected.
+- When users interact with the controls (e.g., takeoff, landing, movement) or try to fetch the drone's status, the app checks if the drone is connected.
+- If the drone is offline, the user is redirected to the `/offline` page, which informs them that the drone is not available.
+
+### Video Feed Handling
+
+- If the drone is offline, the live video feed will not be available.
+- The `/video_feed` route checks the drone’s connection and redirects to the offline page if the connection fails.
+
+## Expected Workflow When Drone is Not Connected
+
+1. **App Start**: 
+   - The Flask server starts normally, even if the drone is not connected.
+   
+2. **Dashboard Access**: 
+   - Users can visit the dashboard at `http://localhost:5000/` and interact with the interface.
+   
+3. **Drone Controls**: 
+   - If the drone is offline and users try to control the drone or view the video feed, they will be redirected to the offline page.
+
+4. **Retrying**: 
+   - On the offline page, users can click the "Retry" button to attempt reconnecting to the dashboard.
 
 ## Possible Challenges and Solutions
 
 ### 1. Drone Not Connecting
-- **Challenge**: The drone fails to connect.
-- **Solution**: Ensure that the Tello drone is powered on and connected to the same Wi-Fi network as your computer. You may also need to reset the drone or your Wi-Fi connection.
+- **Challenge**: The drone fails to connect at startup.
+- **Solution**: Ensure the Tello drone is powered on and connected to the same Wi-Fi network as your computer. If the connection fails, check your network or restart the drone.
 
 ### 2. No Video Feed
-- **Challenge**: The video feed does not display.
-- **Solution**: Ensure that the drone is properly streaming video. Check the `generate_frames` function for any errors and ensure your drone supports video streaming. Additionally, verify that your browser can access the video stream at `http://localhost:5000/video_feed`.
+- **Challenge**: The live video feed is not displaying on the dashboard.
+- **Solution**: Ensure the drone supports video streaming, and check that the `/video_feed` route is working correctly.
 
-### 3. API Response Errors
-- **Challenge**: Receiving error messages from the API.
-- **Solution**: Review the error message returned in the JSON response for more information. Ensure that you are using the correct HTTP method (GET or POST) and that you have provided valid parameters (like distance).
+### 3. API Errors
+- **Challenge**: Receiving errors when interacting with the API.
+- **Solution**: Verify you are using the correct HTTP method and providing valid parameters. Review any error messages returned by the API for troubleshooting.
 
-### 4. Environment Issues
-- **Challenge**: Python or package version compatibility issues.
-- **Solution**: Ensure you are using compatible versions of Python and packages. Consider using a virtual environment to isolate your dependencies:
-  ```bash
-  python -m venv venv
-  source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-  pip install Flask djitellopy opencv-python
-  ```
-
-### 5. Firewall Issues
-- **Challenge**: Localhost connection issues due to firewall restrictions.
-- **Solution**: Check your firewall settings to ensure they are not blocking the Flask application. You may need to allow Python or the specific port (5000) through your firewall.
+### 4. Firewall Issues
+- **Challenge**: Localhost access is blocked due to firewall settings.
+- **Solution**: Check your firewall and network settings to ensure that connections to localhost and port 5000 are not being blocked.
 
 ## Conclusion
 
-This Flask API provides a simple way to control and monitor a Tello drone. By following the setup instructions and addressing potential challenges, you should be able to operate the drone smoothly. If you encounter any issues not covered in this documentation, consider checking the documentation for Flask, djitellopy, or seeking help from community forums.
+This Flask application provides a simple and effective interface for controlling and monitoring a Tello drone. By following the setup instructions and addressing potential issues, you should be able to operate the drone smoothly. If further issues arise, consult the documentation for Flask, djitellopy, or seek assistance from online communities.
