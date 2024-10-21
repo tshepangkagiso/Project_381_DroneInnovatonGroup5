@@ -1,12 +1,13 @@
 # press and wait until it flashes orange and connect to the wifi
-#pip install flask opencv-python djitellopy
+#pip install flask opencv-python djitellopy numpy
+#python drone.py
 
 from flask import Flask, Response, jsonify, render_template  
 from djitellopy import Tello
 import threading
 import cv2
 
-app = Flask(__name__) 
+app = Flask(__name__)
 drone = Tello()  
 drone.connect()  
 

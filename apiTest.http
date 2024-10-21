@@ -40,3 +40,6 @@ Content-Type: application/json
 
 ### Check the live video feed (this will not return a JSON response)
 GET http://localhost:5000/video_feed
+
+### Get index.html
+GET http://localhost:5000/
