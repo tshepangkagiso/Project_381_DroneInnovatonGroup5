@@ -1,0 +1,27 @@
+### Get Login Page
+GET http://localhost:3000/login
+
+### User Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "john.doe@example.com",
+    "password": "securePassword123"
+}
+
+### Get Register Page
+GET http://localhost:3000/register
+
+### User Registration
+POST http://localhost:3000/create
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "securePassword123"
+}
+
+### Get Dsshboard Page
+GET http://localhost:3000/dashboard

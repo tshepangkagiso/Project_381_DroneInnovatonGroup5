@@ -1,0 +1,236 @@
+{
+    "tasks": [
+        {
+            "id": 1,
+            "status": "Active",
+            "title": "Look into a new email marketing service",
+            "detail": "Tootsie roll liquorice cake jelly beans pudding gummi bears chocolate cake donut.",
+            "tags": [
+                {
+                    "title": "Urgent",
+                    "class": "bg-outline-danger"
+                },
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 2,
+            "status": "Active",
+            "title": "Rename existing sections and tasks to fit your project needs",
+            "detail": "Gummi bears chocolate cake donut. Jelly-o sugar plum fruitcake bonbon bear claw cake cookie chocolate bar.",
+            "tags": [
+                {
+                    "title": "Urgent",
+                    "class": "bg-outline-danger"
+                },
+                {
+                    "title": "List",
+                    "class": "bg-outline-success"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 3,
+            "status": "Active",
+            "title": "Learn how to perform magic tricks",
+            "detail": "Pie powder tart chupa chups bonbon donut biscuit chocolate cake pie topping.",
+            "tags": [
+                {
+                    "title": "Urgent",
+                    "class": "bg-outline-danger"
+                },
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 4,
+            "status": "Active",
+            "title": "Meeting with the new design team",
+            "detail": "Chocolate apple pie powder tart chupa chups bonbon. Donut biscuit cake pie topping.",
+            "tags": [
+                {
+                    "title": "List",
+                    "class": "bg-outline-success"
+                },
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 5,
+            "status": "Active",
+            "title": "Editing all the titles and descriptions of pages",
+            "detail": "Chups bonbon donut biscuit chocolate apple pie powder tart biscuit chocolate cake pie pudding gummi.",
+            "tags": [
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 6,
+            "status": "Done",
+            "title": "Build a tree house for the team",
+            "detail": "Sweet roll apple pie tiramisu bonbon sugar plum muffin. Lollipop sweet roll gingerbread halvah sesame snaps powder.",
+            "tags": [
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 7,
+            "status": "Done",
+            "title": "Purchase a better mouse",
+            "detail": "Brownie topping apple pie pie toffee wafer cookie bonbon chupa chups tart brownie.",
+            "tags": [
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 8,
+            "status": "Active",
+            "title": "Make a reservation for valentines day dinner",
+            "detail": "Sweet jujubes fruitcake cookie topping jelly beans ice cream candy canes brownie.",
+            "tags": [
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 9,
+            "status": "Active",
+            "title": "Get familiar with the selected plugins and search for alternatives if necessary",
+            "detail": "Candy jelly beans cupcake. Jelly sesame snaps marshmallow lollipop.",
+            "tags": [],
+            "deleted": false
+        },
+        {
+            "id": 10,
+            "status": "Active",
+            "title": "Progress on team goals and objectives",
+            "detail": "Dessert sweet chocolate fruitcake. Toffee candy cake. Pie gummies dessert oat cake sweet roll.",
+            "tags": [
+                {
+                    "title": "Lists",
+                    "class": "bg-outline-success"
+                },
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 11,
+            "status": "Done",
+            "title": "Assemble the design and dev team for the new project",
+            "detail": "Tootsie roll liquorice cake jelly beans pudding candy.",
+            "tags": [
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                },
+                {
+                    "title": "Urgent",
+                    "class": "bg-outline-danger"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 12,
+            "status": "Done",
+            "title": "Create javascript structure for applications",
+            "detail": "Brownie topping apple pie gummi bears wafer brownie toffee wafer cookie bonbon sweet roll.",
+            "tags": [
+                {
+                    "title": "Project",
+                    "class": "bg-outline-primary"
+                }
+            ],
+            "deleted": false
+        },
+        {
+            "id": 13,
+            "status": "Done",
+            "title": "Learn to make a pie as good as my mom",
+            "detail": "Cheesecake chocolate bear claw apple pie soufflé.",
+            "tags": [
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": true
+        },
+        {
+            "id": 14,
+            "status": "Done",
+            "title": "Build a giant sand castle",
+            "detail": "Cheesecake oat cake croissant topping lemon drops macaroon.",
+            "tags": [
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": true
+        },
+        {
+            "id": 15,
+            "status": "Done",
+            "title": "Make a todo list",
+            "detail": "Tiramisu bear claw jelly-o marshmallow topping jelly beans ice cream candy canes cake.",
+            "tags": [
+                {
+                    "title": "Personal",
+                    "class": "bg-outline-warning"
+                }
+            ],
+            "deleted": true
+        }
+    ],
+    "tags": [
+        {
+            "title": "Project",
+            "class": "bg-outline-primary"
+        },
+        {
+            "title": "Personal",
+            "class": "bg-outline-warning"
+        },
+        {
+            "title": "Urgent",
+            "class": "bg-outline-danger"
+        },
+        {
+            "title": "Lists",
+            "class": "bg-outline-success"
+        }
+    ]
+}
