@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Video Feed</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        img {
+            width: 640px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+            border: 2px solid #333;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Video Feed from Tello Drone</h1>
+    <img src="{{ url_for('video_feed') }}" alt="Drone Video Feed">
+</body>
+</html>
+
