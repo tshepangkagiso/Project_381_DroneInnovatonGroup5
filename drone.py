@@ -1,15 +1,16 @@
 # press and wait until it flashes orange and connect to the wifi
-#pip install flask opencv-python djitellopy numpy
+#pip install flask opencv-python djitellopy numpy opencv-contrib-python
 #python drone.py
 
 from flask import Flask, Response, jsonify, render_template, redirect, url_for
 from djitellopy import Tello
 import threading
 import time
+import cv2  
 
 app = Flask(__name__)
 drone = Tello()
-drone_connected = False  # Global variable to track drone connection status
+drone_connected = False 
 
 # Attempt to connect to the drone
 try:
@@ -17,6 +18,23 @@ try:
     drone_connected = True
 except Exception as e:
     print(f"Drone connection failed: {e}")
+
+# Keep-alive function to maintain connection
+def send_keep_alive():
+    while True:
+        if check_drone_connection():
+            try:
+                drone.get_battery()  # Send battery command periodically to keep the drone active
+                time.sleep(2)  # Send every 10 seconds (adjust as needed)
+            except Exception as e:
+                print(f"Keep-alive error: {e}")
+        else:
+            print("Drone is not connected. Keep-alive not sent.")
+            time.sleep(7)  # Wait before trying again
+
+# Start the keep-alive thread
+keep_alive_thread = threading.Thread(target=send_keep_alive, daemon=True)
+keep_alive_thread.start()
 
 # Mock GPS sensor data
 def get_gps_coordinates():
@@ -157,6 +175,3 @@ def offline():
 # Run the Flask server in a separate thread
 if __name__ == '__main__':
     threading.Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)).start()
-
-
-
