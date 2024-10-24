@@ -1,0 +1,12 @@
+# pip install -r requirements.txt
+
+flask
+flask-socketio
+flask-cors
+djitellopy
+opencv-python
+python-socketio
+eventlet
+python-engineio
+gevent-websocket
+numpy

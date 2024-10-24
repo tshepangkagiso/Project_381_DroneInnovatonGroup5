@@ -1,0 +1,7 @@
+1. connect to your own local mongodb
+2. run the drone web app, npm run start in the terminal of its folder
+3. run python app.py, in its own terminal
+4. connect to the drone using the wifi
+5. open http://localhost:3000/login
+6. login or register, remember it depends on your own mongodb
+7. once logged in and every set done properly, it will open a dashboarddefault.ejs which is just a test dashboard. there you will be able to control the drone

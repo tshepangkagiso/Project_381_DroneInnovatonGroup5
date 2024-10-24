@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Control Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --primary-light: #85c1e9;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-800: #343a40;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray-100);
+            color: var(--secondary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo span {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--secondary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Video Feed Styles */
+        .video-container {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--gray-800);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        #video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .overlay-item {
+            background: rgba(0,0,0,0.7);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Control Buttons */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .control-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .control-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* Telemetry Styles */
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .telemetry-item {
+            background: var(--primary-light);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: var(--white);
+        }
+
+        .telemetry-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .telemetry-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Log Styles */
+        .log-container {
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .log-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .log-icon.success { background: var(--success); color: var(--white); }
+        .log-icon.warning { background: var(--warning); color: var(--white); }
+        .log-icon.danger { background: var(--danger); color: var(--white); }
+
+        .log-message {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        .log-time {
+            font-size: 0.75rem;
+            color: var(--gray-800);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-drone"></i>
+            <span>DroneControl</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Flight Path</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="page-title">Drone Control Dashboard</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <i class="fas fa-battery-three-quarters"></i>
+                    <span id="battery-status">100%</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-signal"></i>
+                    <span id="signal-status">Strong</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-wifi"></i>
+                    <span id="connection-status">Connected</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Video Feed -->
+        <div class="grid">
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-header">
+                    <h2 class="card-title">Live Feed</h2>
+                    <div class="stream-controls">
+                        <button id="start-stream" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Start Stream
+                        </button>
+                        <button id="stop-stream" class="btn btn-danger" disabled>
+                            <i class="fas fa-stop"></i>
+                            Stop Stream
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="video-container">
+                        <img id="video-feed" alt="Drone Feed">
+                        <div class="video-overlay">
+                            <div class="overlay-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span id="fps-counter">0 FPS</span>
+                            </div>
+                            <div class="overlay-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="latency">0ms</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telemetry -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Telemetry</h2>
+                </div>
+                <div class="card-body">
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <div class="telemetry-value" id="altitude">0m</div>
+                            <div class="telemetry-label">Altitude</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <div class="telemetry-value" id="speed">0m/s</div>
+                            <div class="telemetry-label">Speed</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <div class="telemetry-value" id="battery">100%</div>
+                            <div class="telemetry-label">Battery</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <div class="telemetry-value" id="temperature">25°C</div>
+                            <div class="telemetry-label">Temperature</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls and Logs -->
+        <div class="grid">
+            <!-- Flight Controls -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Flight Controls</h2>
+                </div>
+                <div class="card-body">
+                    <div class="controls-grid">
+                        <button class="control-btn" onclick="sendDroneCommand('takeoff')">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Take Off</span>
+                        </button>
+                        <button class="control-btn" onclick="sendDroneCommand('land')">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Land</span>
+                        </button>
+                        <button class="control-btn" onclick="sendDroneCommand('emergency')">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Emergency</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Activity Log</h2>
+                    <button class="btn btn-primary" onclick="exportLogs()">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                </div>
+                <div class="card-body">
+                  <div class="log-container" id="log-container">
+                    <!-- Logs will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Socket.IO -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+<!-- Dashboard JavaScript -->
+<script>
+    // Configuration
+    const API_URL = 'http://localhost:5000';
+    const socket = io(API_URL);
+
+    // DOM Elements
+    const elements = {
+        videoFeed: document.getElementById('video-feed'),
+        fpsCounter: document.getElementById('fps-counter'),
+        latency: document.getElementById('latency'),
+        batteryStatus: document.getElementById('battery-status'),
+        signalStatus: document.getElementById('signal-status'),
+        connectionStatus: document.getElementById('connection-status'),
+        startStreamBtn: document.getElementById('start-stream'),
+        stopStreamBtn: document.getElementById('stop-stream'),
+        logContainer: document.getElementById('log-container'),
+        altitude: document.getElementById('altitude'),
+        speed: document.getElementById('speed'),
+        battery: document.getElementById('battery'),
+        temperature: document.getElementById('temperature')
+    };
+
+    // State
+    let isConnected = false;
+    let isStreaming = false;
+
+    // Socket Connection Handlers
+    socket.on('connect', () => {
+        isConnected = true;
+        updateConnectionStatus(true);
+        addLog('Connected to drone server', 'success');
+    });
+
+    socket.on('disconnect', () => {
+        isConnected = false;
+        updateConnectionStatus(false);
+        addLog('Disconnected from drone server', 'danger');
+    });
+
+    // Video Stream Handlers
+    elements.startStreamBtn.addEventListener('click', startStream);
+    elements.stopStreamBtn.addEventListener('click', stopStream);
+
+    function startStream() {
+        if (!isConnected) {
+            addLog('Cannot start stream: Drone not connected', 'warning');
+            return;
+        }
+        socket.emit('start_video');
+        isStreaming = true;
+        updateStreamControls(true);
+        addLog('Video stream started', 'success');
+    }
+
+    function stopStream() {
+        socket.emit('stop_video');
+        isStreaming = false;
+        updateStreamControls(false);
+        elements.videoFeed.src = '';
+        addLog('Video stream stopped', 'info');
+    }
+
+    socket.on('video_frame', (data) => {
+        if (isStreaming && data.frame) {
+            elements.videoFeed.src = `data:image/jpeg;base64,${data.frame}`;
+            updateFPSCounter();
+        }
+    });
+
+    // Drone Commands
+    function sendDroneCommand(command) {
+        if (!isConnected) {
+            addLog('Cannot send command: Drone not connected', 'warning');
+            return;
+        }
+
+        socket.emit('drone_command', { command });
+        addLog(`Executing command: ${command}`, 'info');
+    }
+
+    // Telemetry Updates
+    socket.on('telemetry', (data) => {
+        updateTelemetry(data);
+    });
+
+    function updateTelemetry(data) {
+        if (data.battery) {
+            elements.battery.textContent = `${data.battery}%`;
+            elements.batteryStatus.textContent = `${data.battery}%`;
+        }
+        if (data.height) elements.altitude.textContent = `${data.height}m`;
+        if (data.temperature) elements.temperature.textContent = `${data.temperature}°C`;
+        if (data.speed) elements.speed.textContent = `${data.speed}m/s`;
+        if (data.signal) {
+            elements.signalStatus.textContent = `${data.signal}%`;
+            updateSignalStrength(data.signal);
+        }
+    }
+
+    // UI Updates
+    function updateConnectionStatus(connected) {
+        elements.connectionStatus.textContent = connected ? 'Connected' : 'Disconnected';
+        elements.connectionStatus.style.color = connected ? 'var(--success)' : 'var(--danger)';
+    }
+
+    function updateStreamControls(streaming) {
+        elements.startStreamBtn.disabled = streaming;
+        elements.stopStreamBtn.disabled = !streaming;
+    }
+
+    function updateSignalStrength(signal) {
+        const strength = signal > 75 ? 'Strong' : signal > 50 ? 'Medium' : 'Weak';
+        elements.signalStatus.textContent = strength;
+    }
+
+    // Logging System
+    function addLog(message, type = 'info') {
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry';
+        
+        const timestamp = new Date().toLocaleTimeString();
+        
+        logEntry.innerHTML = `
+            <div class="log-icon ${type}">
+                <i class="fas ${getLogIcon(type)}"></i>
+            </div>
+            <div class="log-message">${message}</div>
+            <div class="log-time">${timestamp}</div>
+        `;
+
+        elements.logContainer.insertBefore(logEntry, elements.logContainer.firstChild);
+    }
+
+    function getLogIcon(type) {
+        switch(type) {
+            case 'success': return 'fa-check';
+            case 'warning': return 'fa-exclamation-triangle';
+            case 'danger': return 'fa-times-circle';
+            default: return 'fa-info-circle';
+        }
+    }
+
+    function exportLogs() {
+        const logs = Array.from(elements.logContainer.children).map(log => ({
+            message: log.querySelector('.log-message').textContent,
+            timestamp: log.querySelector('.log-time').textContent,
+            type: Array.from(log.querySelector('.log-icon').classList)
+                .find(c => ['success', 'warning', 'danger', 'info'].includes(c))
+        }));
+
+        const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `drone-logs-${new Date().toISOString()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        addLog('Logs exported successfully', 'success');
+    }
+
+    // FPS Counter
+    let frameCount = 0;
+    let lastFrameTime = Date.now();
+
+    function updateFPSCounter() {
+        frameCount++;
+        const now = Date.now();
+        if (now - lastFrameTime >= 1000) {
+            elements.fpsCounter.textContent = `${frameCount} FPS`;
+            frameCount = 0;
+            lastFrameTime = now;
+        }
+    }
+
+    // Initial connection attempt
+    addLog('Initializing drone connection...', 'info');
+</script>
+</body>
+</html>

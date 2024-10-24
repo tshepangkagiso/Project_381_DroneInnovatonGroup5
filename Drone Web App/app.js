@@ -24,7 +24,22 @@ database.once("open", () => {console.log("Successful connection to database")});
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+
+//cors middleware to accept requests.
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, 'src')));
 app.set('view engine', 'ejs');

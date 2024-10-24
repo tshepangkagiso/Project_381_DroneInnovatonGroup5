@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Control Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .video-feed {
+            aspect-ratio: 4/3;
+            background: #000;
+            position: relative;
+        }
+
+        #video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: grid;
+            gap: 10px;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            background: #3a3a3a;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #4a4a4a;
+        }
+
+        button:active {
+            background: #5a5a5a;
+        }
+
+        .takeoff { background: #4CAF50; }
+        .land { background: #f44336; }
+        .emergency { background: #b71c1c; }
+        .takeoff:hover { background: #43A047; }
+        .land:hover { background: #e53935; }
+        .emergency:hover { background: #a71b1b; }
+
+        .telemetry {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .telemetry-item {
+            background: #3a3a3a;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Video Feed -->
+        <div class="card">
+            <div class="video-feed">
+                <img id="video-feed" alt="Drone Feed">
+                <div class="status">
+                    Status: <span id="connection-status">Disconnected</span>
+                </div>
+                <div class="stream-controls">
+                    <button onclick="startStream()">Start Stream</button>
+                    <button onclick="stopStream()">Stop Stream</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="card">
+            <div class="controls">
+                <div class="control-grid">
+                    <button onclick="sendCommand('move_left')">←</button>
+                    <button onclick="sendCommand('move_forward')">↑</button>
+                    <button onclick="sendCommand('move_right')">→</button>
+                    
+                    <button onclick="sendCommand('move_up')">Up</button>
+                    <button onclick="sendCommand('move_back')">↓</button>
+                    <button onclick="sendCommand('move_down')">Down</button>
+                    
+                    <button onclick="sendCommand('rotate_counter_clockwise')">↺</button>
+                    <button onclick="sendCommand('')">•</button>
+                    <button onclick="sendCommand('rotate_clockwise')">↻</button>
+                </div>
+
+                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <button class="takeoff" onclick="sendCommand('takeoff')">Take Off</button>
+                    <button class="land" onclick="sendCommand('land')">Land</button>
+                    <button class="emergency" onclick="sendCommand('emergency')">Emergency</button>
+                </div>
+
+                <div class="telemetry">
+                    <div class="telemetry-item">
+                        <div class="value" id="battery">0%</div>
+                        <div class="label">Battery</div>
+                    </div>
+                    <div class="telemetry-item">
+                        <div class="value" id="height">0m</div>
+                        <div class="label">Height</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let isConnected = false;
+
+        // Connection handling
+        socket.on('connect', () => {
+            isConnected = true;
+            document.getElementById('connection-status').textContent = 'Connected';
+            document.getElementById('connection-status').style.color = '#4CAF50';
+        });
+
+        socket.on('disconnect', () => {
+            isConnected = false;
+            document.getElementById('connection-status').textContent = 'Disconnected';
+            document.getElementById('connection-status').style.color = '#f44336';
+        });
+
+        // Message handling
+        socket.on('message', (data) => {
+            console.log('Message:', data.data);
+        });
+
+        // Video frame handling
+        socket.on('video_frame', (data) => {
+            document.getElementById('video-feed').src = `data:image/jpeg;base64,${data.frame}`;
+        });
+
+        // Command function
+        function sendCommand(command) {
+            if (!isConnected) {
+                alert('Drone is not connected');
+                return;
+            }
+            console.log('Sending command:', command);
+            socket.emit('drone_command', { command });
+        }
+
+        // Stream controls
+        function startStream() {
+            socket.emit('start_video');
+        }
+
+        function stopStream() {
+            socket.emit('stop_video');
+            document.getElementById('video-feed').src = '';
+        }
+
+        // Status updates
+        setInterval(() => {
+            if (isConnected) {
+                fetch('/status')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.error) {
+                            document.getElementById('battery').textContent = data.battery;
+                            document.getElementById('height').textContent = data.height;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching status:', error));
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
