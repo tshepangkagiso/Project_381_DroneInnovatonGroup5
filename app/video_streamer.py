@@ -14,6 +14,10 @@ class VideoStreamer:
         self.stream_thread: Optional[threading.Thread] = None
         self._lock = threading.Lock()
         self.frame_size = (640, 480)  # Reduced frame size for better performance
+        self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        self.tracker = cv2.TrackerCSRT_create()
+        self.tracking = False
+        self.bbox = None
 
     def get_frame(self, drone):
         """Get a frame from the drone with error handling and frame processing."""
@@ -34,6 +38,30 @@ class VideoStreamer:
         except Exception as e:
             logger.error(f"Error getting frame: {str(e)}")
             return None
+
+    def detect_and_track_faces(self, frame):
+        """Detect faces and initialize tracking, or update tracking if already active."""
+        if not self.tracking:
+            # Detect faces if not currently tracking
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+            if len(faces) > 0:
+                # Start tracking the first detected face
+                self.bbox = tuple(faces[0])
+                self.tracker = cv2.TrackerCSRT_create()
+                self.tracker.init(frame, self.bbox)
+                self.tracking = True
+                logger.info("Face detected and tracking initialized")
+        else:
+            # Update tracking
+            success, self.bbox = self.tracker.update(frame)
+            if success:
+                x, y, w, h = [int(v) for v in self.bbox]
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            else:
+                self.tracking = False  # Reset tracking if it fails
+                logger.info("Tracking lost, re-detecting faces")
+        return frame
 
     def encode_frame(self, frame):
         """Encode frame to JPEG format with error handling and compression."""
@@ -70,6 +98,9 @@ class VideoStreamer:
                     logger.warning("Failed to get frame, retrying...")
                     time.sleep(0.1)
                     continue
+
+                # Detect faces and track if tracking is active
+                frame = self.detect_and_track_faces(frame)
 
                 frame_data = self.encode_frame(frame)
                 if frame_data is None:
@@ -133,3 +164,5 @@ class VideoStreamer:
             if self.stream_thread:
                 self.stream_thread.join(timeout=2.0)
                 self.stream_thread = None
+
+
