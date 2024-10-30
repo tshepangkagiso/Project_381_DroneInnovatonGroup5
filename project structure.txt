@@ -1,0 +1,21 @@
+wildlife_drone/
+│
+├── app.py              # Main application with all socket events and server setup
+│
+├── classes/            # All our core classes
+│   ├── __init__.py
+│   ├── drone_manager.py     # Drone control and connection
+│   ├── video_streamer.py    # Video streaming and frame handling
+│   ├── object_detector.py   # Threat detection using YOLO
+│   └── patrol_system.py     # Our new patrol implementation
+│
+├── templates/
+│   └── index.html     # Single page interface with all HTML/CSS/JS
+│
+├── threats/           # Directory where threat images and data are saved
+│   └── YYYY-MM-DD/   # Date-based threat storage
+│
+└── yolov8x.pt        # YOLO model file for object detection
+
+
+python app.py

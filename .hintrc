@@ -3,6 +3,18 @@
     "development"
   ],
   "hints": {
-    "no-inline-styles": "off"
+    "axe/forms": [
+      "default",
+      {
+        "label": "off"
+      }
+    ],
+    "no-inline-styles": "off",
+    "axe/text-alternatives": [
+      "default",
+      {
+        "image-alt": "off"
+      }
+    ]
   }
 }
