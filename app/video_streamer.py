@@ -44,22 +44,31 @@ class VideoStreamer:
         if not self.tracking:
             # Detect faces if not currently tracking
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+            faces = self.face_cascade.detectMultiScale(
+                gray, 
+                scaleFactor=1.05, 
+                minNeighbors=7, 
+                minSize=(30, 30)
+            )
             if len(faces) > 0:
                 # Start tracking the first detected face
                 self.bbox = tuple(faces[0])
                 self.tracker = cv2.TrackerCSRT_create()
                 self.tracker.init(frame, self.bbox)
                 self.tracking = True
-                logger.info("Face detected and tracking initialized")
+                logger.info("Face detected, tracking initialized with bounding box: %s", self.bbox)
+            else:
+                logger.info("No faces detected.")
         else:
             # Update tracking
             success, self.bbox = self.tracker.update(frame)
             if success:
                 x, y, w, h = [int(v) for v in self.bbox]
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                logger.debug("Tracking face with bounding box: %s", self.bbox)
             else:
-                self.tracking = False  # Reset tracking if it fails
+                # Reset tracking if it fails
+                self.tracking = False
                 logger.info("Tracking lost, re-detecting faces")
         return frame
 
@@ -164,5 +173,3 @@ class VideoStreamer:
             if self.stream_thread:
                 self.stream_thread.join(timeout=2.0)
                 self.stream_thread = None
-
-
