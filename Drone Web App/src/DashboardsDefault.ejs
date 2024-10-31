@@ -485,7 +485,7 @@
             <div class="header-content">
                 <h1 class="title">Drone Control System</h1>
                 <div class="status-indicators">
-                    <div class="name">User Logged In: <%= user.name %></div>
+                    <div class="name">Logged In User: <%= user.name %></div>
                     <div class="connection-status">
                         <span class="status-dot" id="connection-status-dot"></span>
                         <span id="connection-status">Disconnected</span>
@@ -630,7 +630,7 @@
     </div>
 
     <script>
-        const socket = io();
+        const socket = io('http://localhost:5000');
         let missionTimer = null;
         let startTime = null;
         let currentFilter = 'all';
