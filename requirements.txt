@@ -1,0 +1,37 @@
+# Core Flask dependencies
+Flask==3.0.2
+flask-socketio==5.3.6
+flask-cors==4.0.0
+python-socketio==5.11.1
+Werkzeug==3.0.1
+
+# Drone control
+djitellopy==2.5.0
+
+# Computer Vision & AI
+opencv-python==4.9.0.80
+numpy==1.26.4
+ultralytics==8.1.28  # For YOLO
+torch==2.2.1  # PyTorch for YOLO
+torchvision==0.17.1
+
+# System utilities
+python-dotenv==1.0.1
+psutil==5.9.8  # For system monitoring
+
+# Development & Debugging
+pytest==8.0.2
+pytest-cov==4.1.0
+black==24.2.0  # Code formatting
+pylint==3.1.0  # Code analysis
+
+# Logging & Monitoring
+structlog==24.1.0
+
+# Security
+cryptography==42.0.5
+
+# Performance
+eventlet==0.35.2  # For Socket.IO
+gevent==24.2.1    # Alternative async backend
+gevent-websocket==0.10.1

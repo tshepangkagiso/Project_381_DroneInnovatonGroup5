@@ -1,14 +1,43 @@
-from ultralytics import YOLO
-import cv2
-import numpy as np
 import logging
-import time
+import os
+import numpy as np
+import cv2
+from ultralytics import YOLO
 from typing import List, Dict, Optional, Tuple, Any
+import time
 
+'''
+This ObjectDetector class handles:
+
+    Loading and managing YOLO models for detection
+    Threat classification and assessment
+    Object detection and tracking
+    Armed person detection with weapon proximity analysis
+    Detection visualization
+    Size analysis for better accuracy
+    Tracking ID generation for object persistence
+
+The class is designed to work with surveillance scenarios and includes specialized detection for:
+
+    Armed persons
+    Dangerous animals
+    Wildlife
+    Livestock
+    General person detection
+'''
+
+# Configure logger
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+handler = logging.FileHandler('logs/object_detector.log')
+handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(handler)
 
 class ObjectDetector:
     def __init__(self):
+        """Initialize the object detector with specialized detection models."""
         try:
             logger.info("Initializing Object Detector with specialized models...")
             self.animal_model = self._load_model('yolov8x.pt', "Animal detection model")
@@ -39,7 +68,7 @@ class ObjectDetector:
                         'bottle', 'baseball bat', 'remote',
                         'gun', 'rifle', 'pistol'
                     ],
-                    'confidence_threshold': 0.35  # Lower threshold for weapons
+                    'confidence_threshold': 0.35
                 },
                 
                 # Wildlife - Medium Threat
@@ -64,12 +93,12 @@ class ObjectDetector:
                 }
             }
             
-            # Adjusted thresholds for better detection
+            # Detection thresholds
             self.animal_confidence_threshold = 0.3
             self.weapon_confidence_threshold = 0.35
             self.person_confidence_threshold = 0.45
             
-            # Cache for performance
+            # Build class cache for faster lookups
             self._class_to_category = self._build_class_cache()
             
             logger.info("Object Detector initialized successfully")
@@ -81,7 +110,7 @@ class ObjectDetector:
             raise
 
     def _load_model(self, model_path: str, model_name: str) -> Optional[YOLO]:
-        """Load a YOLO model."""
+        """Load a YOLO model from the specified path."""
         try:
             logger.info(f"Loading {model_name}")
             model = YOLO(model_path)
@@ -91,7 +120,7 @@ class ObjectDetector:
             return None
 
     def _build_class_cache(self) -> Dict[str, str]:
-        """Build cache for class to category mapping."""
+        """Build a cache mapping class names to their categories."""
         cache = {}
         for category, info in self.target_classes.items():
             for class_name in info['classes']:
@@ -99,17 +128,17 @@ class ObjectDetector:
         return cache
 
     def _remap_class(self, class_name: str, category: str) -> str:
-        """Remap class names based on category configuration."""
+        """Remap class names based on predefined mappings."""
         category_info = self.target_classes.get(category, {})
         remap_dict = category_info.get('remap', {})
         return remap_dict.get(class_name, class_name)
 
     def _get_category(self, class_name: str) -> str:
-        """Get category for a class name."""
+        """Get the category for a given class name."""
         return self._class_to_category.get(class_name, 'unknown')
 
     def _check_for_nearby_weapons(self, person_box: List[float], weapon_boxes: List[Dict]) -> Tuple[bool, List[str]]:
-        """Enhanced weapon proximity check."""
+        """Check if any weapons are near a detected person."""
         if not weapon_boxes:
             return False, []
             
@@ -143,19 +172,8 @@ class ObjectDetector:
             logger.error(f"Error in weapon proximity check: {e}")
             return False, []
 
-    def _analyze_detection_size(self, box: List[float], frame_size: Tuple[int, int]) -> float:
-        """Calculate relative size of detection."""
-        try:
-            x1, y1, x2, y2 = box
-            detection_area = (x2 - x1) * (y2 - y1)
-            frame_area = frame_size[0] * frame_size[1]
-            return detection_area / frame_area
-        except Exception as e:
-            logger.error(f"Error analyzing detection size: {e}")
-            return 0.0
-
     def detect_objects(self, frame: np.ndarray) -> List[Dict]:
-        """Enhanced object detection with improved weapon detection."""
+        """Detect objects in the given frame."""
         if not self._check_models():
             return []
             
@@ -212,7 +230,8 @@ class ObjectDetector:
                                 'box': person_box,
                                 'threat_level': 'high',
                                 'weapons': nearby_weapons,
-                                'timestamp': time.time()
+                                'timestamp': time.time(),
+                                'track_id': self._generate_track_id(person_box)
                             })
                             continue
                     
@@ -229,7 +248,8 @@ class ObjectDetector:
                             'confidence': conf,
                             'box': box.xyxy[0].tolist(),
                             'threat_level': threat_level,
-                            'timestamp': time.time()
+                            'timestamp': time.time(),
+                            'track_id': self._generate_track_id(box.xyxy[0].tolist())
                         }
                         detections.append(detection)
             
@@ -240,7 +260,7 @@ class ObjectDetector:
             return []
 
     def draw_detections(self, frame: np.ndarray, detections: List[Dict]) -> np.ndarray:
-        """Enhanced visualization of detections."""
+        """Draw detection boxes and labels on the frame."""
         try:
             frame_copy = frame.copy()
             
@@ -248,7 +268,7 @@ class ObjectDetector:
                 box = det['box']
                 x1, y1, x2, y2 = map(int, box)
                 
-                # Enhanced color scheme
+                # Color scheme based on threat level
                 color = {
                     'high': (0, 0, 255),      # Red (BGR)
                     'medium': (0, 165, 255),   # Orange
@@ -306,3 +326,25 @@ class ObjectDetector:
             logger.error("Models not properly initialized")
             return False
         return True
+
+    def _analyze_detection_size(self, box: List[float], frame_size: Tuple[int, int]) -> float:
+        """Calculate relative size of detection."""
+        try:
+            x1, y1, x2, y2 = box
+            detection_area = (x2 - x1) * (y2 - y1)
+            frame_area = frame_size[0] * frame_size[1]
+            return detection_area / frame_area
+        except Exception as e:
+            logger.error(f"Error analyzing detection size: {e}")
+            return 0.0
+
+    def _generate_track_id(self, box: List[float]) -> str:
+        """Generate a unique tracking ID based on detection position."""
+        try:
+            x1, y1, x2, y2 = box
+            center_x = (x1 + x2) / 2
+            center_y = (y1 + y2) / 2
+            return f"track_{int(center_x)}_{int(center_y)}_{int(time.time())}"
+        except Exception as e:
+            logger.error(f"Error generating track ID: {e}")
+            return f"track_error_{int(time.time())}"
