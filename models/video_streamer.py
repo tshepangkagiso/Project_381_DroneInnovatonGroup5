@@ -109,8 +109,9 @@ class VideoStreamer:
             self.process_every_n_frames = 3
             self.frame_counter = 0
             self.jpeg_quality = 80  # Increased quality
-            self.max_fps = 30
-            
+            self.max_fps = 60  # Increase max FPS to 60
+            self.process_every_n_frames = 1  # Process every frame for higher FPS
+
             # Frame synchronization
             self.last_processed_frame = None
             self.last_detections = []
@@ -181,22 +182,21 @@ class VideoStreamer:
     def _stream_loop(self, drone) -> None:
         """Main video capture loop with UDP stability improvements."""
         try:
-            frame_time = 1.0 / self.max_fps
+            frame_time = 1.0 / self.max_fps  # Time per frame for target FPS
             last_frame_time = 0
             retry_count = 0
-            
+
             while self.streaming:
                 current_time = time.time()
                 if current_time - last_frame_time < frame_time:
-                    time.sleep(0.001)
+                    time.sleep(0.001)  # Minimize sleep for higher frame capture rate
                     continue
-                    
+
                 try:
                     frame = self._get_frame_with_timeout(drone)
-                    
                     if frame is not None:
                         retry_count = 0
-                        frame = cv2.resize(frame, self.frame_size)
+                        frame = cv2.resize(frame, self.frame_size)  # Ensure consistent size
                         self.frame_buffer.add_frame(frame)
                         self.metrics.update_fps()
                         last_frame_time = current_time
@@ -206,7 +206,6 @@ class VideoStreamer:
                             self._restart_video_stream(drone)
                             retry_count = 0
                         time.sleep(self.udp_retry_delay)
-                        
                 except Exception as e:
                     logger.error(f"Frame capture error: {e}")
                     retry_count += 1
@@ -214,10 +213,10 @@ class VideoStreamer:
                         self._restart_video_stream(drone)
                         retry_count = 0
                     time.sleep(self.udp_retry_delay)
-                    
         except Exception as e:
             logger.error(f"Streaming error: {e}")
             self.stop_streaming()
+
 
     def _get_frame_with_timeout(self, drone, timeout: float = 0.5) -> Optional[np.ndarray]:
         """Get frame with timeout to handle UDP delays."""

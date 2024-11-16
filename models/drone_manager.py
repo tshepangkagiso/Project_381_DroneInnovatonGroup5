@@ -305,22 +305,21 @@ class DroneManager:
             if not self.is_connected:
                 logger.error("Cannot land: Drone not connected")
                 return False
-                
+
             if not self.is_flying:
-                logger.warning("Drone is already landed")
+                logger.warning("Drone is already on the ground")
                 return True
-            
-            # Execute landing
+
+            logger.info("Initiating landing sequence")
             if self.send_command('land'):
                 self.is_flying = False
                 logger.info("Landing successful")
                 return True
-            
-            return False
-            
+            else:
+                logger.error("Landing command failed")
+                return False
         except Exception as e:
             logger.error(f"Landing failed: {e}")
-            self.emergency_stop()  # Emergency stop if landing fails
             return False
 
     def emergency_stop(self) -> None:
