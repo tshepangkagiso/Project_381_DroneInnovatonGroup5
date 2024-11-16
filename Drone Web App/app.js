@@ -7,9 +7,10 @@ const cors = require("cors");
 const path = require("path");
 const cookieParser = require('cookie-parser');
 
+// node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 //local imports
 const port = process.env.PORT || 8000;
-const connectionString = process.env.CONNECTIONSTRING;
+const connectionString = process.env.CONNECTIONSTRING; 
 const loginRoute = require("./server/routes/loginRoute");
 const registerRoute = require("./server/routes/registerRoute");
 const dashboardRoute = require("./server/routes/dashboardRoute");
@@ -53,5 +54,6 @@ app.use('', dashboardRoute);
 
 //server
 app.listen(port, () => {
-    console.log(`running on PORT: ${port}`)
+    console.log(`running on PORT: ${port}`);
+    console.log('http://localhost:3000/login')
 });

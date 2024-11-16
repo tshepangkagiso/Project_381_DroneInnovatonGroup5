@@ -1,51 +1,14 @@
-drone api/
-├── app.py
-├── logs/
-│   └── .gitkeep
+drone/
 ├── models/
 │   ├── __init__.py
-│   ├── drone_manager.py
 │   ├── object_detector.py
 │   ├── video_streamer.py
-│   └── patrol.py
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── main.js
+│   ├── drone_manager.py      # Will need updates
+│   └── patrol_drone.py       
 ├── templates/
-│   └── index.html
-└── requirements.txt
+│   └── index.html           # Will update with patrol UI/JS/CSS
+└── app.py                   # Will need updates for patrol routes
 
+pip install -r requirements.txt
 
-Key points about these dependencies:
-
-    Core Flask stack:
-
-    Flask for the web framework
-    Flask-SocketIO for real-time communication
-    CORS support for potential cross-origin requests
-
-
-    Drone Control:
-
-    djitellopy for Tello drone control
-
-
-    Computer Vision:
-
-    OpenCV for video processing
-    YOLO with PyTorch for object detection
-    NumPy for numerical operations
-
-
-    Development Tools:
-
-    pytest for testing
-    Code quality tools (black, pylint)
-
-
-    Performance:
-
-    eventlet/gevent for async operations
-    WebSocket support
+The key to a faster video stream is the size of the yolo file. nano(yolo8n.pt), small(yolo8s.pt), medium(yolo8m), large(yolo8l.pt) and extra large(yolo8x.pt) and the larger the file the longer and more resourse intensive the resources 

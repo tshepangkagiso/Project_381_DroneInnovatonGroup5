@@ -1,0 +1,9 @@
+# Ignore .pt files in models/weights and elsewhere
+**/*.pt
+models/weights/*.pt
+
+# All compiled Python files (*.pyc, *.pyo, *.pyd) and the pycache directory.
+*.pyc
+*.pyo
+*.pyd
+__pycache__/

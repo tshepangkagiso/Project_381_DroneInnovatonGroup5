@@ -5,3 +5,6 @@
 5. open http://localhost:3000/login
 6. login or register, remember it depends on your own mongodb
 7. once logged in and every set done properly, it will open a dashboarddefault.ejs which is just a test dashboard. there you will be able to control the drone
+
+npm run start
+python app.py

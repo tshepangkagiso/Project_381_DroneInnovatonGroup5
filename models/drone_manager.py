@@ -1,342 +1,480 @@
-from djitellopy import Tello
 import threading
 import time
 import logging
-import os
+from djitellopy import Tello
 from .video_streamer import VideoStreamer
-from typing import Optional
+from typing import Optional, Dict, List, Tuple
+import numpy as np
 
-'''
-This DroneManager class handles:
-
-    Drone connection and initialization
-    Safety monitoring (battery, connection)
-    Emergency procedures
-    Movement controls with safety checks
-    Video streaming management
-    Status monitoring and reporting
-    Cleanup procedures
-
-Each method includes error handling and logging. The class is designed to work with both manual control and the patrol system we'll be implementing.
-'''
-
-# Configure logger
+# Configure logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-if not os.path.exists('logs'):
-    os.makedirs('logs')
-handler = logging.FileHandler('logs/drone_manager.log')
-handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-logger.addHandler(handler)
-
-# Separate logger for keep-alive messages
 keepalive_logger = logging.getLogger('keepalive')
-keepalive_logger.setLevel(logging.INFO)
-keepalive_handler = logging.FileHandler('logs/keepalive.log')
-keepalive_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-keepalive_logger.addHandler(keepalive_handler)
 
 class DroneManager:
     def __init__(self, socketio):
-        """Initialize DroneManager with SocketIO instance for real-time communication."""
-        self.socketio = socketio
-        self.drone: Optional[Tello] = None
-        self.video_streamer = VideoStreamer(socketio)
-        self.is_connected = False
-        self.connection_lock = threading.Lock()
-        self.keep_alive_thread = None
-        self.battery_level = 0
-        self.patrol_mode = False
-        self.emergency_land_triggered = False
-        
-        # Flight parameters
-        self.max_height = 30  # meters
-        self.min_battery = 20  # percentage
-        self.movement_speed = 50  # cm/s
-        
-        logger.info("DroneManager initialized")
+        """Initialize optimized drone manager."""
+        try:
+            # Core components
+            self.socketio = socketio
+            self.drone: Optional[Tello] = None
+            self.video_streamer = VideoStreamer(socketio)
+            self.patrol = None  # Will be set later to avoid circular import
+            
+            # State management
+            self.is_connected = False
+            self.is_flying = False
+            self.battery_level = 0
+            self.last_command_time = 0
+            self.command_cooldown = 0.1  # 100ms minimum between commands
+            
+            # Threading
+            self.connection_lock = threading.Lock()
+            self.command_lock = threading.Lock()
+            self.keep_alive_thread = None
+            self.keep_alive_event = threading.Event()
+            
+            # Performance monitoring
+            self._init_metrics()
+            
+            logger.info("Drone Manager initialized")
+            
+        except Exception as e:
+            logger.error(f"DroneManager initialization failed: {e}")
+            raise
+
+    def init_patrol(self):
+        """Initialize patrol capability."""
+        if not self.patrol:
+            # Import PatrolDrone here to avoid circular import
+            from .patrol_drone import PatrolDrone
+            self.patrol = PatrolDrone(self)
+    
+    def get_position(self) -> tuple:
+        """Get current position."""
+        return (self.drone.get_x(), self.drone.get_y())
+    
+    def get_heading(self) -> float:
+        """Get current heading."""
+        return self.drone.get_yaw()
+
+    def _init_metrics(self) -> None:
+        """Initialize performance metrics."""
+        self.metrics = {
+            'commands_sent': 0,
+            'commands_failed': 0,
+            'avg_response_time': 0,
+            'response_times': [],
+            'max_response_time': 0,
+            'connection_drops': 0,
+            'battery_readings': []
+        }
+    
+    def init_video_stream(self) -> bool:
+        """Initialize video stream separately from connection."""
+        try:
+            if not self.is_connected:
+                logger.error("Cannot initialize video: Drone not connected")
+                return False
+
+            logger.info("Initializing video stream...")
+            if self.drone.streamon():
+                time.sleep(1)  # Wait for stream initialization
+                logger.info("Video stream initialized")
+                return True
+            return False
+
+        except Exception as e:
+            logger.error(f"Failed to initialize video stream: {e}")
+            return False
 
     def connect_drone(self) -> bool:
-        """Establish connection with the drone."""
-        with self.connection_lock:
-            try:
+        """Establish optimized connection with drone."""
+        try:
+            with self.connection_lock:
                 if self.is_connected:
-                    logger.info("Drone already connected")
                     return True
 
                 logger.info("Connecting to drone...")
-                self.drone = Tello()
-                self.drone.connect()
-                time.sleep(1)
-
-                # Test connection and get battery
-                self.battery_level = self.drone.get_battery()
-                logger.info(f"Battery level: {self.battery_level}%")
-
-                # Initialize video
-                self.drone.streamon()
-                time.sleep(2)  # Wait for stream to initialize
-
-                # Set initial drone parameters
-                self.drone.set_speed(self.movement_speed)
                 
-                self.is_connected = True
-                self.start_keep_alive()
-                logger.info("Drone connected successfully")
-                return True
+                # Initialize drone
+                self.drone = Tello()
+                
+                # Set UDP timeout lower for faster error detection
+                self.drone.RESPONSE_TIMEOUT = 3
+                
+                # Connect with retry mechanism
+                max_retries = 3
+                retry_delay = 1.0
+                
+                for attempt in range(max_retries):
+                    try:
+                        self.drone.connect()
+                        time.sleep(0.5)  # Short wait for stability
+                        
+                        # Test connection
+                        self.battery_level = self.drone.get_battery()
+                        logger.info(f"Battery level: {self.battery_level}%")
+                        
+                        self.is_connected = True
+                        self._start_keep_alive()
+                        
+                        logger.info("Drone connected successfully")
+                        return True
+                        
+                    except Exception as e:
+                        logger.warning(f"Connection attempt {attempt + 1} failed: {e}")
+                        if attempt < max_retries - 1:
+                            time.sleep(retry_delay)
+                            retry_delay *= 1.5  # Exponential backoff
+                        continue
 
-            except Exception as e:
-                logger.error(f"Failed to connect to drone: {e}")
+                logger.error("Failed to connect after maximum retries")
                 self.cleanup()
                 return False
-
-    def start_keep_alive(self):
-        """Start keep-alive thread with battery monitoring and safety checks."""
-        def keep_alive_loop():
-            failed_pings = 0
-            max_failed_pings = 3
-            last_battery_check = time.time()
-            battery_check_interval = 30
-            
-            while self.is_connected:
-                try:
-                    current_time = time.time()
-                    
-                    # Battery monitoring
-                    if current_time - last_battery_check >= battery_check_interval:
-                        self.battery_level = self.drone.get_battery()
-                        keepalive_logger.debug(f"Battery Level: {self.battery_level}%")
-                        
-                        # Emergency landing if battery too low
-                        if self.battery_level <= self.min_battery:
-                            keepalive_logger.warning("Low battery! Initiating emergency landing.")
-                            self.emergency_land()
-                        
-                        # Emit battery status to clients
-                        self.socketio.emit('battery_update', {
-                            'battery': self.battery_level,
-                            'timestamp': current_time,
-                            'low_battery': self.battery_level <= self.min_battery
-                        })
-                        
-                        last_battery_check = current_time
-                        failed_pings = 0
-                    
-                    # Quick connection check
-                    self.drone.get_height()
-                    time.sleep(1)
-                    
-                except Exception as e:
-                    failed_pings += 1
-                    keepalive_logger.error(f"Keep-alive error: {e}")
-                    if failed_pings >= max_failed_pings:
-                        keepalive_logger.error("Lost connection to drone")
-                        self.is_connected = False
-                        self.emergency_land()
-                        break
-                    time.sleep(1)
-
-        self.keep_alive_thread = threading.Thread(
-            target=keep_alive_loop,
-            daemon=True
-        )
-        self.keep_alive_thread.start()
-        logger.info("Keep-alive monitoring started")
-
-    def emergency_land(self):
-        """Execute emergency landing procedure."""
-        try:
-            if not self.emergency_land_triggered and self.drone:
-                logger.warning("Executing emergency landing procedure")
-                self.emergency_land_triggered = True
-                
-                # Stop any ongoing patrol
-                self.patrol_mode = False
-                
-                # Land the drone
-                self.drone.land()
-                
-                # Notify clients
-                self.socketio.emit('emergency_land', {
-                    'message': 'Emergency landing executed',
-                    'timestamp': time.time()
-                })
                 
         except Exception as e:
-            logger.error(f"Emergency landing failed: {e}")
-            # Try force landing as last resort
-            try:
-                self.drone.emergency()
-            except:
-                pass
-        finally:
-            self.emergency_land_triggered = False
+            logger.error(f"Failed to connect to drone: {e}")
+            self.cleanup()
+            return False
 
-    def cleanup(self):
-        """Clean up drone resources and connections."""
+    def _start_keep_alive(self) -> None:
+        """Start optimized keep-alive monitoring."""
         try:
-            logger.info("Initiating cleanup procedure")
-            self.is_connected = False
+            def keep_alive_loop():
+                failed_pings = 0
+                max_failed_pings = 3
+                ping_interval = 2.0  # Seconds between pings
+                battery_check_interval = 30.0  # Seconds between battery checks
+                last_battery_check = time.time()
+                
+                while not self.keep_alive_event.is_set():
+                    try:
+                        current_time = time.time()
+                        
+                        # Battery check
+                        if current_time - last_battery_check >= battery_check_interval:
+                            self.battery_level = self.drone.get_battery()
+                            self.metrics['battery_readings'].append(self.battery_level)
+                            
+                            # Emit battery update
+                            self.socketio.emit('battery_update', {
+                                'battery': self.battery_level,
+                                'timestamp': current_time
+                            })
+                            
+                            # Log battery status
+                            keepalive_logger.debug(f"Battery Level: {self.battery_level}%")
+                            last_battery_check = current_time
+                            failed_pings = 0
+                        
+                        # Quick connection check
+                        else:
+                            self.drone.get_height()
+                        
+                        # Reset failed pings on success
+                        failed_pings = 0
+                        time.sleep(ping_interval)
+                        
+                    except Exception as e:
+                        failed_pings += 1
+                        logger.warning(f"Keep-alive ping failed: {failed_pings}/{max_failed_pings}")
+                        
+                        if failed_pings >= max_failed_pings:
+                            logger.error("Lost connection to drone")
+                            self.metrics['connection_drops'] += 1
+                            
+                            # Notify clients
+                            self.socketio.emit('connection_lost', {
+                                'timestamp': time.time(),
+                                'reason': 'Connection timeout'
+                            })
+                            
+                            # Try to recover connection
+                            if not self._recover_connection():
+                                break
+                        
+                        time.sleep(1)  # Short delay before retry
+
+            self.keep_alive_event.clear()
+            self.keep_alive_thread = threading.Thread(
+                target=keep_alive_loop,
+                daemon=True
+            )
+            self.keep_alive_thread.start()
             
-            if self.video_streamer:
-                self.video_streamer.stop_streaming()
-                logger.info("Video streaming stopped")
+        except Exception as e:
+            logger.error(f"Failed to start keep-alive: {e}")
+
+    def _recover_connection(self) -> bool:
+        """Attempt to recover lost connection."""
+        try:
+            logger.info("Attempting connection recovery...")
+            
+            # Try to reconnect
+            self.cleanup()
+            time.sleep(2)  # Wait before retry
+            
+            return self.connect_drone()
+            
+        except Exception as e:
+            logger.error(f"Connection recovery failed: {e}")
+            return False
+
+    def send_command(self, command: str, *args) -> bool:
+        """Send command with optimized error handling."""
+        try:
+            if not self.is_connected or not self.drone:
+                logger.error("Cannot send command: Drone not connected")
+                return False
+                
+            # Check command cooldown
+            current_time = time.time()
+            if current_time - self.last_command_time < self.command_cooldown:
+                time.sleep(self.command_cooldown)
+            
+            with self.command_lock:
+                start_time = time.time()
+                
+                try:
+                    # Get command function
+                    command_func = getattr(self.drone, command, None)
+                    if not command_func or not callable(command_func):
+                        logger.error(f"Invalid command: {command}")
+                        return False
+                    
+                    # Execute command
+                    result = command_func(*args)
+                    
+                    # Update metrics
+                    self.metrics['commands_sent'] += 1
+                    response_time = time.time() - start_time
+                    self.metrics['response_times'].append(response_time)
+                    self.metrics['avg_response_time'] = np.mean(self.metrics['response_times'])
+                    self.metrics['max_response_time'] = max(self.metrics['max_response_time'], response_time)
+                    
+                    # Update last command time
+                    self.last_command_time = time.time()
+                    
+                    logger.info(f"Command '{command}' executed successfully")
+                    return True if result is None else result
+                    
+                except Exception as e:
+                    self.metrics['commands_failed'] += 1
+                    logger.error(f"Command '{command}' failed: {e}")
+                    return False
+                    
+        except Exception as e:
+            logger.error(f"Error sending command: {e}")
+            return False
+
+    def take_off(self) -> bool:
+        """Enhanced takeoff with safety checks."""
+        try:
+            if not self.is_connected:
+                logger.error("Cannot take off: Drone not connected")
+                return False
+                
+            if self.is_flying:
+                logger.warning("Drone is already flying")
+                return True
+                
+            # Safety checks
+            if self.battery_level < 20:
+                logger.error("Cannot take off: Battery too low")
+                self.socketio.emit('message', {
+                    'data': 'Cannot take off: Battery level too low',
+                    'type': 'error'
+                })
+                return False
+            
+            # Execute takeoff
+            if self.send_command('takeoff'):
+                self.is_flying = True
+                logger.info("Takeoff successful")
+                return True
+            
+            return False
+            
+        except Exception as e:
+            logger.error(f"Takeoff failed: {e}")
+            return False
+
+    def land(self) -> bool:
+        """Enhanced landing with safety measures."""
+        try:
+            if not self.is_connected:
+                logger.error("Cannot land: Drone not connected")
+                return False
+                
+            if not self.is_flying:
+                logger.warning("Drone is already landed")
+                return True
+            
+            # Execute landing
+            if self.send_command('land'):
+                self.is_flying = False
+                logger.info("Landing successful")
+                return True
+            
+            return False
+            
+        except Exception as e:
+            logger.error(f"Landing failed: {e}")
+            self.emergency_stop()  # Emergency stop if landing fails
+            return False
+
+    def emergency_stop(self) -> None:
+        """Enhanced emergency stop procedure."""
+        try:
+            logger.warning("Executing emergency stop!")
             
             if self.drone:
                 try:
-                    # Make sure the drone lands
-                    if self.drone.is_flying:
-                        logger.info("Landing drone during cleanup")
-                        self.drone.land()
-                except Exception as e:
-                    logger.error(f"Error landing drone during cleanup: {e}")
+                    self.drone.emergency()
+                except Exception as emergency_e:
+                    logger.error(f"Emergency stop command failed: {emergency_e}")
                 
-                try:
-                    self.drone.streamoff()
-                    logger.info("Video stream turned off")
-                except Exception as e:
-                    logger.error(f"Error stopping video stream: {e}")
+                self.is_flying = False
                 
-                try:
-                    self.drone.end()
-                    logger.info("Drone connection ended")
-                except Exception as e:
-                    logger.error(f"Error ending drone connection: {e}")
-                    
-            self.drone = None
+                # Notify clients
+                self.socketio.emit('emergency_stop', {
+                    'timestamp': time.time(),
+                    'status': 'completed'
+                })
             
+            # Force cleanup
+            self.cleanup()
+            
+        except Exception as e:
+            logger.error(f"Error during emergency stop: {e}")
+            self.socketio.emit('emergency_stop', {
+                'timestamp': time.time(),
+                'status': 'failed',
+                'error': str(e)
+            })
+
+    def get_status(self) -> Dict:
+        """Get comprehensive drone status."""
+        try:
+            status = {
+                'connected': self.is_connected,
+                'flying': self.is_flying,
+                'battery': self.battery_level,
+                'streaming': self.video_streamer.is_streaming(),
+                'metrics': {
+                    'commands_sent': self.metrics['commands_sent'],
+                    'commands_failed': self.metrics['commands_failed'],
+                    'avg_response_time': self.metrics['avg_response_time'],
+                    'connection_drops': self.metrics['connection_drops'],
+                    'last_battery_readings': self.metrics['battery_readings'][-5:]
+                }
+            }
+            
+            if self.video_streamer:
+                status['video_metrics'] = self.video_streamer.get_status()
+                
+            return status
+            
+        except Exception as e:
+            logger.error(f"Error getting status: {e}")
+            return {
+                'connected': False,
+                'error': str(e)
+            }
+
+    def cleanup(self) -> None:
+        """Enhanced cleanup procedure."""
+        try:
+            logger.info("Performing cleanup...")
+            
+            # Stop keep-alive thread
             if self.keep_alive_thread:
+                self.keep_alive_event.set()
                 self.keep_alive_thread.join(timeout=2.0)
-                logger.info("Keep-alive thread terminated")
+            
+            # Stop video streaming
+            if self.video_streamer:
+                self.video_streamer.stop_streaming()
+            
+            # Disconnect drone
+            if self.drone:
+                try:
+                    if self.is_flying:
+                        self.land()
+                    if hasattr(self.drone, 'streamoff'):
+                        self.drone.streamoff()
+                    self.drone.end()
+                except Exception as e:
+                    logger.error(f"Error disconnecting drone: {e}")
+            
+            # Reset state
+            self.is_connected = False
+            self.is_flying = False
+            self.drone = None
             
             logger.info("Cleanup completed")
             
         except Exception as e:
-            logger.error(f"Cleanup error: {e}")
+            logger.error(f"Error during cleanup: {e}")
+        finally:
+            self.is_connected = False
+            self.drone = None
 
-    # Movement controls with safety checks
-    def move(self, direction: str, distance: int) -> bool:
-        """Execute movement command with safety checks."""
-        if not self.is_connected or not self.drone:
-            logger.error("Cannot move: Drone not connected")
-            return False
-
-        try:
-            # Safety checks
-            if self.battery_level <= self.min_battery:
-                logger.warning("Cannot move: Battery too low")
-                return False
-
-            current_height = self.drone.get_height()
+    def _get_movement_command(self, command: str) -> Optional[str]:
+        """
+        Map movement commands to drone API methods.
+        
+        Args:
+            command: Command string
             
-            # Execute movement
-            movement_map = {
-                'forward': self.drone.move_forward,
-                'back': self.drone.move_back,
-                'left': self.drone.move_left,
-                'right': self.drone.move_right,
-                'up': self.drone.move_up,
-                'down': self.drone.move_down
-            }
+        Returns:
+            Mapped command or None if invalid
+        """
+        movement_commands = {
+            'up': 'move_up',
+            'down': 'move_down',
+            'left': 'move_left',
+            'right': 'move_right',
+            'forward': 'move_forward',
+            'back': 'move_back',
+            'clockwise': 'rotate_clockwise',
+            'counter_clockwise': 'rotate_counter_clockwise'
+        }
+        return movement_commands.get(command)
 
-            if direction in movement_map:
-                # Check height limits for vertical movements
-                if direction == 'up' and current_height + distance > self.max_height:
-                    logger.warning(f"Cannot move up: Would exceed max height of {self.max_height}m")
-                    return False
-                    
-                if direction == 'down' and current_height - distance < 10:  # 10cm minimum height
-                    logger.warning("Cannot move down: Would be too close to ground")
-                    return False
-
-                movement_map[direction](distance)
-                logger.info(f"Moved {direction} by {distance}cm")
-                return True
-            else:
-                logger.error(f"Invalid movement direction: {direction}")
+    def move(self, direction: str, distance: int = 30) -> bool:
+        """
+        Execute drone movement with safety checks.
+        
+        Args:
+            direction: Movement direction
+            distance: Movement distance in cm
+            
+        Returns:
+            bool: Success status
+        """
+        try:
+            if not self.is_connected or not self.is_flying:
+                logger.error(f"Cannot move {direction}: Drone not ready")
                 return False
-
+                
+            # Get mapped command
+            command = self._get_movement_command(direction)
+            if not command:
+                logger.error(f"Invalid movement command: {direction}")
+                return False
+                
+            # Execute movement
+            return self.send_command(command, distance)
+            
         except Exception as e:
             logger.error(f"Movement error: {e}")
             return False
-
-    def rotate(self, direction: str, degrees: int) -> bool:
-        """Execute rotation command."""
-        if not self.is_connected or not self.drone:
-            logger.error("Cannot rotate: Drone not connected")
-            return False
-
+    
+    def get_height(self) -> int:
+        """Get current height in cm."""
         try:
-            if direction == 'cw':
-                self.drone.rotate_clockwise(degrees)
-            elif direction == 'ccw':
-                self.drone.rotate_counter_clockwise(degrees)
-            else:
-                logger.error(f"Invalid rotation direction: {direction}")
-                return False
-                
-            logger.info(f"Rotated {direction} by {degrees} degrees")
-            return True
-
+            return self.drone.get_height()
         except Exception as e:
-            logger.error(f"Rotation error: {e}")
-            return False
-
-    def takeoff(self) -> bool:
-        """Execute takeoff command with safety checks."""
-        if not self.is_connected or not self.drone:
-            logger.error("Cannot takeoff: Drone not connected")
-            return False
-
-        try:
-            if self.battery_level <= self.min_battery:
-                logger.warning("Cannot takeoff: Battery too low")
-                return False
-
-            self.drone.takeoff()
-            logger.info("Takeoff successful")
-            return True
-
-        except Exception as e:
-            logger.error(f"Takeoff error: {e}")
-            return False
-
-    def land(self) -> bool:
-        """Execute landing command."""
-        if not self.is_connected or not self.drone:
-            logger.error("Cannot land: Drone not connected")
-            return False
-
-        try:
-            self.drone.land()
-            logger.info("Landing successful")
-            return True
-
-        except Exception as e:
-            logger.error(f"Landing error: {e}")
-            return False
-
-    def get_status(self) -> dict:
-        """Get current drone status."""
-        if not self.is_connected or not self.drone:
-            return {
-                'connected': False,
-                'battery': 0,
-                'height': 0,
-                'flying': False,
-                'patrol_mode': False
-            }
-
-        try:
-            return {
-                'connected': self.is_connected,
-                'battery': self.battery_level,
-                'height': self.drone.get_height(),
-                'flying': self.drone.is_flying,
-                'patrol_mode': self.patrol_mode,
-                'temperature': self.drone.get_temperature(),
-                'flight_time': self.drone.get_flight_time()
-            }
-        except Exception as e:
-            logger.error(f"Error getting status: {e}")
-            return {'error': str(e)}
+            logger.error(f"Height check error: {e}")
+            return 0

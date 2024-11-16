@@ -1,0 +1,184 @@
+2024-11-16 19:18:22,750 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 19:18:22,751 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 19:18:22,896 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 19:18:22,896 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 19:18:22,896 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 19:18:22,896 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 19:18:22,919 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 19:18:22,921 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 19:18:22,927 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:18:23,128 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 19:18:23,630 - models.drone_manager - INFO - Battery level: 69%
+2024-11-16 19:18:23,631 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 19:18:23,681 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 19:18:23,683 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 19:19:19,025 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 19:19:19,127 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 19:19:21,133 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 19:19:21,134 - performance - INFO - Video streaming started successfully
+2024-11-16 19:19:43,689 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 19:19:45,956 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 19:19:45,961 - performance - INFO - Landing successful
+2024-11-16 19:19:47,912 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 19:19:47,915 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 19:19:47,919 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 19:19:49,077 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 19:19:49,080 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 19:19:49,083 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 19:19:49,086 - performance - INFO - Takeoff successful
+2024-11-16 19:19:49,660 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:19:49,728 - models.video_streamer - INFO - Stream stopped - Processed 779 frames at 29.7 FPS
+2024-11-16 19:19:49,729 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:49,830 - djitellopy - INFO - Response land: 'error'
+2024-11-16 19:19:49,831 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:49,932 - djitellopy - INFO - Response land: 'error'
+2024-11-16 19:19:49,934 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:50,035 - djitellopy - INFO - Response land: 'error'
+2024-11-16 19:19:50,036 - models.drone_manager - ERROR - Command 'land' failed: Command 'land' was unsuccessful for 4 tries. Latest response:	'error'
+2024-11-16 19:19:50,041 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 19:19:50,142 - djitellopy - INFO - Response streamoff: 'ok'
+2024-11-16 19:19:50,144 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:50,246 - djitellopy - INFO - Response land: 'error'
+2024-11-16 19:19:50,246 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:50,347 - djitellopy - INFO - Response land: 'error'
+2024-11-16 19:19:50,347 - djitellopy - INFO - Send command: 'land'
+2024-11-16 19:19:50,449 - djitellopy - INFO - Response land: 'ok'
+2024-11-16 19:19:50,450 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 19:19:50,451 - performance - WARNING - Emergency stop triggered
+2024-11-16 19:20:01,185 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:20:01,187 - models.video_streamer - INFO - Stream stopped - Processed 779 frames at 29.7 FPS
+2024-11-16 19:20:01,188 - performance - INFO - Video streaming stopped
+2024-11-16 19:20:16,849 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:20:16,850 - models.video_streamer - INFO - Stream stopped - Processed 779 frames at 29.7 FPS
+2024-11-16 19:20:16,851 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 19:20:16,869 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:20:16] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 19:20:16,889 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 19:20:17,346 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 19:20:17,347 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 19:20:17,350 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:20:17,452 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 19:20:17,954 - models.drone_manager - INFO - Battery level: 65%
+2024-11-16 19:20:17,956 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 19:20:21,594 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 19:20:21,605 - libav.h264 - ERROR - error while decoding MB 8 43, bytestream -8
+2024-11-16 19:20:21,696 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 19:20:23,699 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 19:20:23,699 - performance - INFO - Video streaming started successfully
+2024-11-16 19:20:24,411 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,413 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,413 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,413 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,414 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,414 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,414 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,415 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,415 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,415 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,416 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,416 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,417 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,417 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,418 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,418 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,419 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,420 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,420 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,420 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,421 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,421 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,421 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,421 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,423 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,424 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,424 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,425 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,426 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,426 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,427 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,427 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,428 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,429 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,430 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,430 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,431 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,432 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,432 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,434 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,435 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,436 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,437 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,441 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,469 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,473 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,475 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,476 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,477 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,479 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,480 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,481 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,481 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,503 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,505 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,506 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,507 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,508 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,509 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,509 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,510 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,512 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,512 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,513 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,513 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,514 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,514 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,514 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:24,514 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,516 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 19:20:24,516 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 19:20:24,517 - libav.h264 - ERROR - no frame!
+2024-11-16 19:20:52,568 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:20:52,569 - libav.h264 - ERROR - error while decoding MB 0 37, bytestream 1460
+2024-11-16 19:21:10,539 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:21:10,591 - models.video_streamer - INFO - Stream stopped - Processed 1305 frames at 27.6 FPS
+2024-11-16 19:21:10,592 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 19:21:10,607 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:21:10] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 19:21:10,610 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 19:21:13,325 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 19:21:13,427 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 19:21:15,430 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 19:21:15,431 - performance - INFO - Video streaming started successfully
+2024-11-16 19:21:20,297 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:21:20,727 - models.video_streamer - INFO - Stream stopped - Processed 143 frames at 29.4 FPS
+2024-11-16 19:21:20,727 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 19:21:20,730 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:21:20] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 19:21:20,732 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
