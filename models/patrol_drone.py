@@ -22,6 +22,50 @@ patrol_handler.setFormatter(
 )
 patrol_logger.addHandler(patrol_handler)
 
+# Patrol Configuration Constants
+class PatrolConfig:
+    """Centralized patrol configuration."""
+    # Patrol area dimensions in meters
+    PATROL_SIZE = 1  # Change this value to adjust patrol area (1m, 2m, 3m, 4m)
+    
+    # Convert patrol size to centimeters and derive other measurements
+    PERIMETER_WIDTH = PATROL_SIZE * 100  # Convert meters to centimeters
+    PERIMETER_HEIGHT = PATROL_SIZE * 100
+    TAKEOFF_HEIGHT = PATROL_SIZE * 100
+    
+    # Safety and performance settings
+    SPEED = 15  # cm/s
+    BUFFER = 15  # cm buffer from edges
+    ROTATION_SPEED = 45  # degrees per second
+    MIN_BATTERY = 20  # minimum battery percentage
+    POSITION_TOLERANCE = 20  # cm tolerance for position verification
+    
+    # Timing constants
+    TAKEOFF_STABILIZATION_TIME = 2  # seconds
+    HEIGHT_STABILIZATION_TIME = 3
+    CORNER_STABILIZATION_TIME = 1
+    ROTATION_STABILIZATION_TIME = 2  # seconds after rotation
+    LANDING_STABILIZATION_TIME = 2
+    EMERGENCY_TIMEOUT = 5  # maximum seconds to wait for emergency procedures
+    
+    @classmethod
+    def get_corners(cls) -> Dict[str, Tuple[int, int]]:
+        """Calculate corner coordinates based on patrol size."""
+        return {
+            'bottom_right': (0, 0),
+            'top_right': (0, cls.PERIMETER_HEIGHT - cls.BUFFER),
+            'top_left': (cls.PERIMETER_WIDTH - cls.BUFFER, cls.PERIMETER_HEIGHT - cls.BUFFER),
+            'bottom_left': (cls.PERIMETER_WIDTH - cls.BUFFER, 0)
+        }
+    
+    @classmethod
+    def get_corner_sequences(cls) -> Dict[str, List[str]]:
+        """Define patrol sequences."""
+        return {
+            'clockwise': ['top_right', 'top_left', 'bottom_left', 'bottom_right'],
+            'counterclockwise': ['bottom_left', 'top_left', 'top_right', 'bottom_right']
+        }
+
 class PatrolStatus(Enum):
     """Patrol drone status states."""
     IDLE = "idle"
@@ -47,6 +91,16 @@ class PatrolMetrics:
     detection_count: int = 0
     patrol_type: str = ""
     completion_status: str = ""
+    patrol_size: float = PatrolConfig.PATROL_SIZE  # Track patrol size used
+    height_deviations: List[float] = None
+    position_deviations: List[Tuple[float, float]] = None
+    scan_durations: List[float] = None
+    
+    def __post_init__(self):
+        """Initialize mutable defaults."""
+        self.height_deviations = []
+        self.position_deviations = []
+        self.scan_durations = []
 
 class PatrolDrone:
     """Manages automated drone patrol sequences."""
@@ -54,27 +108,13 @@ class PatrolDrone:
     def __init__(self, drone_manager):
         """Initialize patrol drone with configuration."""
         try:
-            # Store reference to drone_manager instead of importing the class
             self.drone_manager = drone_manager
             self.video_streamer = drone_manager.video_streamer
             
-            # Patrol configuration
-            self.PERIMETER = {
-                'width': 400,  # 4 meters in cm
-                'height': 400  # 4 meters in cm
-            }
-            self.TAKEOFF_HEIGHT = 200  # 2 meters in cm
-            self.SPEED = 15  # 15 cm/s
-            self.BUFFER = 15  # 15cm buffer from edges
-            self.ROTATION_SPEED = 45  # degrees per second
-            
-            # Corner coordinates (x, y) in cm from bottom right origin
-            self.CORNERS = {
-                'bottom_right': (0, 0),
-                'top_right': (0, self.PERIMETER['height'] - self.BUFFER),
-                'top_left': (self.PERIMETER['width'] - self.BUFFER, self.PERIMETER['height'] - self.BUFFER),
-                'bottom_left': (self.PERIMETER['width'] - self.BUFFER, 0)
-            }
+            # Load configuration
+            self.config = PatrolConfig
+            self.CORNERS = self.config.get_corners()
+            self.SEQUENCES = self.config.get_corner_sequences()
             
             # Flight status
             self.is_patrolling = False
@@ -89,11 +129,12 @@ class PatrolDrone:
             # Event flags
             self.stop_requested = threading.Event()
             
-            patrol_logger.info("Patrol Drone initialized successfully")
+            patrol_logger.info(f"Patrol Drone initialized with {self.config.PATROL_SIZE}m patrol size")
             
         except Exception as e:
             patrol_logger.error(f"Failed to initialize Patrol Drone: {e}")
             raise
+
     def _start_metrics(self, patrol_type: str) -> None:
         """Initialize metrics for new patrol."""
         try:
@@ -102,6 +143,7 @@ class PatrolDrone:
             self.metrics.battery_start = self.drone_manager.battery_level
             self.metrics.patrol_type = patrol_type
             self.metrics.patrol_number = len(self.patrol_history) + 1
+            self.metrics.patrol_size = self.config.PATROL_SIZE
             
         except Exception as e:
             patrol_logger.error(f"Error initializing metrics: {e}")
@@ -125,19 +167,27 @@ class PatrolDrone:
             self.metrics.battery_end = self.drone_manager.battery_level
             self.metrics.completion_status = completion_status
             
+            # Calculate averages and summaries
+            duration = self.metrics.end_time - self.metrics.start_time
+            battery_used = self.metrics.battery_start - self.metrics.battery_end
+            avg_height_deviation = sum(self.metrics.height_deviations) / len(self.metrics.height_deviations) if self.metrics.height_deviations else 0
+            avg_scan_duration = sum(self.metrics.scan_durations) / len(self.metrics.scan_durations) if self.metrics.scan_durations else 0
+            
             # Add to history
             self.patrol_history.append(self.metrics)
             
-            # Log summary
-            duration = self.metrics.end_time - self.metrics.start_time
-            battery_used = self.metrics.battery_start - self.metrics.battery_end
-            
+            # Log detailed summary
             patrol_logger.info(
                 f"Patrol {self.metrics.patrol_number} completed:\n"
                 f"Type: {self.metrics.patrol_type}\n"
+                f"Size: {self.metrics.patrol_size}m\n"
                 f"Duration: {duration:.1f}s\n"
                 f"Distance: {self.metrics.distance_traveled}cm\n"
                 f"Battery used: {battery_used}%\n"
+                f"Corners visited: {self.metrics.corners_visited}\n"
+                f"Scans completed: {self.metrics.scans_completed}\n"
+                f"Avg height deviation: {avg_height_deviation:.1f}cm\n"
+                f"Avg scan duration: {avg_scan_duration:.1f}s\n"
                 f"Status: {completion_status}"
             )
             
@@ -151,7 +201,7 @@ class PatrolDrone:
             self.status = PatrolStatus.TAKEOFF
             
             # Safety checks
-            if self.drone_manager.battery_level < 20:
+            if self.drone_manager.battery_level < self.config.MIN_BATTERY:
                 raise Exception("Battery too low for takeoff")
                 
             # Initial takeoff
@@ -159,25 +209,28 @@ class PatrolDrone:
                 raise Exception("Takeoff failed")
             
             # Wait for stability
-            await asyncio.sleep(2)
+            await asyncio.sleep(self.config.TAKEOFF_STABILIZATION_TIME)
             
             # Rise to patrol height
-            self.drone_manager.send_command('move_up', self.TAKEOFF_HEIGHT)
-            await asyncio.sleep(3)  # Extra time for height stability
+            self.drone_manager.send_command('move_up', self.config.TAKEOFF_HEIGHT)
+            await asyncio.sleep(self.config.HEIGHT_STABILIZATION_TIME)
             
-            # Verify height
+            # Verify height and record deviation
             height = self.drone_manager.get_height()
-            if abs(height - self.TAKEOFF_HEIGHT) > 20:  # 20cm tolerance
-                patrol_logger.warning(f"Height deviation detected: {height}cm vs {self.TAKEOFF_HEIGHT}cm")
-                self.drone_manager.send_command('move_up', self.TAKEOFF_HEIGHT - height)
-                await asyncio.sleep(2)
+            deviation = abs(height - self.config.TAKEOFF_HEIGHT)
+            self.metrics.height_deviations.append(deviation)
             
-            # Start streaming
+            if deviation > self.config.POSITION_TOLERANCE:
+                patrol_logger.warning(f"Height deviation detected: {height}cm vs {self.config.TAKEOFF_HEIGHT}cm")
+                self.drone_manager.send_command('move_up', self.config.TAKEOFF_HEIGHT - height)
+                await asyncio.sleep(self.config.HEIGHT_STABILIZATION_TIME)
+            
+            # Start streaming if not already active
             if not self.video_streamer.is_streaming():
                 self.video_streamer.start_streaming(self.drone_manager.drone)
                 await asyncio.sleep(1)
             
-            patrol_logger.info(f"Takeoff complete at height {self.TAKEOFF_HEIGHT}cm")
+            patrol_logger.info(f"Takeoff complete at height {self.config.TAKEOFF_HEIGHT}cm")
             return True
             
         except Exception as e:
@@ -185,7 +238,7 @@ class PatrolDrone:
             self.status = PatrolStatus.ERROR
             await self.emergency()
             return False
-
+        
     async def land(self) -> bool:
         """Execute safe landing sequence."""
         try:
@@ -203,15 +256,15 @@ class PatrolDrone:
             
             # Gradual descent
             height = self.drone_manager.get_height()
-            if height > 100:  # If above 1m
-                self.drone_manager.send_command('move_down', height - 50)
-                await asyncio.sleep(2)
+            if height > 20:  # If above 20cm
+                self.drone_manager.send_command('move_down', height - 20)
+                await asyncio.sleep(self.config.LANDING_STABILIZATION_TIME)
             
             # Final landing
             if not self.drone_manager.land():
                 raise Exception("Landing failed")
                 
-            await asyncio.sleep(2)
+            await asyncio.sleep(self.config.LANDING_STABILIZATION_TIME)
             patrol_logger.info("Landing complete")
             return True
             
@@ -233,11 +286,16 @@ class PatrolDrone:
             if self.video_streamer.is_streaming():
                 self.video_streamer.stop_streaming()
             
-            # Emergency stop
-            self.drone_manager.emergency_stop()
+            # Emergency stop with timeout
+            try:
+                async with asyncio.timeout(self.config.EMERGENCY_TIMEOUT):
+                    self.drone_manager.emergency_stop()
+            except asyncio.TimeoutError:
+                patrol_logger.error("Emergency stop timed out")
             
             # Update metrics
             if hasattr(self, 'metrics'):
+                self.metrics.errors_encountered += 1
                 self._finalize_metrics('emergency')
                 
             return True
@@ -250,9 +308,10 @@ class PatrolDrone:
         """Execute 360-degree scan."""
         try:
             patrol_logger.info("Executing 360° scan")
+            scan_start_time = time.time()
             
             # Calculate rotation time based on speed
-            rotation_time = 360 / self.ROTATION_SPEED
+            rotation_time = 360 / self.config.ROTATION_SPEED
             
             # Reset stream buffer before scan
             if self.video_streamer.is_streaming():
@@ -264,7 +323,7 @@ class PatrolDrone:
             
             # Monitor rotation
             elapsed = 0
-            while elapsed < (rotation_time + 2):  # Add 2s buffer
+            while elapsed < (rotation_time + self.config.ROTATION_STABILIZATION_TIME):
                 if self.stop_requested.is_set():
                     return False
                     
@@ -278,9 +337,11 @@ class PatrolDrone:
                     self.drone_manager.send_command('rotate_clockwise', 360)
             
             # Update metrics
+            scan_duration = time.time() - scan_start_time
+            self.metrics.scan_durations.append(scan_duration)
             self.metrics.scans_completed += 1
             
-            patrol_logger.info("360° scan complete")
+            patrol_logger.info(f"360° scan complete in {scan_duration:.1f}s")
             return True
             
         except Exception as e:
@@ -307,25 +368,26 @@ class PatrolDrone:
             distance = math.sqrt(dx*dx + dy*dy)
             
             # Execute movements with stability checks
-            if dx != 0:
-                direction = 'move_right' if dx > 0 else 'move_left'
-                self.drone_manager.send_command(direction, abs(dx))
-                await asyncio.sleep(abs(dx) / self.SPEED + 1)
+            for movement in [('x', dx), ('y', dy)]:
+                axis, delta = movement
+                if delta == 0:
+                    continue
                 
-                # Verify position
-                if abs(self.drone_manager.get_position()[0] - target[0]) > 20:
-                    patrol_logger.warning("Position deviation detected, adjusting")
-                    await asyncio.sleep(1)
-            
-            if dy != 0 and not self.stop_requested.is_set():
-                direction = 'move_forward' if dy > 0 else 'move_back'
-                self.drone_manager.send_command(direction, abs(dy))
-                await asyncio.sleep(abs(dy) / self.SPEED + 1)
+                if self.stop_requested.is_set():
+                    return False
                 
-                # Verify position
-                if abs(self.drone_manager.get_position()[1] - target[1]) > 20:
-                    patrol_logger.warning("Position deviation detected, adjusting")
-                    await asyncio.sleep(1)
+                # Determine movement direction and command
+                if axis == 'x':
+                    direction = 'move_right' if delta > 0 else 'move_left'
+                else:
+                    direction = 'move_forward' if delta > 0 else 'move_back'
+                
+                # Execute movement
+                self.drone_manager.send_command(direction, abs(delta))
+                
+                # Wait for movement completion with extra stability time
+                move_time = abs(delta) / self.config.SPEED
+                await asyncio.sleep(move_time + self.config.CORNER_STABILIZATION_TIME)
             
             # Update tracking
             self.current_corner = target_corner
@@ -340,104 +402,47 @@ class PatrolDrone:
 
     async def clockwise_patrol(self) -> bool:
         """Execute clockwise patrol route."""
-        try:
-            # Ensure no other patrol is running
-            if not self._patrol_lock.acquire(blocking=False):
-                patrol_logger.warning("Another patrol is already in progress")
-                return False
-            
-            try:
-                patrol_logger.info("Starting clockwise patrol")
-                self.is_patrolling = True
-                self.status = PatrolStatus.PATROLLING
-                self.stop_requested.clear()
-                
-                # Initialize metrics
-                self._start_metrics("clockwise")
-                
-                # Takeoff and initialization
-                if not await self.takeoff():
-                    return False
-                
-                # Execute patrol sequence
-                corner_sequence = ['top_right', 'top_left', 'bottom_left', 'bottom_right']
-                
-                for corner in corner_sequence:
-                    if self.stop_requested.is_set():
-                        patrol_logger.info("Patrol stop requested")
-                        break
-                    
-                    # Move to corner
-                    if not await self.move_to_corner(corner):
-                        await self.emergency()
-                        return False
-                    
-                    # Execute scan
-                    if not await self.rotate_360():
-                        await self.emergency()
-                        return False
-                    
-                    await asyncio.sleep(1)  # Stability pause
-                
-                # Return and land
-                await self.land()
-                
-                # Finalize metrics
-                self._finalize_metrics("completed" if not self.stop_requested.is_set() else "stopped")
-                
-                patrol_logger.info("Clockwise patrol complete")
-                return True
-                
-            finally:
-                self.is_patrolling = False
-                self.status = PatrolStatus.IDLE
-                self._patrol_lock.release()
-            
-        except Exception as e:
-            patrol_logger.error(f"Clockwise patrol error: {e}")
-            await self.emergency()
-            return False
+        return await self._execute_patrol('clockwise')
 
     async def counterclockwise_patrol(self) -> bool:
         """Execute counterclockwise patrol route."""
+        return await self._execute_patrol('counterclockwise')
+
+    async def _execute_patrol(self, direction: str) -> bool:
+        """Execute patrol sequence in specified direction."""
         try:
-            # Ensure no other patrol is running
             if not self._patrol_lock.acquire(blocking=False):
                 patrol_logger.warning("Another patrol is already in progress")
                 return False
             
             try:
-                patrol_logger.info("Starting counterclockwise patrol")
+                patrol_logger.info(f"Starting {direction} patrol")
                 self.is_patrolling = True
                 self.status = PatrolStatus.PATROLLING
                 self.stop_requested.clear()
                 
                 # Initialize metrics
-                self._start_metrics("counterclockwise")
+                self._start_metrics(direction)
                 
                 # Takeoff and initialization
                 if not await self.takeoff():
                     return False
                 
                 # Execute patrol sequence
-                corner_sequence = ['bottom_left', 'top_left', 'top_right', 'bottom_right']
-                
-                for corner in corner_sequence:
+                for corner in self.SEQUENCES[direction]:
                     if self.stop_requested.is_set():
                         patrol_logger.info("Patrol stop requested")
                         break
                     
-                    # Move to corner
                     if not await self.move_to_corner(corner):
                         await self.emergency()
                         return False
                     
-                    # Execute scan
                     if not await self.rotate_360():
                         await self.emergency()
                         return False
                     
-                    await asyncio.sleep(1)  # Stability pause
+                    await asyncio.sleep(self.config.CORNER_STABILIZATION_TIME)
                 
                 # Return and land
                 await self.land()
@@ -445,7 +450,7 @@ class PatrolDrone:
                 # Finalize metrics
                 self._finalize_metrics("completed" if not self.stop_requested.is_set() else "stopped")
                 
-                patrol_logger.info("Counterclockwise patrol complete")
+                patrol_logger.info(f"{direction} patrol complete")
                 return True
                 
             finally:
@@ -454,7 +459,7 @@ class PatrolDrone:
                 self._patrol_lock.release()
             
         except Exception as e:
-            patrol_logger.error(f"Counterclockwise patrol error: {e}")
+            patrol_logger.error(f"{direction} patrol error: {e}")
             await self.emergency()
             return False
 
@@ -479,7 +484,9 @@ class PatrolDrone:
                     'scans_completed': self.metrics.scans_completed,
                     'distance_traveled': self.metrics.distance_traveled,
                     'patrol_type': self.metrics.patrol_type,
-                    'battery_start': self.metrics.battery_start
+                    'patrol_size': self.metrics.patrol_size,
+                    'battery_start': self.metrics.battery_start,
+                    'errors_encountered': self.metrics.errors_encountered
                 }
 
             status = {
@@ -510,6 +517,7 @@ class PatrolDrone:
                 history.append({
                     'patrol_number': patrol.patrol_number,
                     'patrol_type': patrol.patrol_type,
+                    'patrol_size': patrol.patrol_size,
                     'start_time': patrol.start_time,
                     'end_time': patrol.end_time,
                     'duration': patrol.end_time - patrol.start_time,
@@ -518,7 +526,10 @@ class PatrolDrone:
                     'scans_completed': patrol.scans_completed,
                     'battery_used': patrol.battery_start - patrol.battery_end,
                     'completion_status': patrol.completion_status,
-                    'detection_count': patrol.detection_count
+                    'detection_count': patrol.detection_count,
+                    'errors_encountered': patrol.errors_encountered,
+                    'avg_height_deviation': sum(patrol.height_deviations) / len(patrol.height_deviations) if patrol.height_deviations else 0,
+                    'avg_scan_duration': sum(patrol.scan_durations) / len(patrol.scan_durations) if patrol.scan_durations else 0
                 })
             return history
             
@@ -554,7 +565,7 @@ class PatrolDrone:
             if self.is_patrolling:
                 return False, "Patrol already in progress"
                 
-            if self.drone_manager.battery_level < 20:
+            if self.drone_manager.battery_level < self.config.MIN_BATTERY:
                 return False, "Battery level too low"
                 
             if not self.drone_manager.is_connected:

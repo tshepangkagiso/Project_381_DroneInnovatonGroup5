@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skylynx | Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <style>
         /* Theme Variables & Color System */
         :root {
-            /* Core Theme Colors - Light (Skyblue & White Theme) */
+            /* Core Theme Colors - Light (White & Sky Blue Theme) */
             --primary-l: #0EA5E9;           /* Bright sky blue */
             --primary-hover-l: #0284C7;     /* Darker sky blue for hover */
             --secondary-l: #F0F9FF;         /* Very light blue tint */
@@ -18,7 +21,7 @@
             --background-l: #FFFFFF;        /* Pure white background */
             --surface-l: #FFFFFF;          /* Pure white surface */
             --panel-bg-l: #FFFFFF;         /* White panel background */
-            --border-l: #E2E8F0;          /* Light border color */
+            --border-l: #E2E8F0;          /* Light gray border */
             --text-primary-l: #1E293B;     /* Dark text */
             --text-secondary-l: #64748B;   /* Medium gray text */
             
@@ -32,7 +35,7 @@
             --border-d: #334155;
             --text-primary-d: #F8FAFC;
             --text-secondary-d: #94A3B8;
-        
+    
             /* Status Colors */
             --success: #22C55E;
             --success-bg: rgba(34, 197, 94, 0.1);
@@ -42,31 +45,26 @@
             --danger-bg: rgba(239, 68, 68, 0.1);
             --info: #3B82F6;
             --info-bg: rgba(59, 130, 246, 0.1);
-        
-            /* Shadows - Enhanced for better depth */
+    
+            /* Elevation Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            
-            /* Button Shadows */
-            --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-btn-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
-        
+    
             /* Animation Speeds */
             --transition-fast: 150ms;
             --transition-normal: 250ms;
             --transition-slow: 350ms;
-        
+    
             /* Layout Measurements */
             --header-height: 60px;
-            --footer-height: 50px;
             --sidebar-width: 280px;
             --content-max-width: 1920px;
             --border-radius-sm: 0.375rem;
             --border-radius-md: 0.5rem;
             --border-radius-lg: 0.75rem;
         }
-        
+    
         /* Theme Class Definitions */
         .light-theme {
             --primary: var(--primary-l);
@@ -79,7 +77,7 @@
             --text-primary: var(--text-primary-l);
             --text-secondary: var(--text-secondary-l);
         }
-        
+    
         .dark-theme {
             --primary: var(--primary-d);
             --primary-hover: var(--primary-hover-d);
@@ -91,7 +89,7 @@
             --text-primary: var(--text-primary-d);
             --text-secondary: var(--text-secondary-d);
         }
-        
+    
         /* Base Reset & Optimizations */
         *, *::before, *::after {
             margin: 0;
@@ -100,27 +98,27 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
+    
         /* Modern CSS Reset Additions */
         html {
             text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
             height: 100%;
         }
-        
+    
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             line-height: 1.5;
             height: 102vh;
             width: 100vw;
-            overflow-x: hidden;
+            overflow: hidden;
             background-color: var(--background);
             color: var(--text-primary);
             transition: background-color var(--transition-normal), color var(--transition-normal);
         }
-        
-        /* Layout System */
-        .app-container {
+    
+    /* Layout System */
+    .app-container {
             display: grid;
             grid-template-rows: var(--header-height) 1fr;
             height: 100vh;
@@ -128,7 +126,7 @@
             max-width: var(--content-max-width);
             margin: 0 auto;
         }
-        
+
         /* Header Styling */
         .header {
             background-color: var(--surface);
@@ -140,7 +138,9 @@
             gap: 2rem;
             height: var(--header-height);
             transition: background-color var(--transition-normal);
+            z-index: 40;
         }
+
         /* Modern Logo Design */
         .logo {
             display: flex;
@@ -150,17 +150,16 @@
             font-weight: 700;
             color: var(--primary);
             text-decoration: none;
-            transition: all var(--transition-fast);
+            transition: opacity var(--transition-fast);
         }
 
         .logo:hover {
             opacity: 0.9;
-            transform: scale(1.02);
         }
 
-        .logo i {
-            font-size: 1.75rem;
-            color: var(--primary);
+        .logo img {
+            height: 32px;
+            width: auto;
         }
 
         /* Status Indicators */
@@ -176,22 +175,18 @@
             gap: 0.5rem;
             font-size: 0.875rem;
             color: var(--text-secondary);
-            padding: 0.375rem 0.75rem;
+            padding: 0.25rem 0.75rem;
             border-radius: var(--border-radius-sm);
             background-color: var(--surface);
             border: 1px solid var(--border);
             transition: all var(--transition-fast);
         }
 
-        .status-indicator i {
-            color: var(--primary);
-        }
-
         .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            transition: all var(--transition-fast);
+            transition: background-color var(--transition-fast);
         }
 
         .status-dot.connected { 
@@ -214,8 +209,8 @@
         .main-content {
             display: grid;
             grid-template-columns: var(--sidebar-width) 1fr;
-            gap: 1.5rem;
-            padding: 1.5rem;
+            gap: 1rem;
+            padding: 1rem;
             height: calc(100vh - var(--header-height));
             overflow: hidden;
         }
@@ -230,13 +225,7 @@
             flex-direction: column;
             gap: 1rem;
             padding: 1.25rem;
-            transition: all var(--transition-normal);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .light-theme .sidebar {
-            border-color: var(--primary);
-            background-color: var(--surface);
+            transition: background-color var(--transition-normal);
         }
 
         .operator-info {
@@ -244,11 +233,7 @@
             align-items: center;
             gap: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .light-theme .operator-info {
-            border-bottom-color: var(--primary);
+            border-bottom: 1px solid var(--border);
         }
 
         .operator-avatar {
@@ -264,41 +249,82 @@
             box-shadow: var(--shadow-md);
         }
 
-        .operator-details {
+        /* Content Area */
+        .content-area {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            height: calc(100vh - var(--header-height) - 2rem);
+            gap: 1rem;
         }
 
-        .operator-name {
-            font-weight: 600;
-            color: var(--text-primary);
+        /* Video Section - Maximized */
+        .video-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            height: calc(100% - 180px); /* Adjusted to maximize video size */
+            min-height: 0;
         }
 
-        .operator-role {
+        .video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: var(--background);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: var(--surface);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .video-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 0.375rem 1rem;
+            border-radius: var(--border-radius-lg);
             font-size: 0.875rem;
-            color: var(--text-secondary);
+            font-weight: 500;
+            z-index: 10;
+            backdrop-filter: blur(4px);
         }
 
-        /* Control Groups */
-        .control-group {
+        .video-metrics {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 0.375rem 1rem;
+            border-radius: var(--border-radius-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+    /* Control Groups */
+    .control-group {
             padding: 1.25rem 0;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .light-theme .control-group {
-            border-bottom-color: var(--primary);
+            border-bottom: 1px solid var(--border);
         }
 
         .control-group:last-child {
             border-bottom: none;
-            padding-bottom: 0;
         }
 
         .control-group-title {
             font-size: 0.875rem;
             font-weight: 600;
-            color: var(--primary);
+            color: var(--text-secondary);
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -315,14 +341,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             transition: all var(--transition-fast);
-            border: 2px solid transparent;
+            border: 1px solid transparent;
             font-size: 0.875rem;
             position: relative;
             overflow: hidden;
-            margin-bottom: 0.75rem;
-            box-shadow: var(--shadow-btn);
+            margin-bottom: 0.5rem;
+            user-select: none;
         }
 
         .btn:last-child {
@@ -330,161 +356,102 @@
         }
 
         .btn i {
-            font-size: 1.125rem;
+            font-size: 1rem;
             transition: transform var(--transition-fast);
         }
 
-        .btn:hover:not(:disabled) i {
+        .btn:hover i {
             transform: scale(1.1);
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            box-shadow: none;
         }
 
-        /* Button Variants */
         .btn-primary {
             background-color: var(--primary);
-            border-color: var(--primary);
             color: white;
         }
 
         .btn-primary:hover:not(:disabled) {
             background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-btn-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary:active:not(:disabled) {
             transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            filter: brightness(110%);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
+            border: 1px solid var(--border);
             color: var(--text-primary);
+            background-color: transparent;
         }
 
         .btn-outline:hover:not(:disabled) {
             border-color: var(--primary);
             color: var(--primary);
             background-color: var(--info-bg);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-btn-hover);
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-            border-color: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover:not(:disabled) {
-            filter: brightness(110%);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-btn-hover);
-        }
-
-        /* Video Section */
-        .video-section {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            height: calc(100% - 200px);
-            min-height: 0;
-        }
-
-        .video-container {
-            aspect-ratio: 16/9;
-            background-color: var(--surface);
-            border-radius: var(--border-radius-lg);
-            overflow: hidden;
-            position: relative;
-            border: 2px solid var(--border);
-            transition: all var(--transition-normal);
-            height: 100%;
-        }
-
-        .light-theme .video-container {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .video-container:hover {
-            transform: scale(1.002);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .video-feed {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-color: var(--background);
-        }
-
-        .video-label {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-lg);
-            font-size: 0.875rem;
-            font-weight: 500;
-            z-index: 10;
-            backdrop-filter: blur(4px);
-        }
-
-        .video-metrics {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-lg);
-            font-size: 0.875rem;
-            font-weight: 500;
-            z-index: 10;
-            backdrop-filter: blur(4px);
         }
 
         /* Monitoring Section */
         .monitoring-section {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
-            height: 180px;
-            margin-top: 0.2rem;
+            gap: 1rem;
+            height: 210px;  /* Fixed height for monitoring section */
         }
 
         .threats-list {
             background-color: var(--surface);
             border-radius: var(--border-radius-lg);
             padding: 1.25rem;
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-        }
-
-        .light-theme .threats-list {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-sm);
         }
 
         .threat-level {
             padding: 0.75rem 1rem;
             border-radius: var(--border-radius-sm);
             font-size: 0.875rem;
+            font-weight: 500;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all var(--transition-fast);
-            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .threat-level::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            transition: all var(--transition-fast);
         }
 
         .threat-level:hover {
@@ -494,19 +461,28 @@
         .threat-level.high {
             background-color: var(--danger-bg);
             color: var(--danger);
-            border-left: 4px solid var(--danger);
+        }
+
+        .threat-level.high::before {
+            background-color: var(--danger);
         }
 
         .threat-level.medium {
             background-color: var(--warning-bg);
             color: var(--warning);
-            border-left: 4px solid var(--warning);
+        }
+
+        .threat-level.medium::before {
+            background-color: var(--warning);
         }
 
         .threat-level.low {
             background-color: var(--success-bg);
             color: var(--success);
-            border-left: 4px solid var(--success);
+        }
+
+        .threat-level.low::before {
+            background-color: var(--success);
         }
 
         /* Logs Section */
@@ -514,22 +490,19 @@
             background-color: var(--surface);
             border-radius: var(--border-radius-lg);
             padding: 1.25rem;
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        .light-theme .logs-section {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-sm);
-        }
-
         .logs-list {
-            flex-grow: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
             gap: 0.5rem;
+            height: 100%;
+            padding-right: 0.5rem;
         }
 
         .log-entry {
@@ -544,44 +517,98 @@
             border: 1px solid var(--border);
         }
 
-        .light-theme .log-entry {
-            border-color: var(--border);
-        }
-
         .log-entry:hover {
             transform: translateX(4px);
-            border-color: var(--primary);
+            background-color: var(--surface);
         }
 
-        .log-entry .log-time {
+        .log-entry.success { border-left: 4px solid var(--success); }
+        .log-entry.warning { border-left: 4px solid var(--warning); }
+        .log-entry.error { border-left: 4px solid var(--danger); }
+        .log-entry.info { border-left: 4px solid var(--info); }
+
+        .log-time {
             color: var(--text-secondary);
             font-family: monospace;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            width: 48px;
-            height: 24px;
-            border-radius: 12px;
+        /* Toast System */
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+    /* Toast Styling */
+    .toast {
+            min-width: 300px;
+            max-width: 400px;
             background-color: var(--surface);
-            border: 2px solid var(--primary);
-            cursor: pointer;
-            position: relative;
+            border-radius: var(--border-radius-md);
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            pointer-events: all;
+            animation: slideIn var(--transition-normal) ease-out;
+            border-left: 4px solid;
+        }
+
+        .toast.success { 
+            border-color: var(--success);
+        }
+        .toast.warning { 
+            border-color: var(--warning);
+        }
+        .toast.error { 
+            border-color: var(--danger);
+        }
+        .toast.info { 
+            border-color: var(--info);
+        }
+
+        .toast-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
-            padding: 2px;
-            transition: all var(--transition-normal);
+            justify-content: center;
         }
 
-        .theme-toggle i {
-            color: var(--primary);
-            font-size: 14px;
-            transition: transform var(--transition-normal);
-            position: absolute;
+        .toast-content {
+            flex-grow: 1;
         }
 
-        .light-theme .theme-toggle i {
-            transform: translateX(24px);
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            flex-shrink: 0;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity var(--transition-fast);
+            padding: 0.25rem;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
         }
 
         /* Loading Overlay */
@@ -591,7 +618,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(15, 23, 42, 0.9);
+            background-color: color-mix(in srgb, var(--background) 95%, transparent);
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
@@ -625,54 +652,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            pointer-events: none;
-        }
-
-        .toast {
-            min-width: 300px;
-            max-width: 400px;
-            background-color: var(--surface);
-            border-radius: var(--border-radius-md);
-            padding: 1rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            box-shadow: var(--shadow-lg);
-            pointer-events: all;
-            animation: slideIn var(--transition-normal) ease-out;
-            border-left: 4px solid;
-        }
-
-        .toast.success { border-color: var(--success); }
-        .toast.warning { border-color: var(--warning); }
-        .toast.error { border-color: var(--danger); }
-        .toast.info { border-color: var(--info); }
-
-        .toast-content {
-            flex-grow: 1;
-        }
-
-        .toast-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .toast-message {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Scrollbar Styling */
+        /* Custom Scrollbar */
         .custom-scrollbar {
             scrollbar-width: thin;
             scrollbar-color: var(--border) transparent;
@@ -692,12 +672,53 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: var(--text-secondary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all var(--transition-normal);
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             background-color: var(--primary);
+            transition: transform var(--transition-normal);
+        }
+
+        .theme-toggle.dark::after {
+            transform: translateX(24px);
+        }
+
+        .theme-toggle i {
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all var(--transition-normal);
+            z-index: 1;
         }
 
         /* Animations */
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to { 
+                transform: rotate(360deg); 
+            }
         }
 
         @keyframes slideIn {
@@ -728,7 +749,21 @@
             100% { opacity: 1; }
         }
 
-        /* Media Queries */
+        @keyframes ripple {
+            0% {
+                box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.2);
+            }
+            100% {
+                box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
         @media (max-width: 1536px) {
             :root {
                 --sidebar-width: 260px;
@@ -743,6 +778,10 @@
             .video-section {
                 gap: 1rem;
             }
+
+            .status-bar {
+                gap: 1rem;
+            }
         }
 
         @media (max-width: 1024px) {
@@ -752,12 +791,13 @@
 
             .video-section {
                 grid-template-columns: 1fr;
-                height: auto;
+                grid-template-rows: repeat(2, 1fr);
             }
 
             .monitoring-section {
                 grid-template-columns: 1fr;
                 height: auto;
+                min-height: 180px;
             }
         }
 
@@ -780,11 +820,48 @@
                 left: 0;
             }
 
-            .video-section {
-                height: calc(100vh - 400px);
+            .header {
+                padding: 0 1rem;
+            }
+
+            .status-bar {
+                gap: 0.75rem;
+            }
+
+            .status-indicator {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .toast {
+                min-width: auto;
+                max-width: calc(100vw - 2rem);
             }
         }
 
+        @media (max-width: 640px) {
+            :root {
+                --header-height: 50px;
+            }
+
+            .status-bar {
+                display: none;
+            }
+
+            .video-section {
+                height: calc(100% - 120px);
+            }
+
+            .monitoring-section {
+                min-height: 120px;
+            }
+        }
+
+        /* Accessibility */
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -795,187 +872,183 @@
                 scroll-behavior: auto !important;
             }
         }
-    </style>
 
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
-    <!-- Main Container -->
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <a href="#" class="logo">
-                    <i class="fas fa-drone"></i>
-                    <span>Skylynx</span>
-                </a>
-            </div>
-
-            <div class="status-bar">
-                <div class="status-indicator">
-                    <div id="connectionStatusDot" class="status-dot disconnected"></div>
-                    <span id="connectionStatus">Disconnected</span>
+        <!-- Main Container -->
+        <div class="app-container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <a href="#" class="logo">
+                        <i class="fas fa-drone"></i>
+                        Skylynx
+                    </a>
                 </div>
-                <div class="status-indicator">
-                    <div id="streamStatusDot" class="status-dot"></div>
-                    <span id="streamStatus">Stream Off</span>
-                </div>
-                <div class="status-indicator">
-                    <i class="fas fa-battery-half"></i>
-                    <span id="batteryLevel">100%</span>
-                </div>
-                <div class="status-indicator">
-                    <i class="fas fa-ruler-vertical"></i>
-                    <span id="droneHeight">0 cm</span>
-                </div>
-                <div class="status-indicator">
-                    <i class="fas fa-clock"></i>
-                    <span id="flightTime">00:00</span>
-                </div>
-                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
-                    <i class="fas fa-sun"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Sidebar -->
-            <aside class="sidebar custom-scrollbar" >
-                <!-- Operator Info -->
-                <div class="operator-info">
-                    <div class="operator-avatar" style="color: skyblue; border: 1.5px solid skyblue;">OP</div>
-                    <div class="operator-details">
-                        <h3 class="operator-name">Operator</h3>
-                        <span class="operator-role">Drone Controller</span>
+    
+                <div class="status-bar">
+                    <div class="status-indicator">
+                        <div id="connectionStatusDot" class="status-dot disconnected"></div>
+                        <span id="connectionStatus">Disconnected</span>
                     </div>
+                    <div class="status-indicator">
+                        <div id="streamStatusDot" class="status-dot"></div>
+                        <span id="streamStatus">Stream Off</span>
+                    </div>
+                    <div class="status-indicator">
+                        <i class="fas fa-battery-half"></i>
+                        <span id="batteryLevel">100%</span>
+                    </div>
+                    <div class="status-indicator">
+                        <i class="fas fa-ruler-vertical"></i>
+                        <span id="droneHeight">0 cm</span>
+                    </div>
+                    <div class="status-indicator">
+                        <i class="fas fa-clock"></i>
+                        <span id="flightTime">00:00</span>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                        <i class="fas fa-sun"></i>
+                    </button>
                 </div>
-
-                <!-- Stream Control -->
-                <div class="control-group">
-                    <h3 class="control-group-title">Stream Control</h3>
-                    <div class="button-container">
+            </header>
+    
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Sidebar -->
+                <aside class="sidebar custom-scrollbar">
+                    <!-- Operator Info -->
+                    <div class="operator-info">
+                        <div class="operator-avatar">OP</div>
+                        <div class="operator-details">
+                            <h3 class="operator-name">Operator</h3>
+                            <span class="operator-role">Drone Controller</span>
+                        </div>
+                    </div>
+    
+                    <!-- Stream Control -->
+                    <div class="control-group">
+                        <h3 class="control-group-title">Stream Control</h3>
                         <button id="startStream" class="btn btn-primary">
-                            <i class="fas fa-play" style="color: black;"></i>
-                            <span style="color: black;">Start Stream</span>
+                            <i class="fas fa-play"></i> Start Stream
                         </button>
-                        <button id="stopStream" class="btn btn-outline">
-                            <i class="fas fa-stop" style="color: black;"></i>
-                            <span>Stop Stream</span>
+                        <button id="stopStream" class="btn btn-outline" disabled>
+                            <i class="fas fa-stop"></i> Stop Stream
                         </button>
                     </div>
-                </div>
-
-                <!-- Flight Control -->
-                <div class="control-group">
-                    <h3 class="control-group-title">Flight Control</h3>
-                    <div class="button-container">
+    
+                    <!-- Flight Control -->
+                    <div class="control-group">
+                        <h3 class="control-group-title">Flight Control</h3>
                         <button id="takeoff" class="btn btn-primary">
-                            <i class="fas fa-plane-departure" style="color: black;"></i>
-                            <span style="color: black;">Takeoff</span>
+                            <i class="fas fa-plane-departure"></i> Takeoff
                         </button>
-                        <button id="land" class="btn btn-outline">
-                            <i class="fas fa-plane-arrival" style="color: black;"></i>
-                            <span style="color: black;">Land</span>
+                        <button id="land" class="btn btn-outline" disabled>
+                            <i class="fas fa-plane-arrival"></i> Land
                         </button>
-                        <button id="emergency" class="btn btn-danger">
-                            <i class="fas fa-exclamation-triangle" style="color: black;"></i>
-                            <span style="color: black;">Emergency Stop</span>
+                        <button id="emergency" class="btn btn-danger" disabled>
+                            <i class="fas fa-exclamation-triangle"></i> Emergency Stop
                         </button>
                     </div>
-                </div>
-
-                <!-- Patrol Control -->
-                <div class="control-group">
-                    <h3 class="control-group-title">Autonomous Patrol</h3>
-                    <div class="button-container">
+    
+                    <!-- Patrol Control -->
+                    <div class="control-group">
+                        <h3 class="control-group-title">Autonomous Patrol</h3>
                         <button id="startClockwise" class="btn btn-primary">
-                            <i class="fas fa-redo" style="color: black "></i>
-                            <span style="color: black; ">Clockwise Patrol</span>
+                            <i class="fas fa-redo"></i> Clockwise Patrol
                         </button>
                         <button id="startCounterClockwise" class="btn btn-primary">
-                            <i class="fas fa-undo" style="color: black;"></i>
-                            <span style="color: black;">Counter-clockwise</span>
+                            <i class="fas fa-undo"></i> Counter-clockwise
                         </button>
-                        <button id="stopPatrol" class="btn btn-outline">
-                            <i class="fas fa-stop-circle" style="color: black;"></i>
-                            <span style="color: black;">Stop Patrol</span>
+                        <button id="stopPatrol" class="btn btn-outline" disabled>
+                            <i class="fas fa-stop-circle"></i> Stop Patrol
                         </button>
                     </div>
-                </div>
-            </aside>
-
-            <!-- Content Area -->
-            <section class="content-area">
+                </aside>
+    
                 <!-- Video Section -->
-                <div class="video-section">
-                    <!-- Raw Feed -->
-                    <div class="video-container">
-                        <div class="video-label">Raw Feed</div>
-                        <div id="rawMetrics" class="video-metrics">FPS: --</div>
-                        <img id="rawFeed" src="/api/placeholder/1280/720" alt="Raw drone feed" class="video-feed">
-                    </div>
-
-                    <!-- Detection Feed -->
-                    <div class="video-container">
-                        <div class="video-label">Detection Feed</div>
-                        <div id="detectionMetrics" class="video-metrics">Detected: --</div>
-                        <img id="detectionFeed" src="/api/placeholder/1280/720" alt="Object detection feed" class="video-feed">
-                    </div>
-                </div>
-
-                <!-- Monitoring Section -->
-                <div class="monitoring-section">
-                    <!-- Threat Monitoring -->
-                    <div class="threats-list">
-                        <h3 class="control-group-title">Threat Monitoring</h3>
-                        <div class="threat-level high">
-                            <span>High Threats</span>
-                            <span id="highThreatCount">0</span>
+                <section class="content-area">
+                    <div class="video-section">
+                        <!-- Raw Feed -->
+                        <div class="video-container">
+                            <div class="video-label">Raw Feed</div>
+                            <div id="rawMetrics" class="video-metrics">FPS: --</div>
+                            <img id="rawFeed" src="/api/placeholder/1280/720" alt="Raw drone feed" class="video-feed">
                         </div>
-                        <div class="threat-level medium">
-                            <span>Medium Threats</span>
-                            <span id="mediumThreatCount">0</span>
-                        </div>
-                        <div class="threat-level low">
-                            <span>Low Threats</span>
-                            <span id="lowThreatCount">0</span>
+                        
+                        <div class="video-container">
+                            <div class="video-label">Detection Feed</div>
+                            <div id="detectionMetrics" class="video-metrics">Detected: --</div>
+                            <img id="detectionFeed" src="/api/placeholder/1280/720" alt="Object detection feed" class="video-feed">
                         </div>
                     </div>
-
-                    <!-- System Logs -->
-                    <div class="logs-section">
-                        <h3 class="control-group-title">System Logs</h3>
-                        <div id="logsList" class="logs-list custom-scrollbar"></div>
+    
+                    <!-- Monitoring Section -->
+                    <div class="monitoring-section">
+                        <!-- Threat Monitoring -->
+                        <div class="threats-list">
+                            <h3 class="control-group-title">Threat Monitoring</h3>
+                            <div class="threat-level high">
+                                <span>High Threats</span>
+                                <span id="highThreatCount">0</span>
+                            </div>
+                            <div class="threat-level medium">
+                                <span>Medium Threats</span>
+                                <span id="mediumThreatCount">0</span>
+                            </div>
+                            <div class="threat-level low">
+                                <span>Low Threats</span>
+                                <span id="lowThreatCount">0</span>
+                            </div>
+                        </div>
+    
+                        <!-- System Logs -->
+                        <div class="logs-section">
+                            <h3 class="control-group-title">System Logs</h3>
+                            <div id="logsList" class="logs-list custom-scrollbar"></div>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </main>
-    </div>
+                </section>
+            </main>
+        </div>
+    
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loader"></div>
+            <div class="loading-text">Connecting to drone...</div>
+        </div>
+    
+        <!-- Audio Elements -->
+        <audio id="highThreatSound">
+            <source src="data:audio/mp3;base64,${AUDIO.HIGH_THREAT}" type="audio/mp3">
+        </audio>
+        <audio id="takeoffSound">
+            <source src="data:audio/mp3;base64,${AUDIO.TAKEOFF}" type="audio/mp3">
+        </audio>
+        <audio id="landingSound">
+            <source src="data:audio/mp3;base64,${AUDIO.LAND}" type="audio/mp3">
+        </audio>
+        <audio id="disconnectSound">
+            <source src="data:audio/mp3;base64,${AUDIO.DISCONNECT}" type="audio/mp3">
+        </audio>
 
-    <!-- Toast Container -->
-    <div id="toastContainer" class="toast-container">Theme</div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loader"></div>
-        <div class="loading-text">Connecting to drone server...</div>
-    </div>
-
-    <!-- Hidden Audio Elements -->
-    <audio id="highThreatSound">
-        <source src="data:audio/mp3;base64,${AUDIO.HIGH_THREAT}" type="audio/mp3">
-    </audio>
-    <audio id="takeoffSound">
-        <source src="data:audio/mp3;base64,${AUDIO.TAKEOFF}" type="audio/mp3">
-    </audio>
-    <audio id="landingSound">
-        <source src="data:audio/mp3;base64,${AUDIO.LAND}" type="audio/mp3">
-    </audio>
-    <audio id="disconnectSound">
-        <source src="data:audio/mp3;base64,${AUDIO.DISCONNECT}" type="audio/mp3">
-    </audio>
-
-    <script>
+        <script>
             // Audio encodings for alerts (base64)
             const AUDIO = {
                 HIGH_THREAT: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
@@ -983,219 +1056,227 @@
                 LAND: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
                 DISCONNECT: 'data:audio/mp3;base64,//uQxAAAEvGLIVT0AAp1IyfjveAAXHXf5+IAgCHv//yQEP/JH/yAEG4COIf+pMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ=='
             };
+
             class DroneController {
-            constructor() {
-                // Socket initialization
-                this.socket = io('http://localhost:5000', {
-                    transports: ['websocket'],
-                    reconnectionAttempts: 5,
-                    reconnectionDelay: 1000,
-                    timeout: 10000,
-                    cors: {
-                        origin: "*",
-                        methods: ["GET", "POST"]
-                    }
-                });
+                constructor() {
+                    // Socket initialization
+                    this.socket = io('http://localhost:5000', {
+                        transports: ['websocket'],
+                        reconnectionAttempts: 5,
+                        reconnectionDelay: 1000,
+                        timeout: 10000,
+                        cors: {
+                            origin: "*",
+                            methods: ["GET", "POST"]
+                        }
+                    });
 
-                // State Management
-                this.state = {
-                    isConnected: false,
-                    isStreaming: false,
-                    isFlying: false,
-                    isPatrolling: false,
-                    frameCount: 0,
-                    lastFPSUpdate: Date.now(),
-                    threatCounts: { high: 0, medium: 0, low: 0 }
-                };
+                    // State Management
+                    this.state = {
+                        isConnected: false,
+                        isStreaming: false,
+                        isFlying: false,
+                        isPatrolling: false,
+                        frameCount: 0,
+                        lastFPSUpdate: Date.now(),
+                        threatCounts: { high: 0, medium: 0, low: 0 }
+                    };
 
-                // Initialize Audio
-                this.sounds = {
-                    highThreat: new Audio(AUDIO.HIGH_THREAT),
-                    takeoff: new Audio(AUDIO.TAKEOFF),
-                    land: new Audio(AUDIO.LAND),
-                    disconnect: new Audio(AUDIO.DISCONNECT)
-                };
+                    // Initialize Audio
+                    this.sounds = {
+                        highThreat: new Audio(AUDIO.HIGH_THREAT),
+                        takeoff: new Audio(AUDIO.TAKEOFF),
+                        land: new Audio(AUDIO.LAND),
+                        disconnect: new Audio(AUDIO.DISCONNECT)
+                    };
 
-                // Initialize DOM Elements
-                this.elements = {
-                    // Status Elements
-                    connectionStatusDot: document.getElementById('connectionStatusDot'),
-                    connectionStatus: document.getElementById('connectionStatus'),
-                    streamStatusDot: document.getElementById('streamStatusDot'),
-                    streamStatus: document.getElementById('streamStatus'),
-                    batteryLevel: document.getElementById('batteryLevel'),
-                    droneHeight: document.getElementById('droneHeight'),
-                    flightTime: document.getElementById('flightTime'),
+                    // Initialize DOM Elements
+                    this.initializeElements();
                     
-                    // Video Elements
-                    rawFeed: document.getElementById('rawFeed'),
-                    detectionFeed: document.getElementById('detectionFeed'),
-                    rawMetrics: document.getElementById('rawMetrics'),
-                    detectionMetrics: document.getElementById('detectionMetrics'),
+                    // Start Setup
+                    this.initializeEventListeners();
+                    this.initializeSocketHandlers();
+                    this.initializeTheme();
                     
-                    // Control Buttons
-                    startStream: document.getElementById('startStream'),
-                    stopStream: document.getElementById('stopStream'),
-                    takeoff: document.getElementById('takeoff'),
-                    land: document.getElementById('land'),
-                    emergency: document.getElementById('emergency'),
-                    startClockwise: document.getElementById('startClockwise'),
-                    startCounterClockwise: document.getElementById('startCounterClockwise'),
-                    stopPatrol: document.getElementById('stopPatrol'),
-                    
-                    // Threat Counters
-                    highThreatCount: document.getElementById('highThreatCount'),
-                    mediumThreatCount: document.getElementById('mediumThreatCount'),
-                    lowThreatCount: document.getElementById('lowThreatCount'),
-                    
-                    // Other UI Elements
-                    logsList: document.getElementById('logsList'),
-                    loadingOverlay: document.getElementById('loadingOverlay'),
-                    themeToggle: document.getElementById('themeToggle')
-                };
+                    // Show loading overlay
+                    this.elements.loadingOverlay.classList.add('active');
 
-                // Start initialization
-                this.initializeEventListeners();
-                this.initializeSocketHandlers();
-                this.initializeTheme();
+                    // Remove loading overlay after 5 seconds
+                    setTimeout(() => {
+                        this.elements.loadingOverlay.classList.remove('active');
+                    }, 5000);
+                }
 
-                // Show loading overlay
-                this.elements.loadingOverlay.classList.add('active');
+                initializeElements() {
+                    this.elements = {
+                        // Status Elements
+                        connectionStatusDot: document.getElementById('connectionStatusDot'),
+                        connectionStatus: document.getElementById('connectionStatus'),
+                        streamStatusDot: document.getElementById('streamStatusDot'),
+                        streamStatus: document.getElementById('streamStatus'),
+                        batteryLevel: document.getElementById('batteryLevel'),
+                        droneHeight: document.getElementById('droneHeight'),
+                        flightTime: document.getElementById('flightTime'),
+                        
+                        // Video Elements
+                        rawFeed: document.getElementById('rawFeed'),
+                        detectionFeed: document.getElementById('detectionFeed'),
+                        rawMetrics: document.getElementById('rawMetrics'),
+                        detectionMetrics: document.getElementById('detectionMetrics'),
+                        
+                        // Control Buttons
+                        startStream: document.getElementById('startStream'),
+                        stopStream: document.getElementById('stopStream'),
+                        takeoff: document.getElementById('takeoff'),
+                        land: document.getElementById('land'),
+                        emergency: document.getElementById('emergency'),
+                        startClockwise: document.getElementById('startClockwise'),
+                        startCounterClockwise: document.getElementById('startCounterClockwise'),
+                        stopPatrol: document.getElementById('stopPatrol'),
+                        
+                        // Threat Counters
+                        highThreatCount: document.getElementById('highThreatCount'),
+                        mediumThreatCount: document.getElementById('mediumThreatCount'),
+                        lowThreatCount: document.getElementById('lowThreatCount'),
+                        
+                        // Other UI Elements
+                        logsList: document.getElementById('logsList'),
+                        loadingOverlay: document.getElementById('loadingOverlay'),
+                        toastContainer: document.getElementById('toastContainer'),
+                        themeToggle: document.getElementById('themeToggle')
+                    };
+                }
 
-                // Remove loading overlay after 5 seconds
-                setTimeout(() => {
-                    this.elements.loadingOverlay.classList.remove('active');
-                }, 5000);
-            }
+                initializeEventListeners() {
+                    // Stream Controls
+                    this.elements.startStream.onclick = () => this.startStream();
+                    this.elements.stopStream.onclick = () => this.stopStream();
 
-            initializeEventListeners() {
-                // Stream Controls
-                this.elements.startStream.onclick = () => this.startStream();
-                this.elements.stopStream.onclick = () => this.stopStream();
+                    // Flight Controls
+                    this.elements.takeoff.onclick = () => {
+                        this.socket.emit('takeoff');
+                        this.sounds.takeoff.play();
+                        this.log('Initiating takeoff sequence...', 'info');
+                    };
 
-                // Flight Controls
-                this.elements.takeoff.onclick = () => {
-                    this.socket.emit('takeoff');
-                    this.sounds.takeoff.play();
-                    this.log('Initiating takeoff sequence...', 'info');
-                };
+                    this.elements.land.onclick = () => {
+                        this.socket.emit('land');
+                        this.sounds.land.play();
+                        this.log('Initiating landing sequence...', 'info');
+                    };
 
-                this.elements.land.onclick = () => {
-                    this.socket.emit('land');
-                    this.sounds.land.play();
-                    this.log('Initiating landing sequence...', 'info');
-                };
+                    this.elements.emergency.onclick = () => {
+                        this.socket.emit('emergency');
+                        this.log('EMERGENCY STOP INITIATED', 'error');
+                    };
 
-                this.elements.emergency.onclick = () => {
-                    this.socket.emit('emergency');
-                    this.log('EMERGENCY STOP INITIATED', 'error');
-                };
+                    // Patrol Controls
+                    this.elements.startClockwise.onclick = () => {
+                        this.socket.emit('start_patrol', { direction: 'clockwise' });
+                        this.state.isPatrolling = true;
+                        this.updatePatrolControls();
+                        this.log('Starting clockwise patrol...', 'info');
+                    };
 
-                // Patrol Controls
-                this.elements.startClockwise.onclick = () => {
-                    this.socket.emit('start_patrol', { direction: 'clockwise' });
-                    this.state.isPatrolling = true;
-                    this.updatePatrolControls();
-                    this.log('Starting clockwise patrol...', 'info');
-                };
+                    this.elements.startCounterClockwise.onclick = () => {
+                        this.socket.emit('start_patrol', { direction: 'counterclockwise' });
+                        this.state.isPatrolling = true;
+                        this.updatePatrolControls();
+                        this.log('Starting counter-clockwise patrol...', 'info');
+                    };
 
-                this.elements.startCounterClockwise.onclick = () => {
-                    this.socket.emit('start_patrol', { direction: 'counterclockwise' });
-                    this.state.isPatrolling = true;
-                    this.updatePatrolControls();
-                    this.log('Starting counter-clockwise patrol...', 'info');
-                };
+                    this.elements.stopPatrol.onclick = () => {
+                        this.socket.emit('stop_patrol');
+                        this.state.isPatrolling = false;
+                        this.updatePatrolControls();
+                        this.log('Stopping patrol...', 'info');
+                    };
 
-                this.elements.stopPatrol.onclick = () => {
-                    this.socket.emit('stop_patrol');
-                    this.state.isPatrolling = false;
-                    this.updatePatrolControls();
-                    this.log('Stopping patrol...', 'info');
-                };
+                    // Theme Toggle
+                    this.elements.themeToggle.onclick = () => this.toggleTheme();
 
-                // Theme Toggle
-                this.elements.themeToggle.onclick = () => this.toggleTheme();
+                    // Window Events
+                    window.onbeforeunload = () => {
+                        if (this.state.isStreaming) {
+                            this.socket.emit('stop_video');
+                        }
+                    };
+                }
 
-                // Window Events
-                window.onbeforeunload = () => {
-                    if (this.state.isStreaming) {
-                        this.socket.emit('stop_video');
-                    }
-                };
-            }
+                initializeSocketHandlers() {
+                    // Connection Events
+                    this.socket.on('connect', () => {
+                        this.state.isConnected = true;
+                        this.updateConnectionStatus(true);
+                        this.showToast('Connected to drone server', 'success');
+                        //this.elements.loadingOverlay.classList.remove('active');
+                    });
 
-            initializeSocketHandlers() {
-                this.socket.on('connect', () => {
-                    this.state.isConnected = true;
-                    this.updateConnectionStatus(true);
-                    this.showToast('Connected to drone server', 'success');
-                    //this.elements.loadingOverlay.classList.remove('active');
-                });
+                    this.socket.on('disconnect', () => {
+                        this.state.isConnected = false;
+                        this.updateConnectionStatus(false);
+                        this.sounds.disconnect.play();
+                        this.showToast('Disconnected from drone server', 'error');
+                        //this.elements.loadingOverlay.classList.add('active');
+                    });
 
-                this.socket.on('disconnect', () => {
-                    this.state.isConnected = false;
-                    this.updateConnectionStatus(false);
-                    this.sounds.disconnect.play();
-                    this.showToast('Disconnected from drone server', 'error');
-                    this.stopStream();
-                    //this.elements.loadingOverlay.classList.add('active');
-                });
-
-                // Video Frame Handlers
-                this.socket.on('video_frame', (data) => {
-                    if (this.state.isStreaming && data.frame) {
-                        requestAnimationFrame(() => {
+                    // Video Frame Handlers
+                    this.socket.on('video_frame', (data) => {
+                        if (this.state.isStreaming && data.frame) {
                             this.elements.rawFeed.src = `data:image/jpeg;base64,${data.frame}`;
+                            this.elements.rawMetrics.textContent = `FPS: ${data.fps.toFixed(1)}`;
                             this.updateFPS();
-                        });
-                    }
-                });
+                        }
+                    });
 
-                this.socket.on('detection_frame', (data) => {
-                    if (this.state.isStreaming && data.frame) {
-                        requestAnimationFrame(() => {
+                    this.socket.on('detection_frame', (data) => {
+                        if (this.state.isStreaming && data.frame) {
                             this.elements.detectionFeed.src = `data:image/jpeg;base64,${data.frame}`;
                             if (data.detections) {
                                 this.updateDetections(data.detections);
                             }
-                        });
-                    }
-                });
+                        }
+                    });
 
-                // Status Updates
-                this.socket.on('drone_status', (status) => {
-                    this.updateDroneStatus(status);
-                });
+                    // Status Events
+                    this.socket.on('drone_status', (status) => {
+                        this.updateDroneStatus(status);
+                    });
 
-                this.socket.on('battery_update', (data) => {
-                    this.elements.batteryLevel.textContent = `${data.battery}%`;
-                });
+                    this.socket.on('battery_update', (data) => {
+                        this.elements.batteryLevel.textContent = `${data.battery}%`;
+                    });
 
-                this.socket.on('height_update', (data) => {
-                    this.elements.droneHeight.textContent = `${data.height} cm`;
-                });
+                    this.socket.on('height_update', (data) => {
+                        this.elements.droneHeight.textContent = `${data.height} cm`;
+                    });
 
-                this.socket.on('video_error', (error) => {
-                    this.log(`Video stream error: ${error.message}`, 'error');
-                    this.showToast('Video stream error occurred', 'error');
-                    this.stopStream();
-                });
-            }
+                    // Error Handling
+                    this.socket.on('video_error', (error) => {
+                        this.log(`Video stream error: ${error.message}`, 'error');
+                        this.showToast('Video stream error occurred', 'error');
+                        this.stopStream();
+                    });
 
-            initializeTheme() {
+                    this.socket.on('error', (error) => {
+                        this.log(`Drone error: ${error.message}`, 'error');
+                        this.showToast('Drone error occurred', 'error');
+                    });
+                }
+                initializeTheme() {
                 const savedTheme = localStorage.getItem('theme') || 'dark';
                 document.documentElement.className = `${savedTheme}-theme`;
-                this.updateThemeIcon(savedTheme);
+                this.updateThemeToggleIcon(savedTheme);
             }
 
             toggleTheme() {
                 const currentTheme = document.documentElement.className.includes('dark') ? 'light' : 'dark';
                 document.documentElement.className = `${currentTheme}-theme`;
                 localStorage.setItem('theme', currentTheme);
-                this.updateThemeIcon(currentTheme);
+                this.updateThemeToggleIcon(currentTheme);
             }
 
-            updateThemeIcon(theme) {
+            updateThemeToggleIcon(theme) {
                 const icon = theme === 'dark' ? 'sun' : 'moon';
                 this.elements.themeToggle.innerHTML = `<i class="fas fa-${icon}"></i>`;
             }
@@ -1236,7 +1317,14 @@
             updateConnectionStatus(connected) {
                 this.elements.connectionStatusDot.className = `status-dot ${connected ? 'connected' : 'disconnected'}`;
                 this.elements.connectionStatus.textContent = connected ? 'Connected' : 'Disconnected';
+                
+                // Update button states
                 this.updateControlButtons();
+                
+                // Reset stream if disconnected
+                if (!connected && this.state.isStreaming) {
+                    this.stopStream();
+                }
             }
 
             updateDetections(detections) {
@@ -1248,6 +1336,7 @@
                     }
                 });
 
+                // Check for new high threats
                 if (threats.high > this.state.threatCounts.high) {
                     this.sounds.highThreat.play();
                     this.showToast('⚠️ High threat detected!', 'error');
@@ -1289,6 +1378,11 @@
                 if (status.flight_time !== undefined) {
                     this.elements.flightTime.textContent = this.formatTime(status.flight_time);
                 }
+
+                if (status.is_patrolling !== undefined) {
+                    this.state.isPatrolling = status.is_patrolling;
+                    this.updatePatrolControls();
+                }
             }
 
             showToast(message, type = 'info') {
@@ -1320,6 +1414,7 @@
                 
                 this.elements.logsList.insertBefore(entry, this.elements.logsList.firstChild);
                 
+                // Limit log entries
                 while (this.elements.logsList.childNodes.length > 100) {
                     this.elements.logsList.removeChild(this.elements.logsList.lastChild);
                 }
@@ -1332,8 +1427,9 @@
             }
         }
 
-        // Initialize controller
+        // Initialize drone controller
         const droneController = new DroneController();
+
     </script>
 </body>
 </html>

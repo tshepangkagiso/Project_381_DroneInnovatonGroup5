@@ -79,8 +79,10 @@ class ObjectDetector:
             
             # Primary model for fast inference
             #self.fast_model = self._load_or_download_model('yolov8n', "Fast detection model")
-            self.fast_model = self._load_or_download_model('yolov8s', "Fast detection model")
-            #self.fast_model = self._load_or_download_model('yolov8m', "Fast detection model")
+            #self.fast_model = self._load_or_download_model('yolov8s', "Fast detection model")
+            self.fast_model = self._load_or_download_model('yolov8m', "Fast detection model")
+            #self.fast_model = self._load_or_download_model('yolov8l', "Fast detection model")
+            #self.fast_model = self._load_or_download_model('yolov8x', "Fast detection model")
             self.model = self.fast_model  # Save reference to current model
             
             # Secondary model for threat verification

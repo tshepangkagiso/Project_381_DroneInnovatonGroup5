@@ -18,6 +18,8 @@ from dataclasses import dataclass
 from contextlib import contextmanager
 from PIL import Image
 from io import BytesIO
+import threading
+
 
 # Initialize colorama for colored console output
 colorama.init()
@@ -542,17 +544,27 @@ def handle_init_patrol():
             'type': 'error'
         })
 
+
+def background_task(app, coroutine):
+    """Run coroutine in background with app context."""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    with app.app_context():
+        loop.run_until_complete(coroutine)
+    loop.close()
+
 @socketio.on('start_patrol')
-async def handle_start_patrol(data):
-    """Start patrol sequence."""
+def handle_start_patrol(data):
+    """Handle patrol start with proper async execution."""
     try:
         patrol_type = data.get('type', 'clockwise')
         print(f"\n{Fore.CYAN}Starting {patrol_type} patrol...{Style.RESET_ALL}")
         
         if not drone_manager.patrol:
+            # Initialize patrol synchronously first
             drone_manager.init_patrol()
         
-        # Validate patrol conditions
+        # Validate patrol conditions synchronously
         valid, message = drone_manager.patrol.validate_patrol_conditions()
         if not valid:
             print(f"{Fore.RED}✗ Cannot start patrol: {message}{Style.RESET_ALL}")
@@ -561,27 +573,26 @@ async def handle_start_patrol(data):
                 'type': 'error'
             })
             return
-        
-        # Start patrol based on type
+
+        # Create the patrol coroutine based on type
         if patrol_type == 'clockwise':
-            success = await drone_manager.patrol.clockwise_patrol()
+            patrol_coro = drone_manager.patrol.clockwise_patrol()
         else:
-            success = await drone_manager.patrol.counterclockwise_patrol()
-        
-        if success:
-            print(f"{Fore.GREEN}✓ Patrol completed successfully{Style.RESET_ALL}")
-            emit('patrol_status', {
-                'status': 'completed',
-                'type': patrol_type
-            })
-        else:
-            print(f"{Fore.RED}✗ Patrol failed to complete{Style.RESET_ALL}")
-            emit('patrol_status', {
-                'status': 'failed',
-                'type': patrol_type,
-                'error': 'Patrol failed to complete'
-            })
-            
+            patrol_coro = drone_manager.patrol.counterclockwise_patrol()
+
+        # Start patrol in background thread
+        thread = threading.Thread(
+            target=background_task,
+            args=(app, patrol_coro),
+            daemon=True
+        )
+        thread.start()
+
+        emit('message', {
+            'data': f'Starting {patrol_type} patrol',
+            'type': 'success'
+        })
+
     except Exception as e:
         logger.error(f"{Fore.RED}Patrol start error: {e}{Style.RESET_ALL}")
         emit('message', {
