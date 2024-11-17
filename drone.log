@@ -57,3 +57,873 @@ Traceback (most recent call last):
     assert status_set is not None, "write() before start_response"
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: write() before start_response
+2024-11-16 19:43:31,960 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 19:43:31,961 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 19:43:31,962 - models.object_detector - INFO - Downloading yolov8s model...
+2024-11-16 19:43:36,824 - models.object_detector - INFO - Model downloaded and saved to models\weights\yolov8s.pt
+2024-11-16 19:43:36,891 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 19:43:36,891 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 19:43:36,892 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 19:43:36,892 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 19:43:36,904 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 19:43:36,917 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 19:43:36,982 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:43:44,029 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:43:44,030 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:43:51,063 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:43:51,064 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:43:58,099 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:43:58,099 - models.drone_manager - WARNING - Connection attempt 1 failed: Command 'command' was unsuccessful for 4 tries. Latest response:	'Aborting command 'command'. Did not receive a response after 7 seconds'
+2024-11-16 19:43:59,101 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:06,139 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:06,140 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:13,184 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:13,186 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:20,218 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:20,218 - models.drone_manager - WARNING - Connection attempt 2 failed: Command 'command' was unsuccessful for 4 tries. Latest response:	'Aborting command 'command'. Did not receive a response after 7 seconds'
+2024-11-16 19:44:21,720 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:28,755 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:28,755 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:35,789 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:35,790 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:44:42,828 - djitellopy - WARNING - Aborting command 'command'. Did not receive a response after 7 seconds
+2024-11-16 19:44:42,829 - models.drone_manager - WARNING - Connection attempt 3 failed: Command 'command' was unsuccessful for 4 tries. Latest response:	'Aborting command 'command'. Did not receive a response after 7 seconds'
+2024-11-16 19:44:42,830 - models.drone_manager - ERROR - Failed to connect after maximum retries
+2024-11-16 19:44:42,831 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 19:44:42,832 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:44:42,832 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 19:44:42,833 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 19:44:49,867 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 19:44:49,868 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 19:44:56,903 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 19:44:56,903 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 19:45:03,937 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 19:45:03,938 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 19:45:03,939 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 19:45:23,479 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 19:45:23,480 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 19:45:23,536 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 19:45:23,537 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 19:45:23,537 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 19:45:23,537 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 19:45:23,550 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 19:45:23,552 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 19:45:23,554 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:45:23,655 - djitellopy - ERROR - 'utf-8' codec can't decode byte 0xcc in position 0: invalid continuation byte
+2024-11-16 19:45:23,658 - djitellopy - INFO - Send command: 'command'
+2024-11-16 19:45:23,660 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 19:45:24,212 - models.drone_manager - INFO - Battery level: 51%
+2024-11-16 19:45:24,214 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 19:45:24,239 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 19:45:24,239 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 19:45:32,431 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET / HTTP/1.1" 200 -
+2024-11-16 19:45:32,675 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 19:45:32,708 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET / HTTP/1.1" 200 -
+2024-11-16 19:45:32,711 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET / HTTP/1.1" 200 -
+2024-11-16 19:45:32,727 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET / HTTP/1.1" 200 -
+2024-11-16 19:45:32,730 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 19:45:32] "GET / HTTP/1.1" 200 -
+2024-11-16 19:45:42,864 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 19:45:42,865 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 19:45:44,875 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 19:45:44,876 - performance - INFO - Video streaming started successfully
+2024-11-16 19:45:48,182 - libav.h264 - ERROR - error while decoding MB 7 41, bytestream -6
+2024-11-16 19:45:50,739 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:45:50,741 - libav.h264 - ERROR - error while decoding MB 0 14, bytestream 9912
+2024-11-16 19:45:51,542 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 19:45:51,545 - libav.h264 - ERROR - error while decoding MB 0 4, bytestream 9917
+2024-11-16 19:45:56,878 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:45:57,336 - models.video_streamer - INFO - Stream stopped - Processed 297 frames at 29.3 FPS
+2024-11-16 19:45:57,340 - performance - INFO - Video streaming stopped
+2024-11-16 19:45:59,806 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 19:45:59,807 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 19:45:59,808 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 19:45:59,808 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 19:45:59,808 - performance - INFO - Takeoff successful
+2024-11-16 19:46:00,662 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:46:00,662 - libav.h264 - ERROR - error while decoding MB 0 24, bytestream 6244
+2024-11-16 19:46:08,661 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:46:08,661 - libav.h264 - ERROR - error while decoding MB 0 39, bytestream 1565
+2024-11-16 19:46:09,885 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:46:09,885 - libav.h264 - ERROR - error while decoding MB 0 42, bytestream 182
+2024-11-16 19:46:10,977 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:46:10,978 - libav.h264 - ERROR - error while decoding MB 0 23, bytestream 7822
+2024-11-16 19:46:17,401 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 19:46:17,402 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 19:46:17,402 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 19:46:17,614 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 19:46:17,615 - libav.h264 - ERROR - error while decoding MB 0 4, bytestream 15446
+2024-11-16 19:46:18,238 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 19:46:18,238 - models.video_streamer - INFO - Stream stopped - Processed 297 frames at 29.3 FPS
+2024-11-16 19:46:18,239 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 19:46:18,239 - djitellopy - INFO - Response streamoff: 'ok'
+2024-11-16 19:46:18,240 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 19:46:18,240 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:01:10,306 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:01:10,307 - models.video_streamer - INFO - Stream stopped - Processed 297 frames at 29.3 FPS
+2024-11-16 20:01:10,308 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:01:10,323 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:10] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:01:10,372 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 20:01:13,442 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:01:13,443 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:01:13,444 - models.video_streamer - INFO - Stream stopped - Processed 297 frames at 29.3 FPS
+2024-11-16 20:01:13,444 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:01:13,444 - performance - INFO - Cleanup completed
+2024-11-16 20:01:25,638 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 20:01:25,639 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 20:01:25,717 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 20:01:25,719 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 20:01:25,719 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 20:01:25,720 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 20:01:25,739 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:01:25,740 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:01:25,744 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:01:25,845 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:01:26,398 - models.drone_manager - INFO - Battery level: 46%
+2024-11-16 20:01:26,400 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:01:26,424 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 20:01:26,424 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 20:01:33,211 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET / HTTP/1.1" 200 -
+2024-11-16 20:01:33,344 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET / HTTP/1.1" 200 -
+2024-11-16 20:01:33,346 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET / HTTP/1.1" 200 -
+2024-11-16 20:01:33,350 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET / HTTP/1.1" 200 -
+2024-11-16 20:01:33,353 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET / HTTP/1.1" 200 -
+2024-11-16 20:01:33,373 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:01:33] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:01:35,989 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 20:01:36,090 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 20:01:38,095 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 20:01:38,097 - performance - INFO - Video streaming started successfully
+2024-11-16 20:01:41,800 - libav.h264 - ERROR - error while decoding MB 26 41, bytestream -6
+2024-11-16 20:01:42,238 - libav.h264 - ERROR - error while decoding MB 44 42, bytestream -8
+2024-11-16 20:01:42,642 - libav.h264 - ERROR - error while decoding MB 36 42, bytestream -6
+2024-11-16 20:01:43,136 - libav.h264 - ERROR - error while decoding MB 44 42, bytestream -6
+2024-11-16 20:01:43,996 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:01:43,997 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 7565
+2024-11-16 20:01:45,905 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:01:45,906 - libav.h264 - ERROR - error while decoding MB 0 6, bytestream 9470
+2024-11-16 20:01:49,971 - libav.h264 - ERROR - error while decoding MB 46 40, bytestream -8
+2024-11-16 20:01:51,602 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:01:51,604 - libav.h264 - ERROR - error while decoding MB 0 32, bytestream 1609
+2024-11-16 20:01:52,867 - libav.h264 - ERROR - error while decoding MB 40 40, bytestream -15
+2024-11-16 20:01:58,928 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:01:58,930 - libav.h264 - ERROR - error while decoding MB 0 21, bytestream 4555
+2024-11-16 20:01:59,093 - libav.h264 - ERROR - error while decoding MB 2 41, bytestream -6
+2024-11-16 20:02:00,512 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:00,512 - libav.h264 - ERROR - error while decoding MB 0 10, bytestream 5349
+2024-11-16 20:02:00,566 - libav.h264 - ERROR - error while decoding MB 0 40, bytestream -6
+2024-11-16 20:02:00,893 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:00,894 - libav.h264 - ERROR - error while decoding MB 0 14, bytestream 5740
+2024-11-16 20:02:01,213 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:01,215 - libav.h264 - ERROR - error while decoding MB 0 26, bytestream 1871
+2024-11-16 20:02:01,938 - libav.h264 - ERROR - error while decoding MB 30 40, bytestream -11
+2024-11-16 20:02:03,907 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:03,909 - libav.h264 - ERROR - error while decoding MB 0 9, bytestream 7139
+2024-11-16 20:02:04,101 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:04,102 - libav.h264 - ERROR - error while decoding MB 0 33, bytestream 80
+2024-11-16 20:02:07,509 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:07,510 - libav.h264 - ERROR - error while decoding MB 0 9, bytestream 5456
+2024-11-16 20:02:11,262 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:02:11,263 - libav.h264 - ERROR - error while decoding MB 0 24, bytestream 2940
+2024-11-16 20:02:11,840 - libav.h264 - ERROR - error while decoding MB 32 40, bytestream -5
+2024-11-16 20:02:11,870 - libav.h264 - ERROR - error while decoding MB 28 40, bytestream -9
+2024-11-16 20:02:12,470 - libav.h264 - ERROR - error while decoding MB 10 41, bytestream -10
+2024-11-16 20:02:13,413 - libav.h264 - ERROR - error while decoding MB 56 40, bytestream -10
+2024-11-16 20:02:14,168 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:14,170 - libav.h264 - ERROR - error while decoding MB 0 24, bytestream 3627
+2024-11-16 20:02:17,349 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:02:17,350 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 5474
+2024-11-16 20:02:17,902 - libav.h264 - ERROR - error while decoding MB 41 20, bytestream 3620
+2024-11-16 20:02:18,190 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:18,192 - libav.h264 - ERROR - error while decoding MB 0 8, bytestream 16232
+2024-11-16 20:02:18,218 - libav.h264 - ERROR - error while decoding MB 5 40, bytestream -6
+2024-11-16 20:02:18,613 - libav.h264 - ERROR - error while decoding MB 38 40, bytestream -6
+2024-11-16 20:02:19,815 - libav.h264 - ERROR - error while decoding MB 41 39, bytestream -6
+2024-11-16 20:02:20,557 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:20,558 - libav.h264 - ERROR - error while decoding MB 0 18, bytestream 3910
+2024-11-16 20:02:20,865 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:20,867 - libav.h264 - ERROR - error while decoding MB 0 13, bytestream 5440
+2024-11-16 20:02:23,256 - libav.h264 - ERROR - error while decoding MB 52 38, bytestream -9
+2024-11-16 20:02:26,284 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:26,285 - libav.h264 - ERROR - error while decoding MB 0 31, bytestream 336
+2024-11-16 20:02:26,544 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:02:26,545 - libav.h264 - ERROR - error while decoding MB 0 19, bytestream 3704
+2024-11-16 20:02:29,348 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:29,349 - libav.h264 - ERROR - error while decoding MB 0 30, bytestream 1046
+2024-11-16 20:02:29,436 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:02:29,437 - libav.h264 - ERROR - error while decoding MB 0 10, bytestream 7338
+2024-11-16 20:02:30,714 - libav.h264 - ERROR - error while decoding MB 42 41, bytestream -8
+2024-11-16 20:02:30,933 - libav.h264 - ERROR - error while decoding MB 30 41, bytestream -6
+2024-11-16 20:02:34,013 - libav.h264 - ERROR - error while decoding MB 38 39, bytestream -5
+2024-11-16 20:02:35,278 - libav.h264 - ERROR - error while decoding MB 50 39, bytestream -6
+2024-11-16 20:02:37,009 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:37,011 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 5300
+2024-11-16 20:02:37,137 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:37,138 - libav.h264 - ERROR - error while decoding MB 0 42, bytestream 814
+2024-11-16 20:02:37,241 - libav.h264 - ERROR - error while decoding MB 52 40, bytestream -8
+2024-11-16 20:02:39,337 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:39,339 - libav.h264 - ERROR - error while decoding MB 0 18, bytestream 3737
+2024-11-16 20:02:39,522 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:39,524 - libav.h264 - ERROR - error while decoding MB 0 36, bytestream 1501
+2024-11-16 20:02:41,157 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:41,159 - libav.h264 - ERROR - error while decoding MB 0 35, bytestream 1642
+2024-11-16 20:02:42,927 - libav.h264 - ERROR - error while decoding MB 53 40, bytestream -6
+2024-11-16 20:02:43,958 - libav.h264 - ERROR - error while decoding MB 56 40, bytestream -10
+2024-11-16 20:02:44,571 - libav.h264 - ERROR - error while decoding MB 52 37, bytestream -5
+2024-11-16 20:02:45,947 - libav.h264 - ERROR - error while decoding MB 20 33, bytestream -7
+2024-11-16 20:02:50,400 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:02:50,405 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:02:50] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:02:50,437 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:02:50,437 - performance - INFO - Video streaming stopped
+2024-11-16 20:02:52,435 - libav.h264 - ERROR - error while decoding MB 21 38, bytestream -12
+2024-11-16 20:02:52,599 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:52,600 - libav.h264 - ERROR - error while decoding MB 0 23, bytestream 1620
+2024-11-16 20:02:55,005 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:02:56,692 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:56,693 - libav.h264 - ERROR - error while decoding MB 0 24, bytestream 290
+2024-11-16 20:02:57,259 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:57,260 - libav.h264 - ERROR - error while decoding MB 0 18, bytestream 4036
+2024-11-16 20:02:57,576 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:02:57,577 - libav.h264 - ERROR - error while decoding MB 0 27, bytestream 1012
+2024-11-16 20:02:57,623 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:57,624 - libav.h264 - ERROR - error while decoding MB 0 37, bytestream 188
+2024-11-16 20:02:57,787 - libav.h264 - ERROR - error while decoding MB 37 39, bytestream -5
+2024-11-16 20:02:58,291 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:58,292 - libav.h264 - ERROR - error while decoding MB 0 22, bytestream 1391
+2024-11-16 20:02:58,340 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:02:58,341 - performance - INFO - Landing successful
+2024-11-16 20:02:59,525 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:02:59,529 - performance - INFO - Landing successful
+2024-11-16 20:02:59,551 - libav.h264 - ERROR - error while decoding MB 3 29, bytestream -6
+2024-11-16 20:02:59,849 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:02:59,852 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 6606
+2024-11-16 20:03:00,691 - libav.h264 - ERROR - error while decoding MB 52 38, bytestream -6
+2024-11-16 20:03:00,877 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:03:00,877 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:03:00,879 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:03:01,643 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 20:03:01,644 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 20:03:01,644 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 20:03:01,645 - performance - INFO - Takeoff successful
+2024-11-16 20:03:01,701 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:03:01,702 - libav.h264 - ERROR - error while decoding MB 0 12, bytestream 2748
+2024-11-16 20:03:02,495 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:03:02,495 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:03:02,496 - djitellopy - INFO - Send command: 'land'
+2024-11-16 20:03:02,574 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:03:02,575 - libav.h264 - ERROR - error while decoding MB 0 9, bytestream 3691
+2024-11-16 20:03:02,598 - djitellopy - INFO - Response land: 'error'
+2024-11-16 20:03:02,600 - djitellopy - INFO - Send command: 'land'
+2024-11-16 20:03:02,701 - djitellopy - INFO - Response land: 'error'
+2024-11-16 20:03:02,701 - djitellopy - INFO - Send command: 'land'
+2024-11-16 20:03:02,804 - djitellopy - INFO - Response land: 'error'
+2024-11-16 20:03:02,805 - models.drone_manager - ERROR - Command 'land' failed: Command 'land' was unsuccessful for 4 tries. Latest response:	'error'
+2024-11-16 20:03:02,807 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:03:02,908 - djitellopy - INFO - Response streamoff: 'ok'
+2024-11-16 20:03:02,911 - djitellopy - INFO - Send command: 'land'
+2024-11-16 20:03:02,911 - djitellopy - INFO - Response land: 'ok'
+2024-11-16 20:03:02,912 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:03:02,913 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:03:11,624 - models.drone_manager - ERROR - Cannot land: Drone not connected
+2024-11-16 20:03:11,625 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:03:11,625 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:03:11,625 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:03:11,626 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:03:11,626 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:03:12,200 - models.drone_manager - ERROR - Cannot land: Drone not connected
+2024-11-16 20:03:12,200 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:03:12,201 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:03:12,201 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:03:12,202 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:03:12,202 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:03:12,343 - models.drone_manager - ERROR - Cannot land: Drone not connected
+2024-11-16 20:03:12,344 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:03:12,345 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:03:12,345 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:03:12,346 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:03:12,346 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:04:11,857 - models.drone_manager - ERROR - Cannot take off: Drone not connected
+2024-11-16 20:04:13,960 - models.drone_manager - ERROR - Cannot take off: Drone not connected
+2024-11-16 20:04:18,366 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:04:18,367 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:04:18,367 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:04:18,367 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:04:18,369 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:04:18,369 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:04:18,973 - models.drone_manager - ERROR - Cannot land: Drone not connected
+2024-11-16 20:04:18,974 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:04:18,974 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:04:18,975 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:04:18,975 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:04:18,976 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:04:19,159 - models.drone_manager - ERROR - Cannot land: Drone not connected
+2024-11-16 20:04:19,160 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:04:19,161 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:04:19,161 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:04:19,162 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:04:19,162 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:04:19,665 - models.drone_manager - ERROR - Cannot take off: Drone not connected
+2024-11-16 20:04:36,203 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:04:36,204 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:04:36,205 - performance - INFO - Video streaming stopped
+2024-11-16 20:04:39,620 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:04:39,621 - models.video_streamer - INFO - Stream stopped - Processed 2053 frames at 26.9 FPS
+2024-11-16 20:04:39,622 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:04:39,630 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET / HTTP/1.1" 200 -
+2024-11-16 20:04:39,643 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:04:39,660 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 20:04:39,666 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:04:39,668 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET / HTTP/1.1" 200 -
+2024-11-16 20:04:39,670 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET / HTTP/1.1" 200 -
+2024-11-16 20:04:39,675 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET / HTTP/1.1" 200 -
+2024-11-16 20:04:39,677 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:04:39] "GET / HTTP/1.1" 200 -
+2024-11-16 20:04:39,708 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:04:39,709 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:04:39,709 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:04:39,810 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:04:40,311 - models.drone_manager - INFO - Battery level: 36%
+2024-11-16 20:04:40,313 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:04:44,320 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:04:50,598 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:50,599 - performance - INFO - Landing successful
+2024-11-16 20:04:51,360 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:51,360 - performance - INFO - Landing successful
+2024-11-16 20:04:51,531 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:51,531 - performance - INFO - Landing successful
+2024-11-16 20:04:51,707 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:51,708 - performance - INFO - Landing successful
+2024-11-16 20:04:51,872 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:51,873 - performance - INFO - Landing successful
+2024-11-16 20:04:52,035 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:52,035 - performance - INFO - Landing successful
+2024-11-16 20:04:52,185 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:04:52,186 - performance - INFO - Landing successful
+2024-11-16 20:04:52,877 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 20:04:52,956 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 20:04:52,957 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 20:04:52,957 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 20:04:52,958 - performance - INFO - Takeoff successful
+2024-11-16 20:04:53,180 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 20:04:55,183 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 20:04:55,184 - performance - INFO - Video streaming started successfully
+2024-11-16 20:04:55,268 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:04:55,268 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:04:55,269 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 20:04:55,269 - libav.h264 - ERROR - no frame!
+2024-11-16 20:04:55,269 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:04:55,270 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:04:55,270 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 20:04:55,270 - libav.h264 - ERROR - no frame!
+2024-11-16 20:04:57,063 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:04:57,066 - libav.h264 - ERROR - error while decoding MB 0 26, bytestream 1692
+2024-11-16 20:04:58,027 - libav.h264 - ERROR - error while decoding MB 16 36, bytestream -9
+2024-11-16 20:04:59,483 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:04:59,484 - libav.h264 - ERROR - error while decoding MB 0 14, bytestream 2694
+2024-11-16 20:05:06,527 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:05:06,528 - libav.h264 - ERROR - error while decoding MB 0 33, bytestream 5090
+2024-11-16 20:05:08,590 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:05:08,596 - libav.h264 - ERROR - error while decoding MB 0 24, bytestream 1325
+2024-11-16 20:05:10,299 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:05:10,300 - libav.h264 - ERROR - error while decoding MB 0 20, bytestream 3458
+2024-11-16 20:05:11,274 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:05:11,276 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:05:11,276 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:05:12,189 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:05:12,189 - libav.h264 - ERROR - error while decoding MB 0 37, bytestream 232
+2024-11-16 20:05:12,332 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:05:12,476 - models.video_streamer - INFO - Stream stopped - Processed 451 frames at 28.3 FPS
+2024-11-16 20:05:12,479 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:05:12,581 - djitellopy - INFO - Response streamoff: 'ok'
+2024-11-16 20:05:12,582 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:05:12,583 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:05:22,912 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:05:22,913 - models.video_streamer - INFO - Stream stopped - Processed 451 frames at 28.3 FPS
+2024-11-16 20:05:22,914 - performance - INFO - Video streaming stopped
+2024-11-16 20:05:24,344 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:05:24,345 - models.video_streamer - INFO - Stream stopped - Processed 451 frames at 28.3 FPS
+2024-11-16 20:05:24,346 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:05:24,352 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET / HTTP/1.1" 200 -
+2024-11-16 20:05:24,370 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:05:24,386 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 20:05:24,388 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:05:24,390 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET / HTTP/1.1" 200 -
+2024-11-16 20:05:24,392 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET / HTTP/1.1" 200 -
+2024-11-16 20:05:24,396 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET / HTTP/1.1" 200 -
+2024-11-16 20:05:24,402 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:05:24] "GET / HTTP/1.1" 200 -
+2024-11-16 20:05:24,475 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:05:24,475 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:05:24,475 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:05:24,577 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:05:25,078 - models.drone_manager - INFO - Battery level: 30%
+2024-11-16 20:05:25,080 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:05:32,665 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:05:37,058 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 20:05:37,159 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 20:05:39,161 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 20:05:39,161 - performance - INFO - Video streaming started successfully
+2024-11-16 20:05:39,207 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:05:39,208 - libav.h264 - ERROR - non-existing PPS 0 referenced
+2024-11-16 20:05:39,209 - libav.h264 - ERROR - decode_slice_header error
+2024-11-16 20:05:39,210 - libav.h264 - ERROR - no frame!
+2024-11-16 20:05:41,414 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 20:05:41,416 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 20:05:41,420 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 20:05:41,420 - performance - INFO - Takeoff successful
+2024-11-16 20:05:43,782 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:05:43,783 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 3132
+2024-11-16 20:05:48,352 - libav.h264 - ERROR - error while decoding MB 14 36, bytestream -6
+2024-11-16 20:05:55,392 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:05:55,394 - libav.h264 - ERROR - error while decoding MB 0 14, bytestream 2344
+2024-11-16 20:05:59,562 - libav.h264 - ERROR - error while decoding MB 21 39, bytestream -6
+2024-11-16 20:05:59,990 - libav.h264 - ERROR - error while decoding MB 16 40, bytestream -5
+2024-11-16 20:06:00,194 - libav.h264 - ERROR - error while decoding MB 58 37, bytestream -10
+2024-11-16 20:06:02,174 - libav.h264 - ERROR - error while decoding MB 58 38, bytestream -6
+2024-11-16 20:06:02,790 - libav.h264 - ERROR - error while decoding MB 30 38, bytestream -11
+2024-11-16 20:06:05,412 - libav.h264 - ERROR - error while decoding MB 1 40, bytestream -6
+2024-11-16 20:06:06,431 - libav.h264 - ERROR - error while decoding MB 21 38, bytestream 55
+2024-11-16 20:06:08,128 - libav.h264 - ERROR - error while decoding MB 57 37, bytestream -10
+2024-11-16 20:06:09,492 - libav.h264 - ERROR - error while decoding MB 6 40, bytestream -8
+2024-11-16 20:06:09,899 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:06:09,901 - libav.h264 - ERROR - error while decoding MB 0 8, bytestream 3201
+2024-11-16 20:06:10,268 - libav.h264 - ERROR - error while decoding MB 16 39, bytestream -8
+2024-11-16 20:06:11,053 - libav.h264 - ERROR - error while decoding MB 11 39, bytestream -6
+2024-11-16 20:06:12,112 - libav.h264 - ERROR - error while decoding MB 59 37, bytestream -5
+2024-11-16 20:06:14,069 - libav.h264 - ERROR - error while decoding MB 55 37, bytestream -12
+2024-11-16 20:06:14,746 - libav.h264 - ERROR - error while decoding MB 4 39, bytestream -6
+2024-11-16 20:06:14,975 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:06:14,976 - libav.h264 - ERROR - error while decoding MB 0 13, bytestream 3670
+2024-11-16 20:06:15,274 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:06:15,276 - libav.h264 - ERROR - error while decoding MB 0 9, bytestream 3629
+2024-11-16 20:06:16,774 - libav.h264 - ERROR - error while decoding MB 2 38, bytestream -8
+2024-11-16 20:06:17,135 - libav.h264 - ERROR - error while decoding MB 2 40, bytestream -10
+2024-11-16 20:06:18,001 - libav.h264 - ERROR - error while decoding MB 3 39, bytestream -5
+2024-11-16 20:06:19,306 - libav.h264 - ERROR - error while decoding MB 29 35, bytestream -6
+2024-11-16 20:06:20,391 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:06:20,393 - libav.h264 - ERROR - error while decoding MB 0 27, bytestream 1384
+2024-11-16 20:06:24,825 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:06:24,827 - libav.h264 - ERROR - error while decoding MB 0 37, bytestream 200
+2024-11-16 20:06:26,022 - libav.h264 - ERROR - error while decoding MB 39 37, bytestream -8
+2024-11-16 20:06:26,045 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:06:26,047 - libav.h264 - ERROR - error while decoding MB 0 12, bytestream 2373
+2024-11-16 20:06:26,410 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:06:26,412 - libav.h264 - ERROR - error while decoding MB 0 7, bytestream 4034
+2024-11-16 20:06:28,789 - libav.h264 - ERROR - error while decoding MB 17 37, bytestream -6
+2024-11-16 20:06:29,301 - libav.h264 - ERROR - error while decoding MB 46 34, bytestream -6
+2024-11-16 20:06:30,030 - libav.h264 - ERROR - error while decoding MB 12 38, bytestream -10
+2024-11-16 20:06:32,355 - libav.h264 - ERROR - error while decoding MB 36 33, bytestream -8
+2024-11-16 20:06:32,588 - libav.h264 - ERROR - error while decoding MB 36 38, bytestream -5
+2024-11-16 20:06:34,034 - libav.h264 - ERROR - error while decoding MB 41 37, bytestream 134
+2024-11-16 20:06:36,383 - libav.h264 - ERROR - error while decoding MB 14 38, bytestream -6
+2024-11-16 20:09:33,814 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:09:33,815 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:09:33,815 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:09:34,294 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:09:35,093 - models.drone_manager - WARNING - Drone is already landed
+2024-11-16 20:09:35,094 - performance - INFO - Landing successful
+2024-11-16 20:09:35,205 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:09:35,251 - models.video_streamer - INFO - Stream stopped - Processed 6870 frames at 29.2 FPS
+2024-11-16 20:09:35,251 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:35,467 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:09:35,467 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:09:35,468 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:09:35,469 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:09:35,470 - models.video_streamer - INFO - Stream stopped - Processed 6870 frames at 29.2 FPS
+2024-11-16 20:09:35,470 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:42,278 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:42,280 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:42,496 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:42,500 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:45,406 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:09:45,408 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:09:45,409 - models.video_streamer - INFO - Stream stopped - Processed 6870 frames at 29.2 FPS
+2024-11-16 20:09:45,410 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:49,309 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:49,310 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:49,531 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:49,531 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:52,440 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:52,441 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:09:54,373 - djitellopy - WARNING - Aborting command 'takeoff'. Did not receive a response after 20 seconds
+2024-11-16 20:09:54,373 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:09:56,344 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:56,346 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:09:56,347 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:09:56,348 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:09:56,560 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:56,560 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:09:56,561 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:09:56,561 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:09:59,472 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:09:59,473 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:10:06,505 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:10:06,505 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:10:06,506 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:10:06,506 - performance - INFO - Cleanup completed
+2024-11-16 20:26:22,233 - models.video_streamer - ERROR - VideoStreamer initialization failed: name 'StreamMetrics' is not defined
+2024-11-16 20:26:22,234 - models.drone_manager - ERROR - DroneManager initialization failed: name 'StreamMetrics' is not defined
+2024-11-16 20:27:59,650 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 20:27:59,651 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 20:27:59,729 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 20:27:59,730 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 20:27:59,730 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 20:27:59,730 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 20:27:59,738 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:27:59,739 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:27:59,741 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:27:59,841 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:28:00,392 - models.drone_manager - INFO - Battery level: 51%
+2024-11-16 20:28:00,392 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:28:00,401 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 20:28:00,401 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 20:28:12,345 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET / HTTP/1.1" 200 -
+2024-11-16 20:28:12,482 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET / HTTP/1.1" 200 -
+2024-11-16 20:28:12,483 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET / HTTP/1.1" 200 -
+2024-11-16 20:28:12,488 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET / HTTP/1.1" 200 -
+2024-11-16 20:28:12,490 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET / HTTP/1.1" 200 -
+2024-11-16 20:28:12,505 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:12] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:28:15,187 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:28:15,288 - djitellopy - INFO - Response takeoff: 'error'
+2024-11-16 20:28:15,288 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:28:26,005 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:28:26,006 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:28:26,006 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:28:26,267 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:28:26,267 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:28:26,268 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:28:26,400 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:28:26,400 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:28:26,400 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:28:26,401 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:28:26,401 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:26,402 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:26,416 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:28:26,416 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:28:26,417 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:28:26,417 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:28:26,417 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:28:26,417 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:33,427 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:33,428 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:33,428 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:33,428 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:33,444 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:33,444 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:35,374 - djitellopy - WARNING - Aborting command 'takeoff'. Did not receive a response after 20 seconds
+2024-11-16 20:28:35,374 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:28:40,457 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:40,457 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:40,457 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:40,457 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:40,471 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:40,471 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:41,757 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:28:41,758 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:28:41,758 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:28:41,778 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:28:41] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:28:41,794 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 20:28:43,351 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:28:43,351 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:28:43,351 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:28:43,352 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:47,484 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:47,484 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:28:47,484 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:47,484 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:28:47,484 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:28:47,485 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:28:47,485 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:28:47,485 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:28:47,499 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:47,499 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:28:47,499 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:28:47,500 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:28:50,379 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:50,381 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:28:55,448 - djitellopy - WARNING - Aborting command 'takeoff'. Did not receive a response after 20 seconds
+2024-11-16 20:28:55,448 - models.drone_manager - ERROR - Command 'takeoff' failed: Command 'takeoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'takeoff'. Did not receive a response after 20 seconds'
+2024-11-16 20:28:55,448 - models.drone_manager - ERROR - Invalid command: takeoff
+2024-11-16 20:28:57,410 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:28:57,411 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:29:04,444 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:29:04,444 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:29:04,444 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:29:04,444 - performance - INFO - Cleanup completed
+2024-11-16 20:29:32,209 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 20:29:32,209 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 20:29:32,267 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 20:29:32,268 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 20:29:32,268 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 20:29:32,268 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 20:29:32,277 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:29:32,278 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:29:32,280 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:29:32,380 - djitellopy - ERROR - 'utf-8' codec can't decode byte 0xcc in position 0: invalid continuation byte
+2024-11-16 20:29:32,383 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:29:32,384 - djitellopy - ERROR - 'utf-8' codec can't decode byte 0xcc in position 0: invalid continuation byte
+2024-11-16 20:29:32,384 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:29:32,385 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:29:32,987 - models.drone_manager - INFO - Battery level: 47%
+2024-11-16 20:29:32,987 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:29:32,998 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 20:29:32,999 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 20:29:35,458 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET / HTTP/1.1" 200 -
+2024-11-16 20:29:35,565 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET / HTTP/1.1" 200 -
+2024-11-16 20:29:35,566 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET / HTTP/1.1" 200 -
+2024-11-16 20:29:35,569 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET / HTTP/1.1" 200 -
+2024-11-16 20:29:35,572 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET / HTTP/1.1" 200 -
+2024-11-16 20:29:35,587 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:35] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:29:42,845 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 20:29:42,846 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 20:29:44,849 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 20:29:44,849 - performance - INFO - Video streaming started successfully
+2024-11-16 20:29:49,758 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:29:49,922 - models.video_streamer - ERROR - Frame acquisition error: Failed to grab video frames from video stream
+2024-11-16 20:29:50,422 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:29:50,422 - performance - INFO - Video streaming stopped
+2024-11-16 20:29:50,921 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:29:50,921 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:29:50,921 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:29:50,946 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:29:50] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:29:50,962 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
+2024-11-16 20:30:55,082 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:30:57,006 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:30:57,006 - models.video_streamer - INFO - Stream stopped - Processed 0 frames at 0.0 FPS
+2024-11-16 20:30:57,007 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:30:57,007 - djitellopy - INFO - Response streamoff: 'ok'
+2024-11-16 20:30:57,008 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:30:57,008 - performance - INFO - Cleanup completed
+2024-11-16 20:32:38,519 - models.object_detector - INFO - Initializing Optimized Object Detector...
+2024-11-16 20:32:38,519 - models.object_detector - INFO - Loading Fast detection model (yolov8s)...
+2024-11-16 20:32:38,595 - models.object_detector - INFO - Successfully loaded Fast detection model
+2024-11-16 20:32:38,595 - models.object_detector - INFO - Object Detector initialized successfully
+2024-11-16 20:32:38,595 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-16 20:32:38,595 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-16 20:32:38,605 - models.drone_manager - INFO - Connecting to drone...
+2024-11-16 20:32:38,606 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-16 20:32:38,609 - djitellopy - INFO - Send command: 'command'
+2024-11-16 20:32:38,710 - djitellopy - INFO - Response command: 'ok'
+2024-11-16 20:32:39,262 - models.drone_manager - INFO - Battery level: 47%
+2024-11-16 20:32:39,263 - models.drone_manager - INFO - Drone connected successfully
+2024-11-16 20:32:39,298 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-16 20:32:39,298 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-16 20:32:44,007 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET / HTTP/1.1" 200 -
+2024-11-16 20:32:44,165 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET / HTTP/1.1" 200 -
+2024-11-16 20:32:44,167 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET / HTTP/1.1" 200 -
+2024-11-16 20:32:44,171 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET / HTTP/1.1" 200 -
+2024-11-16 20:32:44,176 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET / HTTP/1.1" 200 -
+2024-11-16 20:32:44,184 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:32:44] "GET /api/placeholder/640/360 HTTP/1.1" 200 -
+2024-11-16 20:32:46,180 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:32:48,582 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:48,583 - performance - INFO - Landing successful
+2024-11-16 20:32:50,645 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:50,646 - performance - INFO - Landing successful
+2024-11-16 20:32:51,134 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:51,134 - performance - INFO - Landing successful
+2024-11-16 20:32:51,305 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:51,306 - performance - INFO - Landing successful
+2024-11-16 20:32:51,503 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:51,504 - performance - INFO - Landing successful
+2024-11-16 20:32:51,678 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:51,679 - performance - INFO - Landing successful
+2024-11-16 20:32:51,873 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:51,874 - performance - INFO - Landing successful
+2024-11-16 20:32:52,054 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:52,054 - performance - INFO - Landing successful
+2024-11-16 20:32:52,229 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:52,230 - performance - INFO - Landing successful
+2024-11-16 20:32:52,400 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:52,400 - performance - INFO - Landing successful
+2024-11-16 20:32:52,613 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:52,614 - performance - INFO - Landing successful
+2024-11-16 20:32:52,791 - models.drone_manager - WARNING - Drone is already on the ground
+2024-11-16 20:32:52,792 - performance - INFO - Landing successful
+2024-11-16 20:32:55,017 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-16 20:32:55,018 - models.drone_manager - INFO - Command 'takeoff' executed successfully
+2024-11-16 20:32:55,018 - models.drone_manager - INFO - Takeoff successful
+2024-11-16 20:32:55,018 - performance - INFO - Takeoff successful
+2024-11-16 20:33:00,103 - models.drone_manager - INFO - Initiating landing sequence
+2024-11-16 20:33:00,104 - djitellopy - INFO - Send command: 'land'
+2024-11-16 20:33:03,922 - djitellopy - INFO - Response land: 'ok'
+2024-11-16 20:33:03,922 - models.drone_manager - INFO - Command 'land' executed successfully
+2024-11-16 20:33:03,923 - models.drone_manager - INFO - Landing successful
+2024-11-16 20:33:03,923 - performance - INFO - Landing successful
+2024-11-16 20:33:31,192 - djitellopy - INFO - Send command: 'streamon'
+2024-11-16 20:33:31,293 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-16 20:33:33,297 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-16 20:33:33,298 - performance - INFO - Video streaming started successfully
+2024-11-16 20:33:35,858 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:35,860 - libav.h264 - ERROR - error while decoding MB 0 32, bytestream 4363
+2024-11-16 20:33:40,181 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:40,182 - libav.h264 - ERROR - error while decoding MB 0 26, bytestream 6040
+2024-11-16 20:33:40,259 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:40,261 - libav.h264 - ERROR - error while decoding MB 0 9, bytestream 12026
+2024-11-16 20:33:40,372 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:40,373 - libav.h264 - ERROR - error while decoding MB 0 30, bytestream 3976
+2024-11-16 20:33:40,471 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:40,472 - libav.h264 - ERROR - error while decoding MB 0 38, bytestream 15634
+2024-11-16 20:33:40,600 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:40,601 - libav.h264 - ERROR - error while decoding MB 0 4, bytestream 12185
+2024-11-16 20:33:40,847 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:33:40,847 - libav.h264 - ERROR - error while decoding MB 0 16, bytestream 8157
+2024-11-16 20:33:41,743 - libav.h264 - ERROR - error while decoding MB 1 43, bytestream -10
+2024-11-16 20:33:42,287 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:42,287 - libav.h264 - ERROR - error while decoding MB 0 41, bytestream 624
+2024-11-16 20:33:43,021 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:43,022 - libav.h264 - ERROR - error while decoding MB 0 14, bytestream 6214
+2024-11-16 20:33:49,134 - libav.h264 - ERROR - error while decoding MB 41 42, bytestream -12
+2024-11-16 20:33:51,415 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:51,416 - libav.h264 - ERROR - error while decoding MB 0 5, bytestream 13570
+2024-11-16 20:33:54,431 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:33:54,431 - libav.h264 - ERROR - error while decoding MB 0 34, bytestream 3843
+2024-11-16 20:34:00,635 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:34:00,635 - libav.h264 - ERROR - error while decoding MB 0 7, bytestream 11736
+2024-11-16 20:34:01,019 - libav.h264 - ERROR - error while decoding MB 12 41, bytestream -8
+2024-11-16 20:34:03,646 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-16 20:34:03,646 - libav.h264 - ERROR - error while decoding MB 0 8, bytestream 12166
+2024-11-16 20:34:05,815 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-16 20:34:05,817 - libav.h264 - ERROR - error while decoding MB 0 10, bytestream 5968
+2024-11-16 20:34:25,933 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:34:26,912 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:34:26,912 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:34:26,913 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:34:27,197 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:34:27,199 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:34:27,199 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:34:27,392 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:34:27,393 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:34:27,394 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:34:27,562 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:34:27,562 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:34:27,564 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:27,564 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:27,564 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:27,564 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:34:27,565 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:27,585 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:27,585 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:27,585 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:27,586 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:27,585 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:27,586 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:27,586 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:27,587 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:27,699 - models.drone_manager - WARNING - Executing emergency stop!
+2024-11-16 20:34:27,700 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-16 20:34:27,700 - models.drone_manager - INFO - Performing cleanup...
+2024-11-16 20:34:27,700 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:27,700 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:27,701 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:34,612 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:34,612 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:34,613 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:34,613 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:34,613 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:34,613 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:34,613 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:34,613 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:34,725 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:34,725 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:41,636 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:41,636 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:41,639 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:41,639 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:41,640 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:41,640 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:41,640 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:41,640 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:41,750 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:41,750 - djitellopy - INFO - Send command: 'streamoff'
+2024-11-16 20:34:46,008 - djitellopy - WARNING - Aborting command 'takeoff'. Did not receive a response after 20 seconds
+2024-11-16 20:34:46,008 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-16 20:34:48,662 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:48,662 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:34:48,662 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:34:48,664 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:34:48,667 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:48,667 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:48,667 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:34:48,667 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:34:48,667 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:48,668 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:34:48,668 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:34:48,668 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:34:48,668 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:34:48,668 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:34:48,668 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:34:48,669 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:34:48,773 - djitellopy - WARNING - Aborting command 'streamoff'. Did not receive a response after 7 seconds
+2024-11-16 20:34:48,774 - models.drone_manager - ERROR - Error disconnecting drone: Command 'streamoff' was unsuccessful for 4 tries. Latest response:	'Aborting command 'streamoff'. Did not receive a response after 7 seconds'
+2024-11-16 20:34:48,774 - models.drone_manager - INFO - Cleanup completed
+2024-11-16 20:34:48,774 - performance - WARNING - Emergency stop triggered
+2024-11-16 20:34:49,925 - models.video_streamer - INFO - Stopping video stream...
+2024-11-16 20:34:49,926 - models.video_streamer - INFO - Stream stopped - Processed 2337 frames at 58.7 FPS
+2024-11-16 20:34:49,926 - performance - INFO - Video streaming stopped on disconnect
+2024-11-16 20:34:49,938 - werkzeug - INFO - 127.0.0.1 - - [16/Nov/2024 20:34:49] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-16 20:34:49,955 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\Tiaan\Documents\Skylynx\Project_381_DroneInnovatonGroup5\.venv\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\Tiaan\Documents\Skylynx\Project_381_DroneInnovatonGroup5\.venv\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\Tiaan\Documents\Skylynx\Project_381_DroneInnovatonGroup5\.venv\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response
