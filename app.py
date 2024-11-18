@@ -20,7 +20,6 @@ from PIL import Image
 from io import BytesIO
 import threading
 
-
 # Initialize colorama for colored console output
 colorama.init()
 
@@ -201,6 +200,28 @@ drone_manager = DroneManager(socketio)
 class DroneServerError(Exception):
     pass
 
+async def execute_drone_command(command_func, *args, success_msg="Command executed successfully", error_msg="Command failed"):
+    """Generic drone command executor with proper async handling."""
+    try:
+        # Create async task
+        result = await command_func(*args)
+        
+        if result:
+            print(f"{Fore.GREEN}✓ {success_msg}{Style.RESET_ALL}")
+            emit('message', {'data': success_msg, 'type': 'success'})
+            performance_logger.info(success_msg)
+            return True
+        else:
+            print(f"{Fore.RED}✗ {error_msg}{Style.RESET_ALL}")
+            emit('message', {'data': error_msg, 'type': 'error'})
+            return False
+            
+    except Exception as e:
+        error_detail = f"{error_msg}: {str(e)}"
+        logger.error(f"{Fore.RED}{error_detail}{Style.RESET_ALL}")
+        emit('message', {'data': error_detail, 'type': 'error'})
+        return False
+
 # Routes
 @app.route('/')
 def index():
@@ -235,85 +256,57 @@ def get_metrics():
 def placeholder(width: int, height: int):
     """Generate placeholder image for video feeds."""
     try:
-        # Create a black image with text
         img = Image.new('RGB', (width, height), color='black')
-        
-        # Save to bytes
         img_io = BytesIO()
         img.save(img_io, 'JPEG', quality=70)
         img_io.seek(0)
-        
         return send_file(img_io, mimetype='image/jpeg')
     except Exception as e:
         logger.error(f"Error generating placeholder: {e}")
         return "Error generating placeholder", 500
 
-# Socket events
+# Socket Events Helper
+def run_async_command(command_func, *args):
+    """Run async command in background thread."""
+    async def async_wrapper():
+        try:
+            await command_func(*args)
+        except Exception as e:
+            logger.error(f"Async command error: {e}")
+            
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        loop.run_until_complete(async_wrapper())
+    finally:
+        loop.close()
+
+# Socket Events - Connection
 @socketio.on('connect')
 def handle_connect():
-    """Handle client connection with enhanced error handling and connection verification."""
-    print(f"\n{Fore.CYAN}{'='*50}")
-    print("NEW CLIENT CONNECTION")
-    print(f"Time: {time.strftime('%H:%M:%S')}")
-    print(f"{'='*50}{Style.RESET_ALL}")
-    
+    """Handle client connection with enhanced error handling."""
     try:
         if not drone_manager.is_connected:
             print(f"\n{Fore.YELLOW}Starting Drone Connection Sequence...")
-            print(f"{'='*30}")
-            print("1. Checking WiFi connection...")
-            print("2. Attempting drone connection...")
-            print(f"{'='*30}{Style.RESET_ALL}")
-            
             if drone_manager.connect_drone():
                 battery = drone_manager.battery_level
-                
-                success_msg = f"""
-{Fore.GREEN}✓ DRONE CONNECTED SUCCESSFULLY
-{'='*30}
-• Status: Online
-• Battery: {battery}%
-• Time: {time.strftime('%H:%M:%S')}
-{'='*30}{Style.RESET_ALL}
-"""
-                print(success_msg)
-                
                 emit('message', {
                     'data': f'Connected to drone successfully! Battery: {battery}%',
                     'type': 'success'
                 })
                 emit('status_update', drone_manager.get_status())
             else:
-                error_msg = f"""
-{Fore.RED}✗ DRONE CONNECTION FAILED
-{'='*30}
-• Please check:
-  1. Drone is powered on
-  2. Connected to drone's WiFi
-  3. Correct IP (192.168.10.1)
-{'='*30}{Style.RESET_ALL}
-"""
-                print(error_msg)
                 emit('message', {
                     'data': 'Failed to connect to drone. Please check power and WiFi connection.',
                     'type': 'error'
                 })
         else:
-            print(f"\n{Fore.YELLOW}Notice: Drone already connected{Style.RESET_ALL}")
             emit('message', {
                 'data': 'Already connected to drone',
                 'type': 'info'
             })
             emit('status_update', drone_manager.get_status())
     except Exception as e:
-        error_msg = f"""
-{Fore.RED}✗ CONNECTION ERROR
-{'='*30}
-Error: {str(e)}
-Please check drone status and try again
-{'='*30}{Style.RESET_ALL}
-"""
-        print(error_msg)
         emit('message', {
             'data': f'Connection error: {str(e)}',
             'type': 'error'
@@ -322,342 +315,208 @@ Please check drone status and try again
 @socketio.on('disconnect')
 def handle_disconnect():
     """Handle client disconnection with cleanup."""
-    print(f"\n{Fore.YELLOW}{'='*50}")
-    print("CLIENT DISCONNECTED")
-    print(f"Time: {time.strftime('%H:%M:%S')}")
-    print(f"{'='*50}{Style.RESET_ALL}")
-    
     try:
         drone_manager.video_streamer.stop_streaming()
-        print(f"{Fore.GREEN}✓ Video stream stopped successfully{Style.RESET_ALL}")
         performance_logger.info("Video streaming stopped on disconnect")
     except Exception as e:
-        print(f"{Fore.RED}✗ Error during disconnect cleanup: {e}{Style.RESET_ALL}")
         logger.error(f"Disconnect error: {e}")
 
-# Add this new monitoring event
-@socketio.on('check_connection')
-def handle_check_connection():
-    """Monitor connection status."""
-    try:
-        if drone_manager.is_connected:
-            status = {
-                'connected': True,
-                'battery': drone_manager.battery_level,
-                'time': time.strftime('%H:%M:%S')
-            }
-            emit('connection_status', status)
-        else:
-            emit('connection_status', {'connected': False})
-    except Exception as e:
-        logger.error(f"Connection check error: {e}")
-        emit('connection_status', {
-            'connected': False,
-            'error': str(e)
-        })
-
-@socketio.on('start_video')
-def handle_start_video():
-    """Start video streaming with performance monitoring."""
-    if not drone_manager.is_connected:
-        print(f"{Fore.RED}✗ Cannot start stream: Drone not connected{Style.RESET_ALL}")
-        emit('message', {
-            'data': 'Cannot start stream: Drone not connected',
-            'type': 'error'
-        })
-        return
-
-    try:
-        success = drone_manager.video_streamer.start_streaming(drone_manager.drone)
-        if success:
-            print(f"{Fore.GREEN}✓ Video streaming started{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Video streaming started',
-                'type': 'success'
-            })
-            performance_logger.info("Video streaming started successfully")
-        else:
-            print(f"{Fore.RED}✗ Failed to start video stream{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Failed to start video stream',
-                'type': 'error'
-            })
-    except Exception as e:
-        logger.error(f"{Fore.RED}Error starting video: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Error starting video: {str(e)}',
-            'type': 'error'
-        })
-
-@socketio.on('stop_video')
-def handle_stop_video():
-    """Stop video streaming with cleanup."""
-    try:
-        drone_manager.video_streamer.stop_streaming()
-        print(f"{Fore.GREEN}✓ Video streaming stopped{Style.RESET_ALL}")
-        emit('message', {
-            'data': 'Video streaming stopped',
-            'type': 'info'
-        })
-        performance_logger.info("Video streaming stopped")
-    except Exception as e:
-        logger.error(f"{Fore.RED}Error stopping video: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Error stopping video: {str(e)}',
-            'type': 'error'
-        })
-
-@socketio.on('threat_detected')
-def handle_threat(data):
-    """Handle threat detection events."""
-    try:
-        print(f"\n{Fore.RED}! THREAT DETECTED: {data}{Style.RESET_ALL}")
-        socketio.emit('threat_alert', {
-            'threat_data': data,
-            'timestamp': time.time()
-        })
-    except Exception as e:
-        logger.error(f"{Fore.RED}Error handling threat: {e}{Style.RESET_ALL}")
-
+# Socket Events - Basic Controls
 @socketio.on('takeoff')
 def handle_takeoff():
-    """Handle drone takeoff with safety checks."""
-    try:
-        if drone_manager.take_off():
-            print(f"{Fore.GREEN}✓ Takeoff successful{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Takeoff successful',
-                'type': 'success'
-            })
-            performance_logger.info("Takeoff successful")
-        else:
-            print(f"{Fore.RED}✗ Takeoff failed - Check battery and connection{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Takeoff failed - Check battery and connection',
-                'type': 'error'
-            })
-    except Exception as e:
-        logger.error(f"{Fore.RED}Takeoff error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Takeoff error: {str(e)}',
-            'type': 'error'
-        })
+    """Handle drone takeoff."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.take_off,),
+        daemon=True
+    )
+    thread.start()
 
 @socketio.on('land')
 def handle_land():
-    """Handle drone landing with safety measures."""
-    try:
-        if drone_manager.land():
-            print(f"{Fore.GREEN}✓ Landing successful{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Landing successful',
-                'type': 'success'
-            })
-            performance_logger.info("Landing successful")
-        else:
-            print(f"{Fore.RED}! Landing failed - Initiating emergency procedures{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Landing failed - Initiating emergency procedures',
-                'type': 'error'
-            })
-            drone_manager.emergency_stop()
-    except Exception as e:
-        logger.error(f"{Fore.RED}Landing error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Landing error: {str(e)}',
-            'type': 'error'
-        })
-        drone_manager.emergency_stop()
+    """Handle drone landing."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.land,),
+        daemon=True
+    )
+    thread.start()
 
 @socketio.on('emergency')
 def handle_emergency():
-    """Handle emergency stop command."""
-    try:
-        print(f"\n{Fore.RED}{'!'*50}")
-        print("EMERGENCY STOP INITIATED")
-        print(f"{'!'*50}{Style.RESET_ALL}")
-        
-        drone_manager.emergency_stop()
-        emit('message', {
-            'data': 'Emergency stop executed',
-            'type': 'warning'
-        })
-        performance_logger.warning("Emergency stop triggered")
-        print(f"{Fore.GREEN}✓ Emergency stop completed{Style.RESET_ALL}")
-    except Exception as e:
-        logger.error(f"{Fore.RED}Emergency stop error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Emergency stop error: {str(e)}',
-            'type': 'error'
-        })
+    """Handle emergency stop."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.emergency_stop,),
+        daemon=True
+    )
+    thread.start()
 
-@socketio.on('command')
-def handle_command(data):
-    """Handle generic drone commands with rate limiting."""
+# Socket Events - Pattern Commands
+@socketio.on('perimeter')
+def handle_perimeter():
+    """Handle perimeter patrol."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.perimeter,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('fly_to_topright')
+def handle_fly_to_topright():
+    """Handle TopRight flight."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.fly_to_TopRight,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('fly_to_topleft')
+def handle_fly_to_topleft():
+    """Handle TopLeft flight."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.fly_to_TopLeft,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('fly_to_bottomleft')
+def handle_fly_to_bottomleft():
+    """Handle BottomLeft flight."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.fly_to_BottomLeft,),
+        daemon=True
+    )
+    thread.start()
+
+# Socket Events - Manual Movement Commands
+@socketio.on('move_forward')
+def handle_move_forward():
+    """Handle forward movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_forward,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('move_back')
+def handle_move_back():
+    """Handle backward movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_back,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('move_left')
+def handle_move_left():
+    """Handle left movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_left,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('move_right')
+def handle_move_right():
+    """Handle right movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_right,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('move_up')
+def handle_move_up():
+    """Handle upward movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_up,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('move_down')
+def handle_move_down():
+    """Handle downward movement."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.move_down,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('rotate_clockwise')
+def handle_rotate_clockwise():
+    """Handle clockwise rotation."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.rotate_clockwise,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('rotate_counter_clockwise')
+def handle_rotate_counter_clockwise():
+    """Handle counter-clockwise rotation."""
+    thread = threading.Thread(
+        target=run_async_command,
+        args=(drone_manager.rotate_counter_clockwise,),
+        daemon=True
+    )
+    thread.start()
+
+@socketio.on('video_start')
+def handle_video_start():
+    """Handle video stream start."""
     try:
-        command = data.get('command')
-        args = data.get('args', [])
-        
-        if not command:
-            print(f"{Fore.RED}✗ Invalid command format{Style.RESET_ALL}")
-            emit('message', {
-                'data': 'Invalid command format',
-                'type': 'error'
-            })
+        if not drone_manager.is_connected:
+            emit('message', {'data': 'Cannot start video: Drone not connected', 'type': 'error'})
             return
-            
-        result = drone_manager.send_command(command, *args)
-        if result:
-            print(f"{Fore.GREEN}✓ Command {command} executed successfully{Style.RESET_ALL}")
-            emit('message', {
-                'data': f'Command {command} executed successfully',
-                'type': 'success'
-            })
-            performance_logger.info(f"Command executed: {command}")
+
+        if drone_manager.video_streamer.start_streaming(drone_manager.drone):
+            emit('message', {'data': 'Video streaming started', 'type': 'success'})
+            performance_logger.info("Video streaming started")
         else:
-            print(f"{Fore.RED}✗ Command {command} failed{Style.RESET_ALL}")
-            emit('message', {
-                'data': f'Command {command} failed',
-                'type': 'error'
-            })
+            emit('message', {'data': 'Failed to start video stream', 'type': 'error'})
     except Exception as e:
-        logger.error(f"{Fore.RED}Command error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Command error: {str(e)}',
-            'type': 'error'
-        })
+        logger.error(f"Video start error: {e}")
+        emit('message', {'data': f'Video start error: {str(e)}', 'type': 'error'})
 
-@socketio.on('init_patrol')
-def handle_init_patrol():
-    """Initialize patrol capability."""
+@socketio.on('video_stop')
+def handle_video_stop():
+    """Handle video stream stop."""
     try:
-        drone_manager.init_patrol()
-        print(f"{Fore.GREEN}✓ Patrol system initialized{Style.RESET_ALL}")
-        emit('message', {
-            'data': 'Patrol system initialized',
-            'type': 'success'
-        })
+        drone_manager.video_streamer.stop_streaming()
+        emit('message', {'data': 'Video streaming stopped', 'type': 'info'})
+        performance_logger.info("Video streaming stopped")
     except Exception as e:
-        logger.error(f"{Fore.RED}Patrol initialization error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Failed to initialize patrol: {str(e)}',
-            'type': 'error'
-        })
+        logger.error(f"Video stop error: {e}")
+        emit('message', {'data': f'Video stop error: {str(e)}', 'type': 'error'})
 
-
-def background_task(app, coroutine):
-    """Run coroutine in background with app context."""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    with app.app_context():
-        loop.run_until_complete(coroutine)
-    loop.close()
-
-@socketio.on('start_patrol')
-def handle_start_patrol(data):
-    """Handle patrol start with proper async execution."""
+@socketio.on('check_connection')
+def handle_check_connection():
+    """Handle connection status check."""
     try:
-        patrol_type = data.get('type', 'clockwise')
-        print(f"\n{Fore.CYAN}Starting {patrol_type} patrol...{Style.RESET_ALL}")
-        
-        if not drone_manager.patrol:
-            # Initialize patrol synchronously first
-            drone_manager.init_patrol()
-        
-        # Validate patrol conditions synchronously
-        valid, message = drone_manager.patrol.validate_patrol_conditions()
-        if not valid:
-            print(f"{Fore.RED}✗ Cannot start patrol: {message}{Style.RESET_ALL}")
-            emit('message', {
-                'data': f'Cannot start patrol: {message}',
-                'type': 'error'
-            })
-            return
-
-        # Create the patrol coroutine based on type
-        if patrol_type == 'clockwise':
-            patrol_coro = drone_manager.patrol.clockwise_patrol()
-        else:
-            patrol_coro = drone_manager.patrol.counterclockwise_patrol()
-
-        # Start patrol in background thread
-        thread = threading.Thread(
-            target=background_task,
-            args=(app, patrol_coro),
-            daemon=True
-        )
-        thread.start()
-
-        emit('message', {
-            'data': f'Starting {patrol_type} patrol',
-            'type': 'success'
-        })
-
+        status = {
+            'connected': drone_manager.is_connected,
+            'battery': drone_manager.battery_level,
+            'flying': drone_manager.is_flying,
+            'streaming': drone_manager.video_streamer.is_streaming(),
+            'timestamp': time.strftime('%H:%M:%S')
+        }
+        emit('connection_status', status)
     except Exception as e:
-        logger.error(f"{Fore.RED}Patrol start error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Patrol error: {str(e)}',
-            'type': 'error'
-        })
-
-@socketio.on('stop_patrol')
-def handle_stop_patrol():
-    """Stop current patrol."""
-    try:
-        if drone_manager.patrol:
-            if drone_manager.patrol.stop_patrol():
-                print(f"{Fore.YELLOW}! Patrol stop requested{Style.RESET_ALL}")
-                emit('message', {
-                    'data': 'Patrol stop requested',
-                    'type': 'info'
-                })
-            else:
-                print(f"{Fore.RED}✗ Failed to stop patrol{Style.RESET_ALL}")
-                emit('message', {
-                    'data': 'Failed to stop patrol',
-                    'type': 'error'
-                })
-    except Exception as e:
-        logger.error(f"{Fore.RED}Patrol stop error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Error stopping patrol: {str(e)}',
-            'type': 'error'
-        })
-
-@socketio.on('get_patrol_status')
-def handle_get_patrol_status():
-    """Get current patrol status."""
-    try:
-        if drone_manager.patrol:
-            status = drone_manager.patrol.get_status()
-            emit('patrol_status', status)
-        else:
-            emit('patrol_status', {
-                'status': 'not_initialized',
-                'is_patrolling': False
-            })
-    except Exception as e:
-        logger.error(f"{Fore.RED}Get patrol status error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Error getting patrol status: {str(e)}',
-            'type': 'error'
-        })
-
-@socketio.on('get_patrol_history')
-def handle_get_patrol_history():
-    """Get patrol history."""
-    try:
-        if drone_manager.patrol:
-            history = drone_manager.patrol.get_patrol_history()
-            emit('patrol_history', {'history': history})
-        else:
-            emit('patrol_history', {'history': []})
-    except Exception as e:
-        logger.error(f"{Fore.RED}Get patrol history error: {e}{Style.RESET_ALL}")
-        emit('message', {
-            'data': f'Error getting patrol history: {str(e)}',
-            'type': 'error'
-        })
+        logger.error(f"Connection check error: {e}")
+        emit('connection_status', {'connected': False, 'error': str(e)})
 
 def cleanup_handler(signum, frame):
     """Enhanced cleanup on shutdown."""
@@ -670,6 +529,11 @@ def cleanup_handler(signum, frame):
             drone_manager.patrol.cleanup()
             print(f"{Fore.GREEN}✓ Patrol system cleaned up{Style.RESET_ALL}")
             
+        if drone_manager.is_connected:
+            if drone_manager.is_flying:
+                asyncio.run(drone_manager.land())
+                print(f"{Fore.GREEN}✓ Emergency landing completed{Style.RESET_ALL}")
+                
         drone_manager.cleanup()
         print(f"{Fore.GREEN}✓ Drone manager cleaned up{Style.RESET_ALL}")
         performance_logger.info("Cleanup completed")
@@ -699,36 +563,52 @@ if __name__ == '__main__':
         if startup_monitor.monitor_startup(app, socketio, drone_manager):
             print(f"\n{Fore.GREEN}System initialization successful!")
             
-            # Attempt immediate drone connection since WiFi is already connected
-            print(f"\n{Fore.YELLOW}Detecting drone connection...{Style.RESET_ALL}")
+            # Attempt immediate drone connection
+            print(f"\n{Fore.YELLOW}Starting drone connection sequence...")
+            print("1. Validating WiFi connection...")
+            print("2. Testing drone response...")
+            print("3. Configuring settings...")
+            print(f"{'='*30}{Style.RESET_ALL}")
+            
             try:
+                if not drone_manager._validate_wifi_connection():
+                    print(f"\n{Fore.RED}{'='*50}")
+                    print("WIFI CONNECTION FAILED")
+                    print("Please ensure you are connected to:")
+                    print("• Network name: TELLO-XXXXX")
+                    print("• Drone IP is reachable (192.168.10.1)")
+                    print(f"{'='*50}{Style.RESET_ALL}")
+                    sys.exit(1)
+                    
+                print(f"{Fore.GREEN}✓ WiFi connection verified{Style.RESET_ALL}")
+                
                 if drone_manager.connect_drone():
                     battery = drone_manager.battery_level
                     
                     # Get additional drone info
                     try:
                         temp = drone_manager.drone.get_temperature()
-                        height = drone_manager.get_height()
+                        height = drone_manager.drone.get_height()
                         sdk = drone_manager.drone.get_sdk_version()
                         
                         success_msg = f"""
 {Fore.GREEN}✓ DRONE CONNECTED SUCCESSFULLY
 {'='*50}
-• Status: Online
-• Battery: {battery}%
-• Temperature: {temp}°C
-• Height: {height}cm
-• SDK Version: {sdk}
-• Time: {time.strftime('%H:%M:%S')}
+- Status: Online
+- Battery: {battery}%
+- Temperature: {temp}°C
+- Height: {height}cm
+- SDK Version: {sdk}
+- Time: {time.strftime('%H:%M:%S')}
 {'='*50}{Style.RESET_ALL}
 """
                     except:
                         success_msg = f"""
 {Fore.GREEN}✓ DRONE CONNECTED SUCCESSFULLY
 {'='*50}
-• Status: Online
-• Battery: {battery}%
-• Time: {time.strftime('%H:%M:%S')}
+- Status: Online
+- Battery: {battery}%
+- Time: {time.strftime('%H:%M:%S')}
 {'='*50}{Style.RESET_ALL}
 """
                     print(success_msg)

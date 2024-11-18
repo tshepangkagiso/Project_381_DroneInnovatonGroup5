@@ -3,23 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <title>Skylynx | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-=======
-    <title>SkyLynx Drone Control</title>
-    
-    <!-- Imports -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
->>>>>>> 63b4e83aa7e9837bd3214d7a7dc896f1fe477223
     <style>
         /* Theme Variables & Color System */
         :root {
-            /* Core Theme Colors - Light (Skyblue & White Theme) */
+            /* Core Theme Colors - Light */
             --primary-l: #0EA5E9;           /* Bright sky blue */
             --primary-hover-l: #0284C7;     /* Darker sky blue for hover */
             --secondary-l: #F0F9FF;         /* Very light blue tint */
@@ -27,10 +18,10 @@
             --background-l: #FFFFFF;        /* Pure white background */
             --surface-l: #FFFFFF;          /* Pure white surface */
             --panel-bg-l: #FFFFFF;         /* White panel background */
-            --border-l: #E2E8F0;          /* Light border color */
+            --border-l: #E2E8F0;           /* Light border color */
             --text-primary-l: #1E293B;     /* Dark text */
             --text-secondary-l: #64748B;   /* Medium gray text */
-            
+
             /* Core Theme Colors - Dark */
             --primary-d: #0EA5E9;
             --primary-hover-d: #0284C7;
@@ -41,7 +32,7 @@
             --border-d: #334155;
             --text-primary-d: #F8FAFC;
             --text-secondary-d: #94A3B8;
-        
+
             /* Status Colors */
             --success: #22C55E;
             --success-bg: rgba(34, 197, 94, 0.1);
@@ -51,31 +42,28 @@
             --danger-bg: rgba(239, 68, 68, 0.1);
             --info: #3B82F6;
             --info-bg: rgba(59, 130, 246, 0.1);
-        
-            /* Shadows - Enhanced for better depth */
+
+            /* Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            
-            /* Button Shadows */
             --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.1);
             --shadow-btn-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
-        
+
             /* Animation Speeds */
             --transition-fast: 150ms;
             --transition-normal: 250ms;
             --transition-slow: 350ms;
-        
+
             /* Layout Measurements */
             --header-height: 60px;
-            --footer-height: 50px;
             --sidebar-width: 280px;
             --content-max-width: 1920px;
             --border-radius-sm: 0.375rem;
             --border-radius-md: 0.5rem;
             --border-radius-lg: 0.75rem;
         }
-        
+
         /* Theme Class Definitions */
         .light-theme {
             --primary: var(--primary-l);
@@ -88,7 +76,7 @@
             --text-primary: var(--text-primary-l);
             --text-secondary: var(--text-secondary-l);
         }
-        
+
         .dark-theme {
             --primary: var(--primary-d);
             --primary-hover: var(--primary-hover-d);
@@ -100,7 +88,7 @@
             --text-primary: var(--text-primary-d);
             --text-secondary: var(--text-secondary-d);
         }
-        
+
         /* Base Reset & Optimizations */
         *, *::before, *::after {
             margin: 0;
@@ -109,36 +97,35 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
-        /* Modern CSS Reset Additions */
+
         html {
             text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
             height: 100%;
         }
-        
+
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             line-height: 1.5;
-            height: 102vh;
+            height: 100vh;
             width: 100vw;
             overflow-x: hidden;
             background-color: var(--background);
             color: var(--text-primary);
-            transition: background-color var(--transition-normal), color var(--transition-normal);
+            transition: background-color var(--transition-normal), 
+                      color var(--transition-normal);
         }
-        
-        /* Layout System */
+
+        /* App Layout */
         .app-container {
             display: grid;
             grid-template-rows: var(--header-height) 1fr;
             height: 100vh;
-            width: 100vw;
             max-width: var(--content-max-width);
             margin: 0 auto;
         }
-        
-        /* Header Styling */
+
+        /* Header */
         .header {
             background-color: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -146,11 +133,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 2rem;
             height: var(--header-height);
             transition: background-color var(--transition-normal);
         }
-        /* Modern Logo Design */
+
+        /* Logo */
         .logo {
             display: flex;
             align-items: center;
@@ -219,6 +206,32 @@
             animation: pulse 2s infinite;
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 48px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: var(--surface);
+            border: 2px solid var(--primary);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        .theme-toggle i {
+            color: var(--primary);
+            font-size: 14px;
+            transition: transform var(--transition-normal);
+            position: absolute;
+        }
+
+        .light-theme .theme-toggle i {
+            transform: translateX(24px);
+        }
+
         /* Main Content Layout */
         .main-content {
             display: grid;
@@ -229,7 +242,7 @@
             overflow: hidden;
         }
 
-        /* Sidebar Styling */
+        /* Sidebar */
         .sidebar {
             background-color: var(--surface);
             border-radius: var(--border-radius-lg);
@@ -242,24 +255,6 @@
             transition: all var(--transition-normal);
             box-shadow: var(--shadow-sm);
         }
-
-        .light-theme .sidebar {
-            border-color: var(--primary);
-            background-color: var(--surface);
-        }
-
-        .operator-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .light-theme .operator-info {
-            border-bottom-color: var(--primary);
-        }
-
         .operator-avatar {
             width: 48px;
             height: 48px;
@@ -289,6 +284,11 @@
             color: var(--text-secondary);
         }
 
+        .light-theme .sidebar {
+            border-color: var(--primary);
+            background-color: var(--surface);
+        }
+
         /* Control Groups */
         .control-group {
             padding: 1.25rem 0;
@@ -313,7 +313,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* Enhanced Button Styles */
+        /* Buttons */
         .btn {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -366,10 +366,6 @@
             box-shadow: var(--shadow-btn-hover);
         }
 
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
         .btn-outline {
             background-color: transparent;
             border: 2px solid var(--primary);
@@ -386,7 +382,6 @@
 
         .btn-danger {
             background-color: var(--danger);
-            border-color: var(--danger);
             color: white;
         }
 
@@ -419,11 +414,6 @@
         .light-theme .video-container {
             border-color: var(--primary);
             box-shadow: var(--shadow-sm);
-        }
-
-        .video-container:hover {
-            transform: scale(1.002);
-            box-shadow: var(--shadow-lg);
         }
 
         .video-feed {
@@ -470,6 +460,7 @@
             margin-top: 0.2rem;
         }
 
+        /* Threats List */
         .threats-list {
             background-color: var(--surface);
             border-radius: var(--border-radius-lg);
@@ -496,10 +487,6 @@
             font-weight: 500;
         }
 
-        .threat-level:hover {
-            transform: translateX(4px);
-        }
-
         .threat-level.high {
             background-color: var(--danger-bg);
             color: var(--danger);
@@ -518,6 +505,11 @@
             border-left: 4px solid var(--success);
         }
 
+        .threat-level.active {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+
         /* Logs Section */
         .logs-section {
             background-color: var(--surface);
@@ -526,6 +518,7 @@
             border: 2px solid var(--border);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .light-theme .logs-section {
@@ -537,8 +530,11 @@
             flex-grow: 1;
             overflow-y: auto;
             display: flex;
-            flex-direction: column-reverse;
+            flex-direction: column;
             gap: 0.5rem;
+            padding-right: 0.5rem;
+            height: 100%;
+            max-height: calc(180px - 3rem);  /* Accounting for title */
         }
 
         .log-entry {
@@ -551,46 +547,42 @@
             transition: all var(--transition-fast);
             font-size: 0.875rem;
             border: 1px solid var(--border);
+            margin-bottom: 0.5rem;
+            animation: slideInTop 0.3s ease-out;
         }
 
-        .light-theme .log-entry {
-            border-color: var(--border);
-        }
-
-        .log-entry:hover {
-            transform: translateX(4px);
-            border-color: var(--primary);
+        .log-entry:last-child {
+            margin-bottom: 0;
         }
 
         .log-entry .log-time {
             color: var(--text-secondary);
             font-family: monospace;
+            min-width: 90px;
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            width: 48px;
-            height: 24px;
-            border-radius: 12px;
-            background-color: var(--surface);
-            border: 2px solid var(--primary);
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 2px;
-            transition: all var(--transition-normal);
+        .log-entry .log-message {
+            flex: 1;
         }
 
-        .theme-toggle i {
-            color: var(--primary);
-            font-size: 14px;
-            transition: transform var(--transition-normal);
-            position: absolute;
+        .log-entry.error {
+            border-left: 4px solid var(--danger);
+            background-color: var(--danger-bg);
         }
 
-        .light-theme .theme-toggle i {
-            transform: translateX(24px);
+        .log-entry.warning {
+            border-left: 4px solid var(--warning);
+            background-color: var(--warning-bg);
+        }
+
+        .log-entry.success {
+            border-left: 4px solid var(--success);
+            background-color: var(--success-bg);
+        }
+
+        .log-entry.info {
+            border-left: 4px solid var(--info);
+            background-color: var(--info-bg);
         }
 
         /* Loading Overlay */
@@ -607,7 +599,7 @@
             align-items: center;
             justify-content: center;
             gap: 1.5rem;
-            z-index: 50;
+            z-index: 1000;
             opacity: 0;
             pointer-events: none;
             transition: opacity var(--transition-normal);
@@ -657,28 +649,82 @@
             gap: 0.75rem;
             box-shadow: var(--shadow-lg);
             pointer-events: all;
-            animation: slideIn var(--transition-normal) ease-out;
+            animation: slideInRight 0.3s ease-out;
             border-left: 4px solid;
         }
 
-        .toast.success { border-color: var(--success); }
-        .toast.warning { border-color: var(--warning); }
-        .toast.error { border-color: var(--danger); }
-        .toast.info { border-color: var(--info); }
+        .toast.success { 
+            border-color: var(--success); 
+            background-color: var(--success-bg);
+        }
+        
+        .toast.warning { 
+            border-color: var(--warning);
+            background-color: var(--warning-bg);
+        }
+        
+        .toast.error { 
+            border-color: var(--danger);
+            background-color: var(--danger-bg);
+        }
+        
+        .toast.info { 
+            border-color: var(--info);
+            background-color: var(--info-bg);
+        }
 
         .toast-content {
             flex-grow: 1;
         }
 
-        .toast-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
         .toast-message {
             font-size: 0.875rem;
-            color: var(--text-secondary);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes slideInTop {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
         /* Scrollbar Styling */
@@ -704,66 +750,22 @@
             background-color: var(--primary);
         }
 
-        /* Animations */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
         /* Media Queries */
         @media (max-width: 1536px) {
-            :root {
-                --sidebar-width: 260px;
-            }
+            :root { --sidebar-width: 260px; }
         }
 
         @media (max-width: 1280px) {
-            .main-content {
-                gap: 1rem;
-            }
-            
-            .video-section {
-                gap: 1rem;
-            }
+            .main-content { gap: 1rem; }
+            .video-section { gap: 1rem; }
         }
 
         @media (max-width: 1024px) {
-            :root {
-                --sidebar-width: 240px;
-            }
-
+            :root { --sidebar-width: 240px; }
             .video-section {
                 grid-template-columns: 1fr;
                 height: auto;
             }
-
             .monitoring-section {
                 grid-template-columns: 1fr;
                 height: auto;
@@ -771,10 +773,7 @@
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
+            .main-content { grid-template-columns: 1fr; }
             .sidebar {
                 position: fixed;
                 left: -100%;
@@ -784,14 +783,8 @@
                 z-index: 40;
                 transition: left var(--transition-normal);
             }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .video-section {
-                height: calc(100vh - 400px);
-            }
+            .sidebar.active { left: 0; }
+            .video-section { height: calc(100vh - 400px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -805,9 +798,8 @@
             }
         }
     </style>
-
 </head>
-<body>
+<body class="dark-theme">
     <!-- Main Container -->
     <div class="app-container">
         <!-- Header -->
@@ -848,8 +840,8 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Sidebar -->
-            <aside class="sidebar custom-scrollbar" >
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar custom-scrollbar">
                 <!-- Operator Info -->
                 <div class="operator-info">
                     <div class="operator-avatar" style="color: skyblue; border: 1.5px solid skyblue;">OP</div>
@@ -862,52 +854,96 @@
                 <!-- Stream Control -->
                 <div class="control-group">
                     <h3 class="control-group-title">Stream Control</h3>
-                    <div class="button-container">
-                        <button id="startStream" class="btn btn-primary">
-                            <i class="fas fa-play" style="color: black;"></i>
-                            <span style="color: black;">Start Stream</span>
-                        </button>
-                        <button id="stopStream" class="btn btn-outline">
-                            <i class="fas fa-stop" style="color: black;"></i>
-                            <span>Stop Stream</span>
-                        </button>
-                    </div>
+                    <button id="startVideo" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Start Stream
+                    </button>
+                    <button id="stopVideo" class="btn btn-outline" disabled>
+                        <i class="fas fa-stop"></i>
+                        Stop Stream
+                    </button>
                 </div>
 
-                <!-- Flight Control -->
+                <!-- Basic Flight Control -->
                 <div class="control-group">
-                    <h3 class="control-group-title">Flight Control</h3>
-                    <div class="button-container">
-                        <button id="takeoff" class="btn btn-primary">
-                            <i class="fas fa-plane-departure" style="color: black;"></i>
-                            <span style="color: black;">Takeoff</span>
-                        </button>
-                        <button id="land" class="btn btn-outline">
-                            <i class="fas fa-plane-arrival" style="color: black;"></i>
-                            <span style="color: black;">Land</span>
-                        </button>
-                        <button id="emergency" class="btn btn-danger">
-                            <i class="fas fa-exclamation-triangle" style="color: black;"></i>
-                            <span style="color: black;">Emergency Stop</span>
-                        </button>
-                    </div>
+                    <h3 class="control-group-title">Basic Flight</h3>
+                    <button id="takeoff" class="btn btn-primary">
+                        <i class="fas fa-plane-departure"></i>
+                        Takeoff
+                    </button>
+                    <button id="land" class="btn btn-outline">
+                        <i class="fas fa-plane-arrival"></i>
+                        Land
+                    </button>
+                    <button id="emergency" class="btn btn-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Emergency Stop
+                    </button>
                 </div>
 
-                <!-- Patrol Control -->
+                <!-- Patrol Patterns -->
                 <div class="control-group">
-                    <h3 class="control-group-title">Autonomous Patrol</h3>
-                    <div class="button-container">
-                        <button id="startClockwise" class="btn btn-primary">
-                            <i class="fas fa-redo" style="color: black "></i>
-                            <span style="color: black; ">Clockwise Patrol</span>
+                    <h3 class="control-group-title">Patrol Patterns</h3>
+                    <button id="perimeter" class="btn btn-primary">
+                        <i class="fas fa-vector-square"></i>
+                        Perimeter Patrol
+                    </button>
+                    <button id="flyToTopRight" class="btn btn-outline">
+                        <i class="fas fa-arrow-up-right"></i>
+                        Fly to Top Right
+                    </button>
+                    <button id="flyToTopLeft" class="btn btn-outline">
+                        <i class="fas fa-arrow-up-left"></i>
+                        Fly to Top Left
+                    </button>
+                    <button id="flyToBottomLeft" class="btn btn-outline">
+                        <i class="fas fa-arrow-down-left"></i>
+                        Fly to Bottom Left
+                    </button>
+                </div>
+
+                <!-- Manual Controls -->
+                <div class="control-group">
+                    <h3 class="control-group-title">Manual Control</h3>
+                    <div class="manual-controls">
+                        <!-- Forward/Back -->
+                        <button id="moveForward" class="btn btn-outline">
+                            <i class="fas fa-arrow-up"></i>
+                            Forward
                         </button>
-                        <button id="startCounterClockwise" class="btn btn-primary">
-                            <i class="fas fa-undo" style="color: black;"></i>
-                            <span style="color: black;">Counter-clockwise</span>
+                        <button id="moveBack" class="btn btn-outline">
+                            <i class="fas fa-arrow-down"></i>
+                            Back
                         </button>
-                        <button id="stopPatrol" class="btn btn-outline">
-                            <i class="fas fa-stop-circle" style="color: black;"></i>
-                            <span style="color: black;">Stop Patrol</span>
+                        
+                        <!-- Left/Right -->
+                        <button id="moveLeft" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i>
+                            Left
+                        </button>
+                        <button id="moveRight" class="btn btn-outline">
+                            <i class="fas fa-arrow-right"></i>
+                            Right
+                        </button>
+
+                        <!-- Up/Down -->
+                        <button id="moveUp" class="btn btn-outline">
+                            <i class="fas fa-level-up-alt"></i>
+                            Up
+                        </button>
+                        <button id="moveDown" class="btn btn-outline">
+                            <i class="fas fa-level-down-alt"></i>
+                            Down
+                        </button>
+
+                        <!-- Rotation -->
+                        <button id="rotateClockwise" class="btn btn-outline">
+                            <i class="fas fa-redo"></i>
+                            Rotate CW
+                        </button>
+                        <button id="rotateCounterClockwise" class="btn btn-outline">
+                            <i class="fas fa-undo"></i>
+                            Rotate CCW
                         </button>
                     </div>
                 </div>
@@ -962,7 +998,7 @@
     </div>
 
     <!-- Toast Container -->
-    <div id="toastContainer" class="toast-container">Theme</div>
+    <div id="toastContainer" class="toast-container"></div>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
@@ -970,54 +1006,19 @@
         <div class="loading-text">Connecting to drone server...</div>
     </div>
 
-    <!-- Hidden Audio Elements -->
-    <audio id="highThreatSound">
-        <source src="data:audio/mp3;base64,${AUDIO.HIGH_THREAT}" type="audio/mp3">
-    </audio>
-    <audio id="takeoffSound">
-        <source src="data:audio/mp3;base64,${AUDIO.TAKEOFF}" type="audio/mp3">
-    </audio>
-    <audio id="landingSound">
-        <source src="data:audio/mp3;base64,${AUDIO.LAND}" type="audio/mp3">
-    </audio>
-    <audio id="disconnectSound">
-        <source src="data:audio/mp3;base64,${AUDIO.DISCONNECT}" type="audio/mp3">
-    </audio>
-
     <script>
-            // Audio encodings for alerts (base64)
-            const AUDIO = {
-                HIGH_THREAT: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
-                TAKEOFF: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
-                LAND: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
-                DISCONNECT: 'data:audio/mp3;base64,//uQxAAAEvGLIVT0AAp1IyfjveAAXHXf5+IAgCHv//yQEP/JH/yAEG4COIf+pMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ=='
-            };
-            class DroneController {
+       
+        // Audio encodings for alerts (base64)
+        const AUDIO = {
+            HIGH_THREAT: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
+            TAKEOFF: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
+            LAND: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAEAAABVgANTU1NTU1Q0NDQ0NDUFBQUFBQXl5eXl5ea2tra2tra3l5eXl5eYaGhoaGhpSUlJSUlKGhoaGhoaGvr6+vr6+8vLy8vLzKysrKysrX19fX19fX5eXl5eXl8vLy8vLy////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQCgAAAAAAAAAVY82AhbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAALACwAAP/AADwQKVE9YWDGPkQWpT66yk4+zIiYPoTUaT3tnU+OBgZcXDgYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4E/+MYxGkNk+p8AZmQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIP/7JMRbD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABBQAAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzB4EAwWIIYDAzBQQAA',
+            DISCONNECT: 'data:audio/mp3;base64,//uQxAAAEvGLIVT0AAp1IyfjveAAXHXf5+IAgCHv//yQEP/JH/yAEG4COIf+pMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ=='
+        };
+
+        // Sound utilities
+        class SoundManager {
             constructor() {
-                // Socket initialization
-                this.socket = io('http://localhost:5000', {
-                    transports: ['websocket'],
-                    reconnectionAttempts: 5,
-                    reconnectionDelay: 1000,
-                    timeout: 10000,
-                    cors: {
-                        origin: "*",
-                        methods: ["GET", "POST"]
-                    }
-                });
-
-                // State Management
-                this.state = {
-                    isConnected: false,
-                    isStreaming: false,
-                    isFlying: false,
-                    isPatrolling: false,
-                    frameCount: 0,
-                    lastFPSUpdate: Date.now(),
-                    threatCounts: { high: 0, medium: 0, low: 0 }
-                };
-
-                // Initialize Audio
                 this.sounds = {
                     highThreat: new Audio(AUDIO.HIGH_THREAT),
                     takeoff: new Audio(AUDIO.TAKEOFF),
@@ -1025,9 +1026,73 @@
                     disconnect: new Audio(AUDIO.DISCONNECT)
                 };
 
-                // Initialize DOM Elements
+                // Pre-configure all sounds
+                Object.values(this.sounds).forEach(sound => {
+                    sound.preload = 'auto';
+                    sound.volume = 0.5;
+                });
+            }
+
+            play(soundName) {
+                const sound = this.sounds[soundName];
+                if (sound) {
+                    sound.currentTime = 0;
+                    sound.play().catch(e => console.warn('Sound playback failed:', e));
+                }
+            }
+        }
+
+        class DroneController {
+            constructor() {
+                // Initialize core components
+                this.initializeState();
+                this.initializeSocket();
+                this.initializeElements();
+                this.soundManager = new SoundManager();
+
+                // Start initialization
+                this.initializeEventListeners();
+                this.initializeSocketHandlers();
+                this.initializeTheme();
+                
+                // Show initial loading state
+                this.showLoader();
+                
+                // Add connection timeout
+                setTimeout(() => {
+                    if (!this.state.isConnected) {
+                        this.hideLoader();
+                        this.showToast('Connection timed out', 'error');
+                    }
+                }, 5000);
+            }
+
+            initializeState() {
+                this.state = {
+                    isConnected: false,
+                    isStreaming: false,
+                    isFlying: false,
+                    isPatrolling: false,
+                    frameCount: 0,
+                    lastFPSUpdate: Date.now(),
+                    threatCounts: { high: 0, medium: 0, low: 0 },
+                    lastHighThreatTime: 0,
+                    cooldownPeriod: 5000
+                };
+            }
+
+            initializeSocket() {
+                this.socket = io('http://localhost:5000', {
+                    transports: ['websocket'],
+                    reconnectionAttempts: 5,
+                    reconnectionDelay: 1000,
+                    timeout: 10000
+                });
+            }
+
+            initializeElements() {
+                // Status elements
                 this.elements = {
-                    // Status Elements
                     connectionStatusDot: document.getElementById('connectionStatusDot'),
                     connectionStatus: document.getElementById('connectionStatus'),
                     streamStatusDot: document.getElementById('streamStatusDot'),
@@ -1036,62 +1101,70 @@
                     droneHeight: document.getElementById('droneHeight'),
                     flightTime: document.getElementById('flightTime'),
                     
-                    // Video Elements
+                    // Video elements
                     rawFeed: document.getElementById('rawFeed'),
                     detectionFeed: document.getElementById('detectionFeed'),
                     rawMetrics: document.getElementById('rawMetrics'),
                     detectionMetrics: document.getElementById('detectionMetrics'),
                     
-                    // Control Buttons
-                    startStream: document.getElementById('startStream'),
-                    stopStream: document.getElementById('stopStream'),
+                    // Basic control buttons
+                    startVideo: document.getElementById('startVideo'),
+                    stopVideo: document.getElementById('stopVideo'),
                     takeoff: document.getElementById('takeoff'),
                     land: document.getElementById('land'),
                     emergency: document.getElementById('emergency'),
-                    startClockwise: document.getElementById('startClockwise'),
-                    startCounterClockwise: document.getElementById('startCounterClockwise'),
-                    stopPatrol: document.getElementById('stopPatrol'),
                     
-                    // Threat Counters
+                    // Patrol buttons
+                    perimeter: document.getElementById('perimeter'),
+                    flyToTopRight: document.getElementById('flyToTopRight'),
+                    flyToTopLeft: document.getElementById('flyToTopLeft'),
+                    flyToBottomLeft: document.getElementById('flyToBottomLeft'),
+                    
+                    // Manual control buttons
+                    moveForward: document.getElementById('moveForward'),
+                    moveBack: document.getElementById('moveBack'),
+                    moveLeft: document.getElementById('moveLeft'),
+                    moveRight: document.getElementById('moveRight'),
+                    moveUp: document.getElementById('moveUp'),
+                    moveDown: document.getElementById('moveDown'),
+                    rotateClockwise: document.getElementById('rotateClockwise'),
+                    rotateCounterClockwise: document.getElementById('rotateCounterClockwise'),
+                    
+                    // Monitoring elements
                     highThreatCount: document.getElementById('highThreatCount'),
                     mediumThreatCount: document.getElementById('mediumThreatCount'),
                     lowThreatCount: document.getElementById('lowThreatCount'),
                     
-                    // Other UI Elements
+                    // UI elements
                     logsList: document.getElementById('logsList'),
                     loadingOverlay: document.getElementById('loadingOverlay'),
+                    toastContainer: document.getElementById('toastContainer'),
                     themeToggle: document.getElementById('themeToggle')
                 };
+            }
 
-                // Start initialization
-                this.initializeEventListeners();
-                this.initializeSocketHandlers();
-                this.initializeTheme();
-
-                // Show loading overlay
-                this.elements.loadingOverlay.classList.add('active');
-
-                // Remove loading overlay after 5 seconds
-                setTimeout(() => {
-                    this.elements.loadingOverlay.classList.remove('active');
-                }, 5000);
+            initializeTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.className = `${savedTheme}-theme`;
+                this.updateThemeIcon(savedTheme);
+                this.updateControlButtons();
             }
 
             initializeEventListeners() {
-                // Stream Controls
-                this.elements.startStream.onclick = () => this.startStream();
-                this.elements.stopStream.onclick = () => this.stopStream();
+                // Video controls
+                this.elements.startVideo.onclick = () => this.startStream();
+                this.elements.stopVideo.onclick = () => this.stopStream();
 
-                // Flight Controls
+                // Basic flight controls
                 this.elements.takeoff.onclick = () => {
                     this.socket.emit('takeoff');
-                    this.sounds.takeoff.play();
+                    this.soundManager.play('takeoff');
                     this.log('Initiating takeoff sequence...', 'info');
                 };
 
                 this.elements.land.onclick = () => {
                     this.socket.emit('land');
-                    this.sounds.land.play();
+                    this.soundManager.play('land');
                     this.log('Initiating landing sequence...', 'info');
                 };
 
@@ -1100,32 +1173,50 @@
                     this.log('EMERGENCY STOP INITIATED', 'error');
                 };
 
-                // Patrol Controls
-                this.elements.startClockwise.onclick = () => {
-                    this.socket.emit('start_patrol', { direction: 'clockwise' });
-                    this.state.isPatrolling = true;
-                    this.updatePatrolControls();
-                    this.log('Starting clockwise patrol...', 'info');
+                // Patrol controls
+                this.elements.perimeter.onclick = () => {
+                    this.socket.emit('perimeter');
+                    this.log('Starting perimeter patrol...', 'info');
                 };
 
-                this.elements.startCounterClockwise.onclick = () => {
-                    this.socket.emit('start_patrol', { direction: 'counterclockwise' });
-                    this.state.isPatrolling = true;
-                    this.updatePatrolControls();
-                    this.log('Starting counter-clockwise patrol...', 'info');
+                this.elements.flyToTopRight.onclick = () => {
+                    this.socket.emit('fly_to_topright');
+                    this.log('Flying to top right position...', 'info');
                 };
 
-                this.elements.stopPatrol.onclick = () => {
-                    this.socket.emit('stop_patrol');
-                    this.state.isPatrolling = false;
-                    this.updatePatrolControls();
-                    this.log('Stopping patrol...', 'info');
+                this.elements.flyToTopLeft.onclick = () => {
+                    this.socket.emit('fly_to_topleft');
+                    this.log('Flying to top left position...', 'info');
                 };
 
-                // Theme Toggle
+                this.elements.flyToBottomLeft.onclick = () => {
+                    this.socket.emit('fly_to_bottomleft');
+                    this.log('Flying to bottom left position...', 'info');
+                };
+
+                // Manual controls
+                const manualControls = {
+                    moveForward: 'move_forward',
+                    moveBack: 'move_back',
+                    moveLeft: 'move_left',
+                    moveRight: 'move_right',
+                    moveUp: 'move_up',
+                    moveDown: 'move_down',
+                    rotateClockwise: 'rotate_clockwise',
+                    rotateCounterClockwise: 'rotate_counter_clockwise'
+                };
+
+                Object.entries(manualControls).forEach(([elementKey, eventName]) => {
+                    this.elements[elementKey].onclick = () => {
+                        this.socket.emit(eventName);
+                        this.log(`Manual control: ${eventName.replace(/_/g, ' ')}`, 'info');
+                    };
+                });
+
+                // Theme toggle
                 this.elements.themeToggle.onclick = () => this.toggleTheme();
 
-                // Window Events
+                // Cleanup on page unload
                 window.onbeforeunload = () => {
                     if (this.state.isStreaming) {
                         this.socket.emit('stop_video');
@@ -1138,19 +1229,24 @@
                     this.state.isConnected = true;
                     this.updateConnectionStatus(true);
                     this.showToast('Connected to drone server', 'success');
-                    //this.elements.loadingOverlay.classList.remove('active');
+                    this.hideLoader();
+                });
+
+                this.socket.on('connect_error', () => {
+                    this.showToast('Connection failed', 'error');
+                    setTimeout(() => this.hideLoader(), 2000);
                 });
 
                 this.socket.on('disconnect', () => {
                     this.state.isConnected = false;
                     this.updateConnectionStatus(false);
-                    this.sounds.disconnect.play();
+                    this.soundManager.play('disconnect');
                     this.showToast('Disconnected from drone server', 'error');
                     this.stopStream();
-                    //this.elements.loadingOverlay.classList.add('active');
+                    this.showLoader();
                 });
 
-                // Video Frame Handlers
+                // Video frame handling
                 this.socket.on('video_frame', (data) => {
                     if (this.state.isStreaming && data.frame) {
                         requestAnimationFrame(() => {
@@ -1171,37 +1267,24 @@
                     }
                 });
 
-                // Status Updates
-                this.socket.on('drone_status', (status) => {
-                    this.updateDroneStatus(status);
-                });
-
+                // Status updates
+                this.socket.on('drone_status', (status) => this.updateDroneStatus(status));
                 this.socket.on('battery_update', (data) => {
                     this.elements.batteryLevel.textContent = `${data.battery}%`;
                 });
-
                 this.socket.on('height_update', (data) => {
                     this.elements.droneHeight.textContent = `${data.height} cm`;
                 });
-
-                this.socket.on('video_error', (error) => {
-                    this.log(`Video stream error: ${error.message}`, 'error');
-                    this.showToast('Video stream error occurred', 'error');
-                    this.stopStream();
-                });
-            }
-
-            initializeTheme() {
-                const savedTheme = localStorage.getItem('theme') || 'dark';
-                document.documentElement.className = `${savedTheme}-theme`;
-                this.updateThemeIcon(savedTheme);
             }
 
             toggleTheme() {
-                const currentTheme = document.documentElement.className.includes('dark') ? 'light' : 'dark';
-                document.documentElement.className = `${currentTheme}-theme`;
-                localStorage.setItem('theme', currentTheme);
-                this.updateThemeIcon(currentTheme);
+                const currentTheme = document.documentElement.className;
+                const newTheme = currentTheme.includes('dark') ? 'light' : 'dark';
+                
+                document.documentElement.className = `${newTheme}-theme`;
+                localStorage.setItem('theme', newTheme);
+                this.updateThemeIcon(newTheme);
+                this.updateControlButtons();
             }
 
             updateThemeIcon(theme) {
@@ -1214,32 +1297,25 @@
                     this.showToast('Cannot start stream: Not connected', 'error');
                     return;
                 }
-                this.socket.emit('start_video');
+                this.socket.emit('video_start');
                 this.state.isStreaming = true;
                 this.updateStreamStatus(true);
                 this.log('Starting video stream...', 'info');
             }
 
             stopStream() {
-                this.socket.emit('stop_video');
+                this.socket.emit('video_stop');
                 this.state.isStreaming = false;
                 this.updateStreamStatus(false);
                 this.resetVideoFeeds();
                 this.log('Stopped video stream', 'info');
             }
 
-            resetVideoFeeds() {
-                this.elements.rawFeed.src = '/api/placeholder/1280/720';
-                this.elements.detectionFeed.src = '/api/placeholder/1280/720';
-                this.elements.rawMetrics.textContent = 'FPS: --';
-                this.elements.detectionMetrics.textContent = 'Detected: --';
-            }
-
             updateStreamStatus(streaming) {
                 this.elements.streamStatusDot.className = `status-dot ${streaming ? 'streaming' : ''}`;
                 this.elements.streamStatus.textContent = streaming ? 'Stream On' : 'Stream Off';
-                this.elements.startStream.disabled = streaming;
-                this.elements.stopStream.disabled = !streaming;
+                this.elements.startVideo.disabled = streaming;
+                this.elements.stopVideo.disabled = !streaming;
             }
 
             updateConnectionStatus(connected) {
@@ -1257,30 +1333,91 @@
                     }
                 });
 
+                // Check for new high threats with cooldown
                 if (threats.high > this.state.threatCounts.high) {
-                    this.sounds.highThreat.play();
-                    this.showToast('⚠️ High threat detected!', 'error');
+                    const now = Date.now();
+                    if (now - this.state.lastHighThreatTime > this.state.cooldownPeriod) {
+                        this.soundManager.play('highThreat');
+                        this.showToast('⚠️ High threat detected!', 'error');
+                        this.state.lastHighThreatTime = now;
+                    }
                 }
 
+                // Update UI
                 this.state.threatCounts = threats;
                 this.elements.highThreatCount.textContent = threats.high;
                 this.elements.mediumThreatCount.textContent = threats.medium;
                 this.elements.lowThreatCount.textContent = threats.low;
                 
                 this.elements.detectionMetrics.textContent = `Detected: ${detections.length}`;
+
+                // Update threat level indicators
+                this.updateThreatLevelIndicators(threats);
             }
 
-            updateFPS() {
-                this.state.frameCount++;
-                const now = Date.now();
-                const elapsed = now - this.state.lastFPSUpdate;
+            updateThreatLevelIndicators(threats) {
+                const threatLevels = ['high', 'medium', 'low'];
+                
+                threatLevels.forEach(level => {
+                    const element = this.elements[`${level}ThreatCount`].parentElement;
+                    if (threats[level] > 0) {
+                        element.classList.add('active');
+                        if (level === 'high') {
+                            element.style.animation = 'pulse 2s infinite';
+                        }
+                    } else {
+                        element.classList.remove('active');
+                        element.style.animation = '';
+                    }
+                });
+            }
 
-                if (elapsed >= 1000) {
-                    const fps = Math.round((this.state.frameCount * 1000) / elapsed);
-                    this.elements.rawMetrics.textContent = `FPS: ${fps}`;
-                    this.state.frameCount = 0;
-                    this.state.lastFPSUpdate = now;
-                }
+            updateThemeIcon(theme) {
+                const icon = theme === 'dark' ? 'sun' : 'moon';
+                this.elements.themeToggle.innerHTML = `<i class="fas fa-${icon}"></i>`;
+            }
+
+            toggleTheme() {
+                const currentTheme = document.documentElement.className;
+                const newTheme = currentTheme.includes('dark') ? 'light' : 'dark';
+                
+                document.documentElement.className = `${newTheme}-theme`;
+                localStorage.setItem('theme', newTheme);
+                this.updateThemeIcon(newTheme);
+                this.updateControlButtons();
+            }
+
+            updateControlButtons() {
+                const isDark = document.documentElement.className.includes('dark');
+                
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(button => {
+                    const icon = button.querySelector('i');
+                    const span = button.querySelector('span');
+                    
+                    if (isDark) {
+                        if (icon) icon.style.color = 'white';
+                        if (span) span.style.color = 'white';
+                    } else {
+                        if (icon) icon.style.color = '#1E293B';
+                        if (span) span.style.color = '#1E293B';
+                    }
+                });
+            }
+
+            showLoader() {
+                this.elements.loadingOverlay.classList.add('active');
+            }
+
+            hideLoader() {
+                this.elements.loadingOverlay.classList.remove('active');
+            }
+
+            resetVideoFeeds() {
+                this.elements.rawFeed.src = '/api/placeholder/1280/720';
+                this.elements.detectionFeed.src = '/api/placeholder/1280/720';
+                this.elements.rawMetrics.textContent = 'FPS: --';
+                this.elements.detectionMetrics.textContent = 'Detected: --';
             }
 
             updateDroneStatus(status) {
@@ -1300,21 +1437,17 @@
                 }
             }
 
-            showToast(message, type = 'info') {
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.innerHTML = `
-                    <div class="toast-content">
-                        <div class="toast-message">${message}</div>
-                    </div>
-                `;
-                
-                this.elements.toastContainer.appendChild(toast);
-                
-                setTimeout(() => {
-                    toast.style.animation = 'slideOut 0.3s ease-out forwards';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
+            updateFPS() {
+                this.state.frameCount++;
+                const now = Date.now();
+                const elapsed = now - this.state.lastFPSUpdate;
+
+                if (elapsed >= 1000) {
+                    const fps = Math.round((this.state.frameCount * 1000) / elapsed);
+                    this.elements.rawMetrics.textContent = `FPS: ${fps}`;
+                    this.state.frameCount = 0;
+                    this.state.lastFPSUpdate = now;
+                }
             }
 
             log(message, type = 'info') {
@@ -1327,11 +1460,38 @@
                     <span class="log-message">${message}</span>
                 `;
                 
-                this.elements.logsList.insertBefore(entry, this.elements.logsList.firstChild);
+                // Insert at the top
+                if (this.elements.logsList.firstChild) {
+                    this.elements.logsList.insertBefore(entry, this.elements.logsList.firstChild);
+                } else {
+                    this.elements.logsList.appendChild(entry);
+                }
                 
-                while (this.elements.logsList.childNodes.length > 100) {
+                // Limit log entries
+                while (this.elements.logsList.children.length > 100) {
                     this.elements.logsList.removeChild(this.elements.logsList.lastChild);
                 }
+
+                // Auto-scroll to top
+                this.elements.logsList.scrollTop = 0;
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="toast-content">
+                        <div class="toast-message">${message}</div>
+                    </div>
+                `;
+                
+                this.elements.toastContainer.appendChild(toast);
+                
+                // Animate out and remove
+                setTimeout(() => {
+                    toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
             }
 
             formatTime(seconds) {
@@ -1341,8 +1501,10 @@
             }
         }
 
-        // Initialize controller
-        const droneController = new DroneController();
+        // Initialize controller when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.droneController = new DroneController();
+        });
     </script>
 </body>
 </html>
