@@ -47,3 +47,66 @@ Traceback (most recent call last):
     assert status_set is not None, "write() before start_response"
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: write() before start_response
+2024-11-19 09:03:20,812 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 09:03:20,814 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 09:03:21,148 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 09:03:21,148 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 09:03:21,149 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 09:03:21,150 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 09:03:21,295 - models.drone_manager - ERROR - Cannot reach drone IP (192.168.10.1)
+2024-11-19 09:03:54,904 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 09:03:54,906 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 09:03:55,233 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 09:03:55,234 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 09:03:55,235 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 09:03:55,235 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 09:03:55,405 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 09:03:55,528 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 09:03:55,529 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 09:03:55,536 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 09:03:55,539 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 09:03:55,552 - djitellopy - INFO - Send command: 'command'
+2024-11-19 09:03:55,757 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 09:03:56,259 - models.drone_manager - INFO - Initial connection successful. Battery: 58%
+2024-11-19 09:03:56,260 - djitellopy - INFO - Send command: 'speed 30'
+2024-11-19 09:03:56,362 - djitellopy - INFO - Response speed 30: 'ok'
+2024-11-19 09:03:56,365 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 09:03:56,371 - djitellopy - INFO - Send command: 'streamon'
+2024-11-19 09:03:56,473 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-19 09:03:58,491 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-19 09:03:58,594 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-19 09:03:58,597 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 09:04:37,353 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:37] "GET / HTTP/1.1" 200 -
+2024-11-19 09:04:38,549 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:38] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 09:04:39,060 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:39] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-11-19 09:04:56,657 - models.video_streamer - INFO - Stopping video stream...
+2024-11-19 09:04:56,678 - models.video_streamer - INFO - Stream stopped - Processed 1567 frames at 29.6 FPS
+2024-11-19 09:04:56,687 - performance - INFO - Video streaming stopped
+2024-11-19 09:04:56,706 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:56] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 09:05:00,681 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 09:05:00,784 - djitellopy - INFO - Response takeoff: 'error'
+2024-11-19 09:05:00,787 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 09:05:00,889 - djitellopy - INFO - Response takeoff: 'error'
+2024-11-19 09:05:00,899 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 09:05:01,002 - djitellopy - INFO - Response takeoff: 'error'
+2024-11-19 09:05:01,005 - models.drone_manager - ERROR - Takeoff error: Command 'takeoff' was unsuccessful for 4 tries. Latest response:	'error'
+2024-11-19 09:05:14,783 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 09:05:16,755 - models.drone_manager - ERROR - Movement already in progress
+2024-11-19 09:05:19,789 - models.drone_manager - ERROR - Movement already in progress
+2024-11-19 09:05:23,110 - models.video_streamer - INFO - Stopping video stream...
+2024-11-19 09:05:23,113 - models.video_streamer - INFO - Stream stopped - Processed 1567 frames at 29.6 FPS
+2024-11-19 09:05:23,114 - performance - INFO - Video streaming stopped on disconnect
+2024-11-19 09:05:23,129 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:05:23] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-19 09:05:23,161 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response

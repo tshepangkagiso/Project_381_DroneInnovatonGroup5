@@ -33,9 +33,9 @@ class PatrolConfig:
     ROTATION_MOVEMENT = 90
     
     # Speed settings (cm/s)
-    DEFAULT_SPEED = 15
+    DEFAULT_SPEED = 30
     MAX_SPEED = 100
-    MIN_SPEED = 10
+    MIN_SPEED = 25
     
     # Safety settings
     MIN_BATTERY = 20
@@ -410,8 +410,9 @@ class DroneManager:
             if current_height > PatrolConfig.EMERGENCY_LAND_HEIGHT:
                 await self.drone.move_down(current_height - PatrolConfig.EMERGENCY_LAND_HEIGHT)
                 await asyncio.sleep(1)
-                
-            await self.drone.land()
+
+            self.drone.move_down(100) 
+            self.drone.land()
             self.is_flying = False
             logger.info("Landing successful")
             return True
@@ -503,34 +504,34 @@ class DroneManager:
             await self.take_off()
             await asyncio.sleep(1)
 
-            await drone.move_up(PatrolConfig.HEIGHT)
+            drone.move_up(PatrolConfig.HEIGHT)
             await asyncio.sleep(1)
 
-            await drone.rotate_clockwise(270)
+            drone.rotate_clockwise(270)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(270)
+            drone.rotate_clockwise(270)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.move_back(PatrolConfig.SIDE_LENGTH)
+            drone.move_back(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(90)
+            drone.rotate_clockwise(90)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_counter_clockwise(90)
+            drone.rotate_counter_clockwise(90)
             await asyncio.sleep(0.5)
 
-            await drone.move_down(PatrolConfig.HEIGHT - 100)
+            drone.move_down(PatrolConfig.HEIGHT - 100)
             await asyncio.sleep(0.5)
 
             await self.land()
@@ -556,19 +557,19 @@ class DroneManager:
             await self.take_off()
             await asyncio.sleep(1)
 
-            await drone.move_up(PatrolConfig.HEIGHT)
+            drone.move_up(150)
             await asyncio.sleep(1)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(200)
             await asyncio.sleep(1)
 
-            await drone.rotate_clockwise(360)
+            drone.rotate_clockwise(360)
             await asyncio.sleep(1)
 
-            await drone.move_back(PatrolConfig.SIDE_LENGTH)
+            drone.move_back(200)
             await asyncio.sleep(1)
 
-            await drone.move_down(PatrolConfig.HEIGHT-100)
+            drone.move_down(100)
             await asyncio.sleep(1)
 
             await self.land()
@@ -594,34 +595,34 @@ class DroneManager:
             await self.take_off()
             await asyncio.sleep(1)
 
-            await drone.move_up(PatrolConfig.HEIGHT)
+            drone.move_up(PatrolConfig.HEIGHT)
             await asyncio.sleep(1)
 
-            await drone.rotate_clockwise(270)
+            drone.rotate_clockwise(270)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(270)
+            drone.rotate_clockwise(270)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.move_back(PatrolConfig.SIDE_LENGTH)
+            drone.move_back(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(90)
+            drone.rotate_clockwise(90)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_counter_clockwise(90)
+            drone.rotate_counter_clockwise(90)
             await asyncio.sleep(0.5)
 
-            await drone.move_down(PatrolConfig.HEIGHT-100)
+            drone.move_down(PatrolConfig.HEIGHT-100)
             await asyncio.sleep(0.5)
 
             await self.land()
@@ -647,25 +648,25 @@ class DroneManager:
             await self.take_off()
             await asyncio.sleep(0.5)
 
-            await drone.move_up(PatrolConfig.HEIGHT)
+            drone.move_up(PatrolConfig.HEIGHT)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(270)
+            drone.rotate_clockwise(270)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_clockwise(180)
+            drone.rotate_clockwise(180)
             await asyncio.sleep(0.5)
 
-            await drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
             await asyncio.sleep(0.5)
 
-            await drone.rotate_counter_clockwise(90)
+            drone.rotate_counter_clockwise(90)
             await asyncio.sleep(0.5)
 
-            await drone.move_down(PatrolConfig.HEIGHT - 100)
+            drone.move_down(PatrolConfig.HEIGHT - 100)
             await asyncio.sleep(0.5)
 
             await self.land()
