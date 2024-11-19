@@ -29,7 +29,7 @@ class PatrolConfig:
     PATROL_SIZE = 2  # 2 meters = 200cm
     SIDE_LENGTH = 200  
     HEIGHT = 150      
-    MANUAL_MOVEMENT = 50 
+    MANUAL_MOVEMENT = 30 
     ROTATION_MOVEMENT = 90
     
     # Speed settings (cm/s)
@@ -40,10 +40,10 @@ class PatrolConfig:
     # Safety settings
     MIN_BATTERY = 20
     STABILIZATION_TIME = 0.5
-    MAX_CONSECUTIVE_ERRORS = 3
+    MAX_CONSECUTIVE_ERRORS = 10
     EMERGENCY_LAND_HEIGHT = 20
     CONNECTION_TIMEOUT = 3
-    MAX_RETRIES = 2
+    MAX_RETRIES = 10
 
 @dataclass
 class PatrolMetrics:
@@ -223,6 +223,7 @@ class DroneManager:
                 try:
                     logger.info("Testing initial connection...")
                     self.drone.connect()
+                    self.drone.set_speed(PatrolConfig.DEFAULT_SPEED)
                     time.sleep(0.5)
                     
                     # Verify connection with battery check
@@ -235,13 +236,13 @@ class DroneManager:
                         
                     # Configure initial speed
                     retry_count = 0
-                    while retry_count < 3:
+                    while retry_count < 10:
                         try:
                             self.drone.set_speed(PatrolConfig.DEFAULT_SPEED)
                             break
                         except Exception:
                             retry_count += 1
-                            if retry_count == 3:
+                            if retry_count == 10:
                                 logger.error("Failed to set initial speed")
                                 return False
                             time.sleep(0.5)
@@ -272,7 +273,7 @@ class DroneManager:
         try:
             def keep_alive_loop():
                 failed_pings = 0
-                max_failed_pings = 3
+                max_failed_pings = 10
                 ping_interval = 2.0
                 battery_check_interval = 30.0
                 last_battery_check = time.time()
@@ -383,14 +384,14 @@ class DroneManager:
             await self.patrol.end_patrol_metrics()
 
     # Basic Movement Commands
-    async def take_off(self) -> bool:
+    def take_off(self) -> bool:
         """Execute takeoff with validation."""
-        return await self.execute_movement(self._takeoff_sequence)
+        return self.execute_movement(self._takeoff_sequence)
 
-    async def _takeoff_sequence(self) -> bool:
+    def _takeoff_sequence(self) -> bool:
         try:
             self.patrol.status = PatrolStatus.TAKEOFF
-            await self.drone.takeoff()
+            self.drone.takeoff()
             self.is_flying = True
             logger.info("Takeoff successful")
             return True
@@ -398,18 +399,18 @@ class DroneManager:
             logger.error(f"Takeoff error: {e}")
             return False
 
-    async def land(self) -> bool:
+    def land(self) -> bool:
         """Execute landing with safety measures."""
-        return await self.execute_movement(self._landing_sequence)
+        return self.execute_movement(self._landing_sequence)
 
-    async def _landing_sequence(self) -> bool:
+    def _landing_sequence(self) -> bool:
         try:
             self.patrol.status = PatrolStatus.LANDING
             current_height = self.drone.get_height()
             
             if current_height > PatrolConfig.EMERGENCY_LAND_HEIGHT:
-                await self.drone.move_down(current_height - PatrolConfig.EMERGENCY_LAND_HEIGHT)
-                await asyncio.sleep(1)
+                self.drone.move_down(current_height - PatrolConfig.EMERGENCY_LAND_HEIGHT)
+                time.sleep(0.5)
 
             self.drone.move_down(100) 
             self.drone.land()
@@ -418,7 +419,7 @@ class DroneManager:
             return True
         except Exception as e:
             logger.error(f"Landing error: {e}")
-            await self.emergency_stop()
+            self.emergency_stop()
             return False
 
     async def emergency_stop(self) -> None:
@@ -489,52 +490,65 @@ class DroneManager:
         )
 
     # Pattern Flight Commands
-    async def perimeter(self) -> bool:
+    def perimeter(self) -> bool:
         """Execute perimeter patrol pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._perimeter_sequence,
             "perimeter"
         )
 
-    async def _perimeter_sequence(self) -> bool:
+    def _perimeter_sequence(self) -> bool:
         """Internal perimeter sequence implementation."""
         try:
             drone = self.drone
             
-            await self.take_off()
-            await asyncio.sleep(1)
+            drone.takeoff()
+            time.sleep(0.5)
 
             drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
+
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            print("Top Right Position")
+            time.sleep(0.5)
+            
+            drone.rotate_clockwise(360)
+            time.sleep(0.5)
+            
+            drone.rotate_clockwise(270)
+            time.sleep(0.5)
+
+            drone.move_forward(PatrolConfig.SIDE_LENGTH)
+            print("Top Left Position")
+            time.sleep(0.5)
+
+            drone.rotate_clockwise(360)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            print("Bottom Right Position")
+            time.sleep(0.5)
+
+            drone.rotate_clockwise(360)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
-
+            time.sleep(0.5)
+            
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
-
-            drone.move_back(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
-
-            drone.rotate_clockwise(90)
-            await asyncio.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
-
-            drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
+            print("Origin Position")
+            time.sleep(0.5)
+            
+            drone.rotate_clockwise(270)
+            time.sleep(0.5)
 
             drone.move_down(PatrolConfig.HEIGHT - 100)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
-            await self.land()
+            drone.land()
             logger.info("Perimeter patrol completed successfully")
             return True
             
@@ -542,37 +556,38 @@ class DroneManager:
             logger.error(f"Perimeter sequence error: {e}")
             return False
 
-    async def fly_to_TopRight(self) -> bool:
+    def fly_to_TopRight(self) -> bool:
         """Execute TopRight flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._top_right_sequence,
             "top_right"
         )
 
-    async def _top_right_sequence(self) -> bool:
+    def _top_right_sequence(self) -> bool:
         """Internal TopRight sequence implementation."""
         try:
             drone = self.drone
-
-            await self.take_off()
-            await asyncio.sleep(1)
+            
+            
+            drone.takeoff()
+            time.sleep(0.5)
 
             drone.move_up(150)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
             drone.move_forward(200)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(360)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
             drone.move_back(200)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
             drone.move_down(100)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
-            await self.land()
+            drone.land()
             logger.info("TopRight flight completed successfully")
             return True
             
@@ -580,9 +595,9 @@ class DroneManager:
             logger.error(f"TopRight sequence error: {e}")
             return False
 
-    async def fly_to_TopLeft(self) -> bool:
+    def fly_to_TopLeft(self) -> bool:
         """Execute TopLeft flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._top_left_sequence,
             "top_left"
         )
@@ -592,40 +607,43 @@ class DroneManager:
         try:
             drone = self.drone
 
-            await self.take_off()
-            await asyncio.sleep(1)
+            drone.takeoff()
+            time.sleep(0.5)
 
             drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(1)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
-
+            time.sleep(0.5)
+            
+            drone.rotate_clockwise(360)
+            time.sleep(0.5)
+            
             drone.move_back(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(90)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
-            drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
+            drone.rotate_counter_clockwise(270)
+            time.sleep(0.5)
 
             drone.move_down(PatrolConfig.HEIGHT-100)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
-            await self.land()
+            drone.land()
             logger.info("TopLeft flight completed successfully")
             return True
             
@@ -633,43 +651,47 @@ class DroneManager:
             logger.error(f"TopLeft sequence error: {e}")
             return False
 
-    async def fly_to_BottomLeft(self) -> bool:
+    def fly_to_BottomLeft(self) -> bool:
         """Execute BottomLeft flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._bottom_left_sequence,
             "bottom_left"
         )
 
-    async def _bottom_left_sequence(self) -> bool:
+    def _bottom_left_sequence(self) -> bool:
         """Internal BottomLeft sequence implementation."""
         try:
             drone = self.drone
             
-            await self.take_off()
-            await asyncio.sleep(0.5)
+            
+            drone.takeoff()
+            time.sleep(0.5)
 
             drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
+            drone.rotate_clockwise(360)
+            time.sleep(0.5)
+            
             drone.rotate_clockwise(180)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
             drone.move_down(PatrolConfig.HEIGHT - 100)
-            await asyncio.sleep(0.5)
+            time.sleep(0.5)
 
-            await self.land()
+            drone.land()
             logger.info("BottomLeft flight completed successfully")
             return True
             
