@@ -1,106 +1,253 @@
-2024-11-19 00:18:08,958 - models.object_detector - INFO - Initializing Farm Security Object Detector...
-2024-11-19 00:18:08,959 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
-2024-11-19 00:18:09,197 - models.object_detector - INFO - Successfully loaded Primary detection model
-2024-11-19 00:18:09,197 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
-2024-11-19 00:18:09,197 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
-2024-11-19 00:18:09,198 - models.drone_manager - INFO - Drone Manager initialized
-2024-11-19 00:18:13,142 - models.drone_manager - ERROR - Cannot reach drone IP (192.168.10.1)
-2024-11-19 00:18:36,107 - models.object_detector - INFO - Initializing Farm Security Object Detector...
-2024-11-19 00:18:36,108 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
-2024-11-19 00:18:36,305 - models.object_detector - INFO - Successfully loaded Primary detection model
-2024-11-19 00:18:36,305 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
-2024-11-19 00:18:36,306 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
-2024-11-19 00:18:36,307 - models.drone_manager - INFO - Drone Manager initialized
-2024-11-19 00:18:36,417 - models.drone_manager - INFO - WiFi connection to drone verified
-2024-11-19 00:18:36,497 - models.drone_manager - INFO - WiFi connection to drone verified
-2024-11-19 00:18:36,498 - models.drone_manager - INFO - Connecting to drone...
-2024-11-19 00:18:36,503 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
-2024-11-19 00:18:36,504 - models.drone_manager - INFO - Testing initial connection...
-2024-11-19 00:18:36,512 - djitellopy - INFO - Send command: 'command'
-2024-11-19 00:18:36,617 - djitellopy - INFO - Response command: 'ok'
-2024-11-19 00:18:37,168 - models.drone_manager - INFO - Initial connection successful. Battery: 63%
-2024-11-19 00:18:37,169 - djitellopy - INFO - Send command: 'speed 15'
-2024-11-19 00:18:37,270 - djitellopy - INFO - Response speed 15: 'ok'
-2024-11-19 00:18:37,271 - models.drone_manager - INFO - Drone connected successfully
-2024-11-19 00:18:37,274 - djitellopy - INFO - Send command: 'streamon'
-2024-11-19 00:18:37,375 - djitellopy - INFO - Response streamon: 'ok'
-2024-11-19 00:18:39,381 - models.video_streamer - INFO - Streaming started with optimized pipeline
-2024-11-19 00:18:39,438 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2024-11-19 12:38:54,313 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 12:38:54,314 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 12:38:54,644 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 12:38:54,645 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 12:38:54,645 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 12:38:54,646 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 12:40:08,482 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 12:40:08,482 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 12:40:08,643 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 12:40:08,643 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 12:40:08,643 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 12:40:08,644 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 12:40:08,734 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:40:08,805 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:40:08,806 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 12:40:08,810 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 12:40:08,811 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 12:40:08,816 - djitellopy - INFO - Send command: 'command'
+2024-11-19 12:40:08,917 - djitellopy - ERROR - 'utf-8' codec can't decode byte 0xcc in position 0: invalid continuation byte
+2024-11-19 12:40:08,919 - djitellopy - INFO - Send command: 'command'
+2024-11-19 12:40:08,920 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 12:40:09,472 - models.drone_manager - INFO - Initial connection successful. Battery: 85%
+2024-11-19 12:40:09,472 - djitellopy - INFO - Send command: 'speed 30'
+2024-11-19 12:40:09,473 - djitellopy - INFO - Response speed 30: 'ok'
+2024-11-19 12:40:09,474 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 12:40:09,510 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
  * Running on http://192.168.10.2:5000
-2024-11-19 00:18:39,441 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2024-11-19 00:19:38,811 - djitellopy - INFO - Send command: 'takeoff'
-2024-11-19 00:19:40,979 - djitellopy - INFO - Response takeoff: 'ok'
-2024-11-19 00:19:40,983 - models.drone_manager - ERROR - Takeoff error: object NoneType can't be used in 'await' expression
-2024-11-19 00:19:41,636 - models.video_streamer - INFO - Stopping video stream...
-2024-11-19 00:19:41,751 - models.video_streamer - INFO - Stream stopped - Processed 1742 frames at 31.5 FPS
-2024-11-19 00:19:41,759 - performance - INFO - Video streaming stopped on disconnect
-2024-11-19 00:19:41,772 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 00:19:41] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
-2024-11-19 00:19:41,786 - werkzeug - ERROR - Error on request:
-Traceback (most recent call last):
-  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
-    execute(self.server.app)
-  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
-    write(b"")
-  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
-    assert status_set is not None, "write() before start_response"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: write() before start_response
-2024-11-19 09:03:20,812 - models.object_detector - INFO - Initializing Farm Security Object Detector...
-2024-11-19 09:03:20,814 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
-2024-11-19 09:03:21,148 - models.object_detector - INFO - Successfully loaded Primary detection model
-2024-11-19 09:03:21,148 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
-2024-11-19 09:03:21,149 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
-2024-11-19 09:03:21,150 - models.drone_manager - INFO - Drone Manager initialized
-2024-11-19 09:03:21,295 - models.drone_manager - ERROR - Cannot reach drone IP (192.168.10.1)
-2024-11-19 09:03:54,904 - models.object_detector - INFO - Initializing Farm Security Object Detector...
-2024-11-19 09:03:54,906 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
-2024-11-19 09:03:55,233 - models.object_detector - INFO - Successfully loaded Primary detection model
-2024-11-19 09:03:55,234 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
-2024-11-19 09:03:55,235 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
-2024-11-19 09:03:55,235 - models.drone_manager - INFO - Drone Manager initialized
-2024-11-19 09:03:55,405 - models.drone_manager - INFO - WiFi connection to drone verified
-2024-11-19 09:03:55,528 - models.drone_manager - INFO - WiFi connection to drone verified
-2024-11-19 09:03:55,529 - models.drone_manager - INFO - Connecting to drone...
-2024-11-19 09:03:55,536 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
-2024-11-19 09:03:55,539 - models.drone_manager - INFO - Testing initial connection...
-2024-11-19 09:03:55,552 - djitellopy - INFO - Send command: 'command'
-2024-11-19 09:03:55,757 - djitellopy - INFO - Response command: 'ok'
-2024-11-19 09:03:56,259 - models.drone_manager - INFO - Initial connection successful. Battery: 58%
-2024-11-19 09:03:56,260 - djitellopy - INFO - Send command: 'speed 30'
-2024-11-19 09:03:56,362 - djitellopy - INFO - Response speed 30: 'ok'
-2024-11-19 09:03:56,365 - models.drone_manager - INFO - Drone connected successfully
-2024-11-19 09:03:56,371 - djitellopy - INFO - Send command: 'streamon'
-2024-11-19 09:03:56,473 - djitellopy - INFO - Response streamon: 'ok'
-2024-11-19 09:03:58,491 - models.video_streamer - INFO - Streaming started with optimized pipeline
-2024-11-19 09:03:58,594 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2024-11-19 12:40:09,512 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 12:40:12,858 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:40:12] "GET / HTTP/1.1" 200 -
+2024-11-19 12:40:13,231 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:40:13] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 12:44:08,651 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 12:44:08,652 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 12:44:08,837 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 12:44:08,837 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 12:44:08,838 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 12:44:08,838 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 12:44:08,919 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:44:08,972 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:44:08,972 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 12:44:08,974 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 12:44:08,975 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 12:44:08,978 - djitellopy - INFO - Send command: 'command'
+2024-11-19 12:44:09,180 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 12:44:09,732 - models.drone_manager - INFO - Initial connection successful. Battery: 84%
+2024-11-19 12:44:09,734 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 12:44:09,758 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
  * Running on http://192.168.10.2:5000
-2024-11-19 09:03:58,597 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2024-11-19 09:04:37,353 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:37] "GET / HTTP/1.1" 200 -
-2024-11-19 09:04:38,549 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:38] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
-2024-11-19 09:04:39,060 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:39] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
-2024-11-19 09:04:56,657 - models.video_streamer - INFO - Stopping video stream...
-2024-11-19 09:04:56,678 - models.video_streamer - INFO - Stream stopped - Processed 1567 frames at 29.6 FPS
-2024-11-19 09:04:56,687 - performance - INFO - Video streaming stopped
-2024-11-19 09:04:56,706 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:04:56] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
-2024-11-19 09:05:00,681 - djitellopy - INFO - Send command: 'takeoff'
-2024-11-19 09:05:00,784 - djitellopy - INFO - Response takeoff: 'error'
-2024-11-19 09:05:00,787 - djitellopy - INFO - Send command: 'takeoff'
-2024-11-19 09:05:00,889 - djitellopy - INFO - Response takeoff: 'error'
-2024-11-19 09:05:00,899 - djitellopy - INFO - Send command: 'takeoff'
-2024-11-19 09:05:01,002 - djitellopy - INFO - Response takeoff: 'error'
-2024-11-19 09:05:01,005 - models.drone_manager - ERROR - Takeoff error: Command 'takeoff' was unsuccessful for 4 tries. Latest response:	'error'
-2024-11-19 09:05:14,783 - djitellopy - INFO - Send command: 'takeoff'
-2024-11-19 09:05:16,755 - models.drone_manager - ERROR - Movement already in progress
-2024-11-19 09:05:19,789 - models.drone_manager - ERROR - Movement already in progress
-2024-11-19 09:05:23,110 - models.video_streamer - INFO - Stopping video stream...
-2024-11-19 09:05:23,113 - models.video_streamer - INFO - Stream stopped - Processed 1567 frames at 29.6 FPS
-2024-11-19 09:05:23,114 - performance - INFO - Video streaming stopped on disconnect
-2024-11-19 09:05:23,129 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 09:05:23] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
-2024-11-19 09:05:23,161 - werkzeug - ERROR - Error on request:
+2024-11-19 12:44:09,760 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 12:44:11,725 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:44:11] "GET / HTTP/1.1" 200 -
+2024-11-19 12:44:11,881 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:44:11] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 12:44:39,463 - djitellopy - INFO - Send command: 'speed 45'
+2024-11-19 12:44:39,565 - djitellopy - INFO - Response speed 45: 'ok'
+2024-11-19 12:44:39,567 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 12:44:42,272 - djitellopy - INFO - Send command: 'down 50'
+2024-11-19 12:44:42,884 - djitellopy - INFO - Response down 50: 'error Not joystick'
+2024-11-19 12:44:42,884 - djitellopy - INFO - Send command: 'down 50'
+2024-11-19 12:44:43,587 - djitellopy - INFO - Response down 50: 'error Not joystick'
+2024-11-19 12:44:43,588 - djitellopy - INFO - Send command: 'down 50'
+2024-11-19 12:44:44,289 - djitellopy - INFO - Response takeoff: 'error Not joystick'
+2024-11-19 12:44:44,291 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 12:44:44,493 - djitellopy - INFO - Response down 50: 'error'
+2024-11-19 12:44:44,494 - models.drone_manager - ERROR - Landing error: Command 'down 50' was unsuccessful for 4 tries. Latest response:	'error'
+2024-11-19 12:44:44,495 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:44:44,496 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:44:45,696 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-19 12:44:46,698 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 12:44:46,800 - djitellopy - INFO - Response up 150: 'error Motor stop'
+2024-11-19 12:44:46,801 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 12:44:46,902 - djitellopy - INFO - Response up 150: 'error Motor stop'
+2024-11-19 12:44:46,902 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 12:44:47,004 - djitellopy - INFO - Response up 150: 'error Motor stop'
+2024-11-19 12:44:47,005 - models.drone_manager - ERROR - TopRight sequence error: Command 'up 150' was unsuccessful for 4 tries. Latest response:	'error Motor stop'
+2024-11-19 12:44:47,006 - models.drone_manager - ERROR - Pattern error: object bool can't be used in 'await' expression
+2024-11-19 12:44:47,007 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:44:47,009 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:45:46,823 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 12:45:46,824 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 12:45:47,010 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 12:45:47,011 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 12:45:47,011 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 12:45:47,011 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 12:45:47,101 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:45:47,159 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:45:47,160 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 12:45:47,162 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 12:45:47,163 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 12:45:47,166 - djitellopy - INFO - Send command: 'command'
+2024-11-19 12:45:47,368 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 12:45:47,869 - models.drone_manager - INFO - Initial connection successful. Battery: 82%
+2024-11-19 12:45:47,870 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 12:45:47,893 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-19 12:45:47,894 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 12:45:49,623 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:45:49] "GET / HTTP/1.1" 200 -
+2024-11-19 12:45:49,742 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:45:49] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 12:45:52,862 - djitellopy - INFO - Send command: 'speed 45'
+2024-11-19 12:45:52,964 - djitellopy - INFO - Response speed 45: 'ok'
+2024-11-19 12:45:52,967 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 12:45:57,578 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-19 12:45:58,079 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 12:46:01,890 - djitellopy - INFO - Response up 150: 'ok'
+2024-11-19 12:46:02,392 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:46:08,908 - djitellopy - INFO - Response forward 200: 'ok'
+2024-11-19 12:46:09,410 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:46:15,725 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:46:16,226 - djitellopy - INFO - Send command: 'cw 270'
+2024-11-19 12:46:21,909 - djitellopy - INFO - Response cw 270: 'ok'
+2024-11-19 12:46:22,410 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:46:28,231 - djitellopy - INFO - Response forward 200: 'ok'
+2024-11-19 12:46:28,732 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:46:35,153 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:46:35,654 - djitellopy - INFO - Send command: 'cw 270'
+2024-11-19 12:46:40,871 - djitellopy - INFO - Response cw 270: 'ok'
+2024-11-19 12:46:41,373 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:46:46,589 - djitellopy - INFO - Response forward 200: 'ok'
+2024-11-19 12:46:47,090 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:46:54,112 - djitellopy - WARNING - Aborting command 'cw 360'. Did not receive a response after 7 seconds
+2024-11-19 12:46:54,113 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:46:54,214 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:46:54,715 - djitellopy - INFO - Send command: 'cw 270'
+2024-11-19 12:47:00,431 - djitellopy - INFO - Response cw 270: 'ok'
+2024-11-19 12:47:00,932 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:47:04,541 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:47:04,543 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:47:04,746 - djitellopy - INFO - Response forward 200: 'error Motor stop'
+2024-11-19 12:47:04,748 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:47:04,850 - djitellopy - INFO - Response forward 200: 'error Motor stop'
+2024-11-19 12:47:04,852 - djitellopy - INFO - Send command: 'forward 200'
+2024-11-19 12:47:04,953 - djitellopy - INFO - Response forward 200: 'error Motor stop'
+2024-11-19 12:47:04,953 - models.drone_manager - ERROR - Perimeter sequence error: Command 'forward 200' was unsuccessful for 4 tries. Latest response:	'error Motor stop'
+2024-11-19 12:47:04,954 - models.drone_manager - ERROR - Pattern error: object bool can't be used in 'await' expression
+2024-11-19 12:47:04,954 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:47:04,954 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:50:02,266 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 12:50:02,267 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 12:50:02,424 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 12:50:02,425 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 12:50:02,425 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 12:50:02,425 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 12:50:02,528 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:50:02,581 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 12:50:02,581 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 12:50:02,583 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 12:50:02,584 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 12:50:02,587 - djitellopy - INFO - Send command: 'command'
+2024-11-19 12:50:02,689 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 12:50:03,249 - models.drone_manager - INFO - Initial connection successful. Battery: 70%
+2024-11-19 12:50:03,250 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 12:50:03,278 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-19 12:50:03,279 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 12:50:06,040 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:50:06] "GET / HTTP/1.1" 200 -
+2024-11-19 12:50:06,116 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:50:06] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 12:50:46,652 - djitellopy - INFO - Send command: 'speed 60'
+2024-11-19 12:50:46,754 - djitellopy - INFO - Response speed 60: 'ok'
+2024-11-19 12:50:46,754 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 12:50:55,677 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-19 12:50:56,178 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 12:50:59,390 - djitellopy - INFO - Response up 150: 'ok'
+2024-11-19 12:50:59,892 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:06,915 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 12:51:06,915 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:08,121 - djitellopy - INFO - Response forward 400: 'ok'
+2024-11-19 12:51:08,622 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:51:14,841 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:51:15,342 - djitellopy - INFO - Send command: 'ccw 90'
+2024-11-19 12:51:15,943 - djitellopy - INFO - Send command: 'streamon'
+2024-11-19 12:51:16,045 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-19 12:51:17,553 - djitellopy - INFO - Response ccw 90: 'ok'
+2024-11-19 12:51:18,049 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-19 12:51:18,050 - performance - INFO - Video streaming started
+2024-11-19 12:51:18,054 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:25,251 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 12:51:25,253 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:26,679 - djitellopy - INFO - Response forward 400: 'ok'
+2024-11-19 12:51:27,184 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:51:30,556 - libav.h264 - ERROR - error while decoding MB 9 13, bytestream -6
+2024-11-19 12:51:32,396 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:51:32,397 - libav.h264 - ERROR - error while decoding MB 0 31, bytestream 2551
+2024-11-19 12:51:32,626 - libav.h264 - ERROR - error while decoding MB 36 43, bytestream -12
+2024-11-19 12:51:34,264 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:51:34,771 - djitellopy - INFO - Send command: 'ccw 90'
+2024-11-19 12:51:39,689 - djitellopy - INFO - Response ccw 90: 'ok'
+2024-11-19 12:51:40,196 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:47,261 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 12:51:47,268 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:51:49,008 - djitellopy - INFO - Response forward 400: 'ok'
+2024-11-19 12:51:49,515 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:51:51,003 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:51:51,004 - libav.h264 - ERROR - error while decoding MB 0 32, bytestream 3866
+2024-11-19 12:51:51,029 - libav.h264 - ERROR - error while decoding MB 56 14, bytestream -6
+2024-11-19 12:51:52,320 - libav.h264 - ERROR - error while decoding MB 27 12, bytestream -6
+2024-11-19 12:51:52,339 - libav.h264 - ERROR - error while decoding MB 22 12, bytestream -8
+2024-11-19 12:51:52,614 - libav.h264 - ERROR - error while decoding MB 6 25, bytestream -6
+2024-11-19 12:51:53,289 - libav.h264 - ERROR - error while decoding MB 12 28, bytestream -6
+2024-11-19 12:51:53,347 - libav.h264 - ERROR - error while decoding MB 14 14, bytestream -6
+2024-11-19 12:51:53,788 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:51:53,788 - libav.h264 - ERROR - error while decoding MB 0 32, bytestream 2820
+2024-11-19 12:51:54,003 - libav.h264 - ERROR - error while decoding MB 33 30, bytestream -6
+2024-11-19 12:51:56,277 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:51:56,785 - djitellopy - INFO - Send command: 'ccw 90'
+2024-11-19 12:51:57,410 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:51:57,412 - libav.h264 - ERROR - error while decoding MB 0 17, bytestream 1102
+2024-11-19 12:51:57,818 - libav.h264 - ERROR - error while decoding MB 22 30, bytestream -6
+2024-11-19 12:51:58,925 - djitellopy - INFO - Response ccw 90: 'ok'
+2024-11-19 12:51:59,433 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:52:06,505 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 12:52:06,508 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 12:52:06,718 - djitellopy - INFO - Response forward 400: 'ok'
+2024-11-19 12:52:07,222 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 12:52:07,492 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:52:07,493 - libav.h264 - ERROR - error while decoding MB 0 23, bytestream 1066
+2024-11-19 12:52:07,574 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:52:07,575 - libav.h264 - ERROR - error while decoding MB 0 8, bytestream 810
+2024-11-19 12:52:11,077 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:52:11,079 - libav.h264 - ERROR - error while decoding MB 0 27, bytestream 2454
+2024-11-19 12:52:11,306 - libav.h264 - ERROR - error while decoding MB 40 15, bytestream -6
+2024-11-19 12:52:11,380 - libav.h264 - ERROR - error while decoding MB 4 31, bytestream -6
+2024-11-19 12:52:11,455 - libav.h264 - ERROR - error while decoding MB 11 31, bytestream -8
+2024-11-19 12:52:12,581 - libav.h264 - ERROR - error while decoding MB 6 16, bytestream -6
+2024-11-19 12:52:13,812 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 12:52:14,315 - djitellopy - INFO - Send command: 'ccw 90'
+2024-11-19 12:52:16,469 - djitellopy - INFO - Response ccw 90: 'ok'
+2024-11-19 12:52:16,970 - djitellopy - INFO - Send command: 'down 150'
+2024-11-19 12:52:18,987 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:52:18,991 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:52:19,332 - djitellopy - INFO - Response down 150: 'error Motor stop'
+2024-11-19 12:52:19,332 - djitellopy - INFO - Send command: 'down 150'
+2024-11-19 12:52:19,436 - djitellopy - INFO - Response down 150: 'error Motor stop'
+2024-11-19 12:52:19,443 - djitellopy - INFO - Send command: 'down 150'
+2024-11-19 12:52:19,649 - djitellopy - INFO - Response down 150: 'error Motor stop'
+2024-11-19 12:52:19,649 - models.drone_manager - ERROR - Perimeter sequence error: Command 'down 150' was unsuccessful for 4 tries. Latest response:	'error Motor stop'
+2024-11-19 12:52:19,650 - models.drone_manager - ERROR - Pattern error: object bool can't be used in 'await' expression
+2024-11-19 12:52:19,650 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 12:52:19,651 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 12:52:22,778 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 12:52:22,779 - libav.h264 - ERROR - error while decoding MB 0 32, bytestream -6
+2024-11-19 12:52:25,488 - models.video_streamer - INFO - Stopping video stream...
+2024-11-19 12:52:26,109 - models.video_streamer - INFO - Stream stopped - Processed 1886 frames at 32.7 FPS
+2024-11-19 12:52:26,111 - performance - INFO - Video streaming stopped on disconnect
+2024-11-19 12:52:26,122 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 12:52:26] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-19 12:52:26,173 - werkzeug - ERROR - Error on request:
 Traceback (most recent call last):
   File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
     execute(self.server.app)

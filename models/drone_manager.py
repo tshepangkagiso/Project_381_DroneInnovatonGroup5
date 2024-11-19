@@ -234,7 +234,7 @@ class DroneManager:
                         return False
                         
                     # Configure initial speed
-                    retry_count = 0
+                    '''retry_count = 0
                     while retry_count < 3:
                         try:
                             self.drone.set_speed(PatrolConfig.DEFAULT_SPEED)
@@ -244,7 +244,7 @@ class DroneManager:
                             if retry_count == 3:
                                 logger.error("Failed to set initial speed")
                                 return False
-                            time.sleep(0.5)
+                            time.sleep(0.5)'''
                     
                     self.is_connected = True
                     self._start_keep_alive()
@@ -252,8 +252,8 @@ class DroneManager:
                     logger.info("Drone connected successfully")
                     
                     # Initialize video stream
-                    if not self.video_streamer.start_streaming(self.drone):
-                        logger.warning("Failed to start video stream")
+                    '''if not self.video_streamer.start_streaming(self.drone):
+                        logger.warning("Failed to start video stream")'''
                         
                     return True
                     
@@ -489,52 +489,82 @@ class DroneManager:
         )
 
     # Pattern Flight Commands
-    async def perimeter(self) -> bool:
+    def perimeter(self) -> bool:
         """Execute perimeter patrol pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._perimeter_sequence,
             "perimeter"
         )
 
-    async def _perimeter_sequence(self) -> bool:
+    def _perimeter_sequence(self) -> bool:
         """Internal perimeter sequence implementation."""
         try:
-            drone = self.drone
+            tello = self.drone
+            tello.set_speed(60)
+
+            tello.takeoff()
             
-            await self.take_off()
-            await asyncio.sleep(1)
+            print("Drone took off")
+            time.sleep(0.5)
+        
+            tello.move_up(150)  # Adjust for initial takeoff height
+            print(f"Drone moved up to {150} cm")
+            time.sleep(0.5)
 
-            drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(1)
+            tello.move_forward(400)
+            print(f"Drone moved forward to {400} cm")
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(360)
+            print("Drone completed 360-degree scan")
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_counter_clockwise(90)
+            print("Drone completed 270-degree scan face tl")
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            tello.move_forward(400)
+            print(f"Drone moved forward to {400} cm")
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(360)
+            print("Drone completed 360-degree scan")
+            time.sleep(0.5)
 
-            drone.move_back(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_counter_clockwise(90)
+            print("Drone completed 270-degree scan face bl")
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(90)
-            await asyncio.sleep(0.5)
+            tello.move_forward(400)
+            print(f"Drone moved forward to {400} cm")
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(360)
+            print("Drone completed 360-degree scan")
+            time.sleep(0.5)
 
-            drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
+            tello.rotate_counter_clockwise(90)
+            print("Drone completed 270-degree scan face br origin")
+            time.sleep(0.5)
 
-            drone.move_down(PatrolConfig.HEIGHT - 100)
-            await asyncio.sleep(0.5)
+            tello.move_forward(400)
+            print(f"Drone moved forward to {400} cm")
+            time.sleep(0.5)
 
-            await self.land()
+            tello.rotate_clockwise(360)
+            print("Drone completed 360-degree scan")
+            time.sleep(0.5)
+
+            tello.rotate_counter_clockwise(90)
+            print("Drone completed 270-degree scan face tr")
+            time.sleep(0.5)
+
+            # Move down slowly to ensure a controlled landing close to the takeoff position
+            tello.move_down(150)
+            print("Drone moved down to prepare for landing")
+        
+            # Land the drone
+            tello.land()
             logger.info("Perimeter patrol completed successfully")
             return True
             
@@ -542,37 +572,46 @@ class DroneManager:
             logger.error(f"Perimeter sequence error: {e}")
             return False
 
-    async def fly_to_TopRight(self) -> bool:
+    def fly_to_TopRight(self) -> bool:
         """Execute TopRight flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._top_right_sequence,
             "top_right"
         )
 
-    async def _top_right_sequence(self) -> bool:
+    def _top_right_sequence(self) -> bool:
         """Internal TopRight sequence implementation."""
         try:
-            drone = self.drone
+            tello = self.drone
+            tello.set_speed(45)
+            # Takeoff and reach the desired height
+            tello.takeoff()
+            print("Drone took off")
+            time.sleep(1)
+        
+            tello.move_up(150)  # Adjust for initial takeoff height
+            print(f"Drone moved up to {150} cm")
+            time.sleep(1)
 
-            await self.take_off()
-            await asyncio.sleep(1)
+            tello.move_forward(200)
+            print(f"Drone moved forward to {200} cm")
+            time.sleep(1)
 
-            drone.move_up(150)
-            await asyncio.sleep(1)
+            tello.rotate_clockwise(360)
+            print("Drone completed 360-degree scan")
+            time.sleep(1)
 
-            drone.move_forward(200)
-            await asyncio.sleep(1)
+            tello.move_back(200)
+            print("Drone move to origin")
+            time.sleep(1)
 
-            drone.rotate_clockwise(360)
-            await asyncio.sleep(1)
-
-            drone.move_back(200)
-            await asyncio.sleep(1)
-
-            drone.move_down(100)
-            await asyncio.sleep(1)
-
-            await self.land()
+            # Move down slowly to ensure a controlled landing close to the takeoff position
+            tello.move_down(100)
+            print("Drone moved down to prepare for landing")
+        
+            # Land the drone
+            tello.land()
+            print("Drone landed")
             logger.info("TopRight flight completed successfully")
             return True
             
@@ -580,52 +619,57 @@ class DroneManager:
             logger.error(f"TopRight sequence error: {e}")
             return False
 
-    async def fly_to_TopLeft(self) -> bool:
+    def fly_to_TopLeft(self) -> bool:
         """Execute TopLeft flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._top_left_sequence,
             "top_left"
         )
 
-    async def _top_left_sequence(self) -> bool:
+    def _top_left_sequence(self) -> bool:
         """Internal TopLeft sequence implementation."""
         try:
-            drone = self.drone
+            tello = self.drone
+            tello.set_speed(45)
+            tello.takeoff()
+            print("Drone took off")
+            time.sleep(1)
 
-            await self.take_off()
-            await asyncio.sleep(1)
+            tello.move_up(150)  # Adjust for initial takeoff height
+            print(f"Drone moved up to {150} cm")
+            time.sleep(1)
 
-            drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(1)
+            tello.rotate_clockwise(270)
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            tello.move_forward(200)
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(270)
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            tello.move_forward(200)
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.move_back(200)
+            time.sleep(0.5)
 
-            drone.move_back(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(90)
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(90)
-            await asyncio.sleep(0.5)
+            tello.move_forward(200)
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.rotate_counter_clockwise(90)
+            time.sleep(0.5)
 
-            drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
-
-            drone.move_down(PatrolConfig.HEIGHT-100)
-            await asyncio.sleep(0.5)
-
-            await self.land()
+            # Move down slowly to ensure a controlled landing close to the takeoff position
+            tello.move_down(100)
+            print("Drone moved down to prepare for landing")
+        
+            # Land the drone
+            tello.land()
+            print("Drone landed")
             logger.info("TopLeft flight completed successfully")
             return True
             
@@ -633,43 +677,49 @@ class DroneManager:
             logger.error(f"TopLeft sequence error: {e}")
             return False
 
-    async def fly_to_BottomLeft(self) -> bool:
+    def fly_to_BottomLeft(self) -> bool:
         """Execute BottomLeft flight pattern."""
-        return await self.execute_pattern(
+        return self.execute_pattern(
             self._bottom_left_sequence,
             "bottom_left"
         )
 
-    async def _bottom_left_sequence(self) -> bool:
+    def _bottom_left_sequence(self) -> bool:
         """Internal BottomLeft sequence implementation."""
         try:
-            drone = self.drone
-            
-            await self.take_off()
-            await asyncio.sleep(0.5)
+            tello = self.drone
+            tello.set_speed(45)
+            # Takeoff and reach the desired height
+            tello.takeoff()
+            print("Drone took off")
+            time.sleep(0.5)
 
-            drone.move_up(PatrolConfig.HEIGHT)
-            await asyncio.sleep(0.5)
+            tello.move_up(150)  # Adjust for initial takeoff height
+            print(f"Drone moved up to {150} cm")
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(270)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(270)
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.move_forward(200)
+            time.sleep(0.5)
 
-            drone.rotate_clockwise(180)
-            await asyncio.sleep(0.5)
+            tello.rotate_clockwise(180)
+            time.sleep(0.5)
 
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            await asyncio.sleep(0.5)
+            tello.move_forward(200)
+            time.sleep(0.5)
 
-            drone.rotate_counter_clockwise(90)
-            await asyncio.sleep(0.5)
+            tello.rotate_counter_clockwise(90)
+            time.sleep(0.5)
 
-            drone.move_down(PatrolConfig.HEIGHT - 100)
-            await asyncio.sleep(0.5)
-
-            await self.land()
+            # Move down slowly to ensure a controlled landing close to the takeoff position
+            tello.move_down(100)
+            print("Drone moved down to prepare for landing")
+        
+            # Land the drone
+            tello.land()
+            print("Drone landed")
             logger.info("BottomLeft flight completed successfully")
             return True
             
