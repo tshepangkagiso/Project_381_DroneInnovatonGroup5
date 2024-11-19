@@ -3455,3 +3455,134 @@ AssertionError: write() before start_response
 2024-11-19 12:08:53,007 - werkzeug - INFO - 192.168.10.2 - - [19/Nov/2024 12:08:53] "GET / HTTP/1.1" 200 -
 2024-11-19 12:08:53,048 - werkzeug - INFO - 192.168.10.2 - - [19/Nov/2024 12:08:53] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
 2024-11-19 12:08:53,146 - werkzeug - INFO - 192.168.10.2 - - [19/Nov/2024 12:08:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-11-19 13:15:52,290 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 13:15:52,292 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 13:15:52,509 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 13:15:52,509 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 13:15:52,510 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 13:15:52,510 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 13:15:55,292 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 13:15:59,295 - models.drone_manager - ERROR - Cannot reach drone IP (192.168.10.1)
+2024-11-19 13:15:59,295 - models.drone_manager - ERROR - WiFi connection validation failed
+2024-11-19 13:16:46,748 - models.object_detector - INFO - Initializing Farm Security Object Detector...
+2024-11-19 13:16:46,749 - models.object_detector - INFO - Loading Primary detection model (yolov8m)...
+2024-11-19 13:16:46,905 - models.object_detector - INFO - Successfully loaded Primary detection model
+2024-11-19 13:16:46,905 - models.object_detector - INFO - Farm Security Object Detector initialized successfully
+2024-11-19 13:16:46,905 - models.video_streamer - INFO - Optimized VideoStreamer initialized successfully
+2024-11-19 13:16:46,906 - models.drone_manager - INFO - Drone Manager initialized
+2024-11-19 13:16:47,004 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 13:16:47,078 - models.drone_manager - INFO - WiFi connection to drone verified
+2024-11-19 13:16:47,079 - models.drone_manager - INFO - Connecting to drone...
+2024-11-19 13:16:47,081 - djitellopy - INFO - Tello instance was initialized. Host: '192.168.10.1'. Port: '8889'.
+2024-11-19 13:16:47,082 - models.drone_manager - INFO - Testing initial connection...
+2024-11-19 13:16:47,087 - djitellopy - INFO - Send command: 'command'
+2024-11-19 13:16:47,288 - djitellopy - INFO - Response command: 'ok'
+2024-11-19 13:16:47,288 - djitellopy - INFO - Send command: 'speed 30'
+2024-11-19 13:16:47,390 - djitellopy - INFO - Response speed 30: 'ok'
+2024-11-19 13:16:47,892 - models.drone_manager - INFO - Initial connection successful. Battery: 53%
+2024-11-19 13:16:47,893 - models.drone_manager - INFO - Drone connected successfully
+2024-11-19 13:16:47,964 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.2:5000
+2024-11-19 13:16:47,966 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-11-19 13:16:50,126 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 13:16:50] "GET / HTTP/1.1" 200 -
+2024-11-19 13:16:50,553 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 13:16:50] "GET /api/placeholder/1280/720 HTTP/1.1" 200 -
+2024-11-19 13:17:11,218 - djitellopy - INFO - Send command: 'speed 60'
+2024-11-19 13:17:11,319 - djitellopy - INFO - Response speed 60: 'ok'
+2024-11-19 13:17:11,322 - djitellopy - INFO - Send command: 'takeoff'
+2024-11-19 13:17:15,537 - djitellopy - INFO - Response takeoff: 'ok'
+2024-11-19 13:17:16,039 - djitellopy - INFO - Send command: 'up 150'
+2024-11-19 13:17:16,099 - djitellopy - INFO - Send command: 'streamon'
+2024-11-19 13:17:16,341 - djitellopy - INFO - Response up 150: 'ok'
+2024-11-19 13:17:16,843 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:19,811 - djitellopy - INFO - Response streamon: 'ok'
+2024-11-19 13:17:21,818 - models.video_streamer - INFO - Streaming started with optimized pipeline
+2024-11-19 13:17:21,819 - performance - INFO - Video streaming started
+2024-11-19 13:17:23,865 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 13:17:23,866 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:31,234 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 13:17:31,235 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:32,269 - djitellopy - INFO - Response forward 400: 'ok'
+2024-11-19 13:17:32,787 - djitellopy - INFO - Send command: 'cw 360'
+2024-11-19 13:17:36,755 - libav.h264 - ERROR - error while decoding MB 8 27, bytestream -6
+2024-11-19 13:17:36,785 - libav.h264 - ERROR - error while decoding MB 3 27, bytestream -6
+2024-11-19 13:17:37,411 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:17:37,413 - libav.h264 - ERROR - error while decoding MB 0 28, bytestream 2540
+2024-11-19 13:17:37,750 - libav.h264 - ERROR - error while decoding MB 20 26, bytestream -6
+2024-11-19 13:17:39,634 - djitellopy - INFO - Response cw 360: 'ok'
+2024-11-19 13:17:40,141 - djitellopy - INFO - Send command: 'ccw 90'
+2024-11-19 13:17:41,914 - libav.h264 - ERROR - error while decoding MB 50 18, bytestream -6
+2024-11-19 13:17:41,980 - libav.h264 - ERROR - error while decoding MB 50 20, bytestream -6
+2024-11-19 13:17:42,113 - libav.h264 - ERROR - error while decoding MB 18 15, bytestream -8
+2024-11-19 13:17:42,251 - libav.h264 - ERROR - error while decoding MB 38 33, bytestream -6
+2024-11-19 13:17:42,407 - libav.h264 - ERROR - error while decoding MB 25 16, bytestream -10
+2024-11-19 13:17:42,709 - djitellopy - INFO - Response ccw 90: 'ok'
+2024-11-19 13:17:43,221 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:50,280 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 13:17:50,282 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:52,472 - libav.h264 - ERROR - error while decoding MB 18 18, bytestream -6
+2024-11-19 13:17:52,542 - libav.h264 - ERROR - error while decoding MB 26 18, bytestream -11
+2024-11-19 13:17:52,576 - libav.h264 - ERROR - cabac decode of qscale diff failed at 1 21
+2024-11-19 13:17:52,578 - libav.h264 - ERROR - error while decoding MB 1 21, bytestream 806
+2024-11-19 13:17:55,923 - libav.h264 - ERROR - error while decoding MB 23 18, bytestream -6
+2024-11-19 13:17:56,764 - libav.h264 - ERROR - error while decoding MB 27 29, bytestream -5
+2024-11-19 13:17:57,096 - libav.h264 - ERROR - error while decoding MB 33 17, bytestream -22
+2024-11-19 13:17:57,312 - libav.h264 - ERROR - error while decoding MB 49 36, bytestream -6
+2024-11-19 13:17:57,373 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 13:17:57,375 - djitellopy - INFO - Send command: 'forward 400'
+2024-11-19 13:17:57,525 - libav.h264 - ERROR - error while decoding MB 35 15, bytestream -6
+2024-11-19 13:17:57,620 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-19 13:17:57,623 - libav.h264 - ERROR - error while decoding MB 0 28, bytestream 2223
+2024-11-19 13:17:57,782 - libav.h264 - ERROR - error while decoding MB 38 17, bytestream -8
+2024-11-19 13:17:57,883 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-19 13:17:57,883 - libav.h264 - ERROR - error while decoding MB 0 42, bytestream 455
+2024-11-19 13:17:58,430 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:17:58,431 - libav.h264 - ERROR - error while decoding MB 0 12, bytestream 734
+2024-11-19 13:17:58,515 - libav.h264 - ERROR - left block unavailable for requested intra4x4 mode -1
+2024-11-19 13:17:58,516 - libav.h264 - ERROR - error while decoding MB 0 13, bytestream 3058
+2024-11-19 13:17:58,573 - libav.h264 - ERROR - error while decoding MB 5 31, bytestream -6
+2024-11-19 13:17:58,786 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:17:58,788 - libav.h264 - ERROR - error while decoding MB 0 15, bytestream -4
+2024-11-19 13:17:58,872 - libav.h264 - ERROR - error while decoding MB 36 30, bytestream -6
+2024-11-19 13:18:02,206 - libav.h264 - ERROR - error while decoding MB 12 13, bytestream -8
+2024-11-19 13:18:04,289 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 13:18:04,291 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 13:18:04,296 - libav.h264 - ERROR - error while decoding MB 39 12, bytestream -9
+2024-11-19 13:18:04,452 - djitellopy - WARNING - Aborting command 'forward 400'. Did not receive a response after 7 seconds
+2024-11-19 13:18:04,470 - models.drone_manager - ERROR - Perimeter sequence error: Command 'forward 400' was unsuccessful for 4 tries. Latest response:	'Aborting command 'forward 400'. Did not receive a response after 7 seconds'
+2024-11-19 13:18:04,487 - models.drone_manager - ERROR - Pattern error: object bool can't be used in 'await' expression
+2024-11-19 13:18:04,496 - djitellopy - INFO - Send command (no response expected): 'emergency'
+2024-11-19 13:18:04,501 - models.drone_manager - ERROR - Emergency stop error: object NoneType can't be used in 'await' expression
+2024-11-19 13:18:04,518 - libav.h264 - ERROR - error while decoding MB 8 35, bytestream -6
+2024-11-19 13:18:06,518 - libav.h264 - ERROR - error while decoding MB 59 31, bytestream -6
+2024-11-19 13:18:06,554 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:18:06,555 - libav.h264 - ERROR - error while decoding MB 0 18, bytestream 1462
+2024-11-19 13:18:06,776 - libav.h264 - ERROR - error while decoding MB 21 17, bytestream -6
+2024-11-19 13:18:06,964 - libav.h264 - ERROR - error while decoding MB 51 43, bytestream -8
+2024-11-19 13:18:07,184 - libav.h264 - ERROR - error while decoding MB 16 32, bytestream -6
+2024-11-19 13:18:07,312 - libav.h264 - ERROR - error while decoding MB 49 43, bytestream -14
+2024-11-19 13:18:07,373 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:18:07,375 - libav.h264 - ERROR - error while decoding MB 0 31, bytestream 196
+2024-11-19 13:18:07,428 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:18:07,429 - libav.h264 - ERROR - error while decoding MB 0 43, bytestream 3135
+2024-11-19 13:18:08,049 - libav.h264 - ERROR - cabac decode of qscale diff failed at 55 12
+2024-11-19 13:18:08,051 - libav.h264 - ERROR - error while decoding MB 55 12, bytestream 1444
+2024-11-19 13:18:08,385 - libav.h264 - ERROR - left block unavailable for requested intra mode
+2024-11-19 13:18:08,386 - libav.h264 - ERROR - error while decoding MB 0 19, bytestream 24
+2024-11-19 13:18:08,844 - libav.h264 - ERROR - error while decoding MB 45 27, bytestream -6
+2024-11-19 13:18:08,847 - libav.h264 - ERROR - error while decoding MB 31 30, bytestream -13
+2024-11-19 13:18:09,045 - models.video_streamer - INFO - Stopping video stream...
+2024-11-19 13:18:09,605 - models.video_streamer - INFO - Stream stopped - Processed 1289 frames at 28.0 FPS
+2024-11-19 13:18:09,606 - performance - INFO - Video streaming stopped on disconnect
+2024-11-19 13:18:09,618 - werkzeug - INFO - 127.0.0.1 - - [19/Nov/2024 13:18:09] "[35m[1mGET /socket.io/?EIO=4&transport=websocket HTTP/1.1[0m" 500 -
+2024-11-19 13:18:09,669 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 336, in execute
+    write(b"")
+  File "C:\Users\tshep\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\serving.py", line 261, in write
+    assert status_set is not None, "write() before start_response"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: write() before start_response

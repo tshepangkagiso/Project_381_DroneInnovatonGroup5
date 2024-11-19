@@ -235,13 +235,8 @@ class DroneManager:
                         return False
                         
                     # Configure initial speed
-<<<<<<< HEAD
                     '''retry_count = 0
                     while retry_count < 3:
-=======
-                    retry_count = 0
-                    while retry_count < 10:
->>>>>>> 8361ce590c2b919d2e1009289fa6018dceec503d
                         try:
                             self.drone.set_speed(PatrolConfig.DEFAULT_SPEED)
                             break
@@ -510,7 +505,6 @@ class DroneManager:
 
             tello.takeoff()
             
-<<<<<<< HEAD
             print("Drone took off")
             time.sleep(0.5)
         
@@ -572,55 +566,6 @@ class DroneManager:
         
             # Land the drone
             tello.land()
-=======
-            drone.takeoff()
-            time.sleep(0.5)
-
-            drone.move_up(PatrolConfig.HEIGHT)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            print("Top Right Position")
-            time.sleep(0.5)
-            
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-            
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            print("Top Left Position")
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            print("Bottom Right Position")
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-            
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            print("Origin Position")
-            time.sleep(0.5)
-            
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_down(PatrolConfig.HEIGHT - 100)
-            time.sleep(0.5)
-
-            drone.land()
->>>>>>> 8361ce590c2b919d2e1009289fa6018dceec503d
             logger.info("Perimeter patrol completed successfully")
             return True
             
@@ -638,7 +583,6 @@ class DroneManager:
     def _top_right_sequence(self) -> bool:
         """Internal TopRight sequence implementation."""
         try:
-<<<<<<< HEAD
             tello = self.drone
             tello.set_speed(45)
             # Takeoff and reach the desired height
@@ -669,30 +613,6 @@ class DroneManager:
             # Land the drone
             tello.land()
             print("Drone landed")
-=======
-            drone = self.drone
-            
-            
-            drone.takeoff()
-            time.sleep(0.5)
-
-            drone.move_up(150)
-            time.sleep(0.5)
-
-            drone.move_forward(200)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-
-            drone.move_back(200)
-            time.sleep(0.5)
-
-            drone.move_down(100)
-            time.sleep(0.5)
-
-            drone.land()
->>>>>>> 8361ce590c2b919d2e1009289fa6018dceec503d
             logger.info("TopRight flight completed successfully")
             return True
             
@@ -716,7 +636,6 @@ class DroneManager:
             print("Drone took off")
             time.sleep(1)
 
-<<<<<<< HEAD
             tello.move_up(150)  # Adjust for initial takeoff height
             print(f"Drone moved up to {150} cm")
             time.sleep(1)
@@ -752,45 +671,6 @@ class DroneManager:
             # Land the drone
             tello.land()
             print("Drone landed")
-=======
-            drone.takeoff()
-            time.sleep(0.5)
-
-            drone.move_up(PatrolConfig.HEIGHT)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-            
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-            
-            drone.move_back(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(90)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-
-            drone.rotate_counter_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_down(PatrolConfig.HEIGHT-100)
-            time.sleep(0.5)
-
-            drone.land()
->>>>>>> 8361ce590c2b919d2e1009289fa6018dceec503d
             logger.info("TopLeft flight completed successfully")
             return True
             
@@ -808,7 +688,6 @@ class DroneManager:
     def _bottom_left_sequence(self) -> bool:
         """Internal BottomLeft sequence implementation."""
         try:
-<<<<<<< HEAD
             tello = self.drone
             tello.set_speed(45)
             # Takeoff and reach the desired height
@@ -842,39 +721,6 @@ class DroneManager:
             # Land the drone
             tello.land()
             print("Drone landed")
-=======
-            drone = self.drone
-            
-            
-            drone.takeoff()
-            time.sleep(0.5)
-
-            drone.move_up(PatrolConfig.HEIGHT)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(270)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-
-            drone.rotate_clockwise(360)
-            time.sleep(0.5)
-            
-            drone.rotate_clockwise(180)
-            time.sleep(0.5)
-
-            drone.move_forward(PatrolConfig.SIDE_LENGTH)
-            time.sleep(0.5)
-
-            drone.rotate_counter_clockwise(90)
-            time.sleep(0.5)
-
-            drone.move_down(PatrolConfig.HEIGHT - 100)
-            time.sleep(0.5)
-
-            drone.land()
->>>>>>> 8361ce590c2b919d2e1009289fa6018dceec503d
             logger.info("BottomLeft flight completed successfully")
             return True
             
