@@ -41,3 +41,6 @@ A full-stack surveillance system integrating DJI Tello drones with real-time vid
 - MongoDB
 - DJI Tello Drone
 - Wi-Fi connection
+
+
+<img width="943" height="508" alt="Image" src="https://github.com/user-attachments/assets/428e5880-3bef-45c7-95ab-c2390ebaf358" />
