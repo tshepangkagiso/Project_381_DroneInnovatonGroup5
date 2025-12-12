@@ -42,5 +42,9 @@ A full-stack surveillance system integrating DJI Tello drones with real-time vid
 - DJI Tello Drone
 - Wi-Fi connection
 
+##
+<img width="1898" height="917" alt="Image" src="https://github.com/user-attachments/assets/f441c68d-447f-4ff2-9252-3ee970b9c6ee" />
+
+<img width="1764" height="902" alt="Image" src="https://github.com/user-attachments/assets/454cdd0e-f5b6-4f2b-bafb-42ae5a23eb38" />
 
 <img width="943" height="508" alt="Image" src="https://github.com/user-attachments/assets/428e5880-3bef-45c7-95ab-c2390ebaf358" />
